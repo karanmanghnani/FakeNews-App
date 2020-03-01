@@ -1,0 +1,37 @@
+{% extends "layout.html" %}
+{% block content %}
+
+    <article class="media content-section">
+    <div>
+      <a >This is a web application to analyze news articles and classify according to their fake content.
+      It also describes the indicators used to evaluate the news</a>
+    </div>
+    </article>
+   
+    <div class="row">
+    	<div class="col-sm-4 url"> News URL
+			<div class="container">
+			  <form action="/HomePage" method = 'POST'> 
+			    <div class="form-group">
+			      <input type="text" class="form-control" id="text" placeholder="Enter the URL here" name="url">
+			    </div>
+			    <input type="submit" class="btn btn-default" value="Go"></input>
+			  </form>
+			</div>
+    	</div>
+    	<div class="col-sm-4 Article"> News Article
+    		<div class="container article">
+			  <form action="/HomePage" method = 'POST'> 
+			    <div class="form-group">
+			    <textarea class="form-control" name="ArticleText" placeholder="Enter the article text here" cols="40" rows="10"></textarea>
+			      
+			    </div>
+			    <input type="submit" class="btn btn-default" value="Go"></input>
+			  </form>
+			</div>
+    	</div>
+  </div>
+
+
+
+{% endblock content %}

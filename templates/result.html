@@ -1,0 +1,27 @@
+{% extends "layout.html" %}
+{% block content %}
+
+
+<h3 align="center"> Article Text</h3>
+
+<article class="media content-section-result">
+  <div>
+    <p class="article_size"> {{ article_text }} </p>
+  </div>
+</article>
+
+<article class="media metric-section">
+  <div class="media-body">
+    <div class="article-metadata">
+      <h2>Emotion</h2>
+    </div>
+    {% for key in emotion_count %}
+      <ul class="list-group">
+        <li class="list-group-item">{{ key  }}: {{ emotion_count[key] }}</li>
+        <p></p>
+      </ul>   
+    {% endfor %}
+  </div>
+</article>
+
+{% endblock content %}
