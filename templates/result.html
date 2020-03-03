@@ -10,18 +10,37 @@
   </div>
 </article>
 
-<article class="media metric-section">
-  <div class="media-body">
-    <div class="article-metadata">
-      <h2>Emotion</h2>
+
+
+ <div class="row">
+  <article class="media metric-section">
+    <div class="media-body">
+      <div class="article-metadata">
+        <h2>Emotion: {{ total_emotion }} %</h2>
+      </div>
+      {% for key in emotion_ratio %}
+        <ul class="list-group">
+          <li class="list-group-item">{{ key  }}: {{ emotion_ratio[key] }} %</li>
+          <p></p>
+        </ul>   
+      {% endfor %}
     </div>
-    {% for key in emotion_count %}
-      <ul class="list-group">
-        <li class="list-group-item">{{ key  }}: {{ emotion_count[key] }}</li>
-        <p></p>
-      </ul>   
-    {% endfor %}
-  </div>
-</article>
+  </article>
+
+
+  <article class="media metric-section">
+    <div class="media-body">
+      <div class="article-metadata">
+        <h2>Subjectivity: {{ totalsubj }} %</h2>
+      </div>
+      {% for key in subj_feats %}
+        <ul class="list-group">
+          <li class="list-group-item">{{ key  }}: {{ subj_feats[key] }} %</li>
+          <p></p>
+        </ul>   
+      {% endfor %}
+    </div>
+  </article>
+</div>
 
 {% endblock content %}
