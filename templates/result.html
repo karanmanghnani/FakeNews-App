@@ -41,6 +41,63 @@
       {% endfor %}
     </div>
   </article>
+
+    <article class="media metric-section">
+    <div class="media-body">
+      <div class="article-metadata">
+        <h2>Affective: {{ vad_features['total_vad'] }}%</h2>
+      </div>
+        <ul class="list-group">
+          <li class="list-group-item"> Valence: {{ vad_features['valence_avg'] }} %</li>
+          <p></p>
+          <li class="list-group-item"> Arousal: {{ vad_features['arousal_avg'] }} %</li>
+          <p></p>
+          <li class="list-group-item"> Dominance: {{ vad_features['dominance_avg'] }} %</li>
+          <p></p>
+        </ul>   
+    </div>
+  </article>
+
+  <article class="media metric-section">
+    <div class="media-body">
+      <div class="article-metadata">
+        <h2>Polarity: {{ polarity['total_pol'] }} %</h2>
+      </div>
+        <ul class="list-group">
+          <li class="list-group-item"> Positive ratio: {{ polarity['positive_ratio'] }} %</li>
+          <p></p>
+          <li class="list-group-item"> Negative ratio: {{ polarity['negative_ratio'] }} %</li>
+          <p></p>
+          <li class="list-group-item"> Positive contrast: {{ polarity['positive_contrast'] }}</li>
+          <p></p>
+          <li class="list-group-item"> Negative contrast: {{ polarity['negative_contrast'] }}</li>
+          <p></p>
+        </ul>   
+    </div>
+  </article>
+
+  <article class="media metric-section">
+    <div class="media-body">
+      <div class="article-metadata">
+        <h2>Behavioral and Physiological: {{ bp_stats['total_bp'] }} %</h2>
+      </div>
+        <ul class="list-group">
+          <li class="list-group-item"> Perceptuality: {{ bp_stats['perceptuality'] }} %</li>
+          <p></p>
+          <li class="list-group-item"> Relativity: {{ bp_stats['relativity'] }} %</li>
+          <p></p>
+          <li class="list-group-item"> Cognitivity: {{ bp_stats['cognitivity'] }} %</li>
+          <p></p>
+          <li class="list-group-item"> Personal concerns: {{ bp_stats['personal_concerns'] }} %</li>
+          <p></p>
+          <li class="list-group-item"> Biological processes: {{ bp_stats['biological_processes'] }} %</li>
+          <p></p>
+          <li class="list-group-item"> Social processes: {{ bp_stats['social_processes'] }} %</li>
+          <p></p>
+        </ul>   
+    </div>
+  </article>
+
 </div>
 
 {% endblock content %}
