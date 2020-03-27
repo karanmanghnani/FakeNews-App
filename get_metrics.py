@@ -122,7 +122,7 @@ def get_vad_features(text):
 	    #else:
 	    #    print(lemma, ' lemma not found')
 	vad_features = {
-		'total_vad': round(total_vad/len(lemmas), 2)*100,
+		'total_vad': round(total_vad/len(lemmas), 3)*100,
 	    'valence_avg': round(statistics.mean(V) , 3),
 	    'valence_std': round(statistics.stdev(V), 4),
 	    'valence_max': round(max(V), 4),
@@ -157,8 +157,8 @@ def sentiment_polarity(text):
 	polarity['positive_contrast'] = get_positive_contrast(sentilex, words)
 	polarity['negative_contrast'] = get_negative_contrast(sentilex, words)
 	#print(polarity)
-	total_pol = ((total_pos + total_neg)/len(words))*100
-	polarity['total_pol'] = round(total_pol, 1)
+	total_pol = round((total_pos + total_neg)/len(words), 3)
+	polarity['total_pol'] = total_pol*100
 	return polarity
 
 
@@ -201,19 +201,18 @@ def get_subjective_ratio(text):
         	total_subj_words += 1
         	#print('weaksubj', word, stem)
 
-    total_subj_ratio = (total_subj_words/n_words)*100
+    total_subj_ratio = (round(total_subj_words/n_words, 3))*100
 
     #Regra 3 simples para calculo de % em relaçao ao total e depois *100 (para meter em %)
     total_strongsubj_ratio = (((subj_feats.get('strongsubj')/n_words)*100)/total_subj_ratio)*100
     total_weeksubj_ratio = (((subj_feats.get('weaksubj')*100)/n_words)/total_subj_ratio)*100
 
-    totalsubj = round(total_subj_ratio, 1)
     subj_feats['strongsubj'] = round(total_strongsubj_ratio, 1)
     subj_feats['weaksubj'] = round(total_weeksubj_ratio, 1)
     
     print(total_subj_words, n_words)
     print(subj_feats)
-    return totalsubj, subj_feats
+    return total_subj_ratio, subj_feats
 
 #######################################
 #          Auxiliar Functions		  #
@@ -319,7 +318,7 @@ def get_social_processes(liwc_tags, words):
             #print(word) 
             n_social_words += 1
 
-    return n_social_words, round(n_social_words/n_words, 3)*100
+    return n_social_words, ('%.1f' % ((n_social_words/n_words)*100))
 
 
 def get_biological_processes(liwc_tags, words):
@@ -337,8 +336,8 @@ def get_biological_processes(liwc_tags, words):
             word in liwc_tags['150']['words']):
             #print(word) 
             n_biological_words += 1
-
-    return n_biological_words, round(n_biological_words/n_words, 3)*100
+ 
+    return n_biological_words, ('%.1f' % ((n_biological_words/n_words)*100))
 
 def get_positive_words_ratio(sentilex, words):
     '''number of potentially positive words over the number of words'''
@@ -364,7 +363,7 @@ def get_negative_words_ratio(sentilex, words):
         if ' ' + neg + ' ' in text:
             n_neg += 1
 
-    return n_neg, round(n_neg/n_words, 3)*100
+    return n_neg, ('%.1f' % ((n_neg/n_words)*100))
 
 
 def get_positive_contrast(sentilex, words):

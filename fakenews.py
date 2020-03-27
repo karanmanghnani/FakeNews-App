@@ -42,7 +42,7 @@ def HomePage():
             article_text = parse(url)
             emotion_count,emotion_ratio,total_emotion = metrics.get_emotions(article_text)
             totalsubj, subj_feats = metrics.get_subjective_ratio(article_text)
-            vad_features = {
+            """vad_features = {
 			'total_vad': 0,
 			'valence_avg': 0,
 			'valence_std': 0,
@@ -59,8 +59,8 @@ def HomePage():
 			'dominance_max': 0,
 			'dominance_min': 0,
 			'dominance_dif': 0,
-			}
-            #vad_features = metrics.get_vad_features(article_text)
+			}"""
+            vad_features = metrics.get_vad_features(article_text)
             polarity = metrics.sentiment_polarity(article_text)
             bp_stats = metrics.behavioral_physiological(article_text)
             return render_template('result.html', title='FakeNews',posts=posts, article_text=article_text, emotion_count=emotion_count, emotion_ratio=emotion_ratio, total_emotion=total_emotion, totalsubj=totalsubj, subj_feats=subj_feats, vad_features=vad_features, polarity=polarity, bp_stats=bp_stats)
@@ -68,7 +68,7 @@ def HomePage():
             article_text = request.form['ArticleText']
             emotion_count,emotion_ratio,total_emotion = metrics.get_emotions(article_text)
             totalsubj, subj_feats = metrics.get_subjective_ratio(article_text)
-            vad_features = {
+            """vad_features = {
 			'total_vad': 0,
 			'valence_avg': 0,
 			'valence_std': 0,
@@ -85,8 +85,8 @@ def HomePage():
 			'dominance_max': 0,
 			'dominance_min': 0,
 			'dominance_dif': 0,
-			}
-            #vad_features = get_vad_features(article_text)
+			}"""
+            vad_features = metrics.get_vad_features(article_text)
             polarity = metrics.sentiment_polarity(article_text)
             bp_stats = metrics.behavioral_physiological(article_text)
             return render_template('result.html', title='FakeNews',posts=posts, article_text=article_text, emotion_count=emotion_count, emotion_ratio=emotion_ratio, total_emotion=total_emotion, totalsubj=totalsubj, subj_feats=subj_feats, vad_features=vad_features, polarity=polarity, bp_stats=bp_stats)
