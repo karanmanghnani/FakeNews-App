@@ -3,6 +3,10 @@ import nltk
 import spacy
 import get_metrics as metrics
 import statistics 
+from urllib.parse import urlparse
+import re
+import xlrd 
+
 import get_lexicons as lex
 
 STEMMER = nltk.stem.SnowballStemmer('portuguese')
@@ -213,6 +217,22 @@ def get_subjective_ratio(text):
     print(total_subj_words, n_words)
     print(subj_feats)
     return total_subj_ratio, subj_feats
+
+def source(url):
+	hostname = urlparse(url).hostname 
+	absolute_url = re.sub('www.', '', hostname)
+
+	loc = ("Entidades registadas.xlsx") 
+	  
+	wb = xlrd.open_workbook(loc) 
+	sheet = wb.sheet_by_index(0) 
+
+	value = False
+	for i in range(2,sheet.nrows):
+	    if(absolute_url in sheet.cell_value(i, 12)):
+	    	value = True
+
+	return value, absolute_url
 
 #######################################
 #          Auxiliar Functions		  #

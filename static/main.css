@@ -15,8 +15,14 @@ h2, h3, h4, h5, h6 {
   font-size: 100px;
   line-height: 30px;
   margin-bottom: 25px;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.4), 0 20px 40px 0 rgba(0, 0, 0, 0.19);
 }
 
+#hero {
+
+  background: #213b52;
+
+}
 
 
 
@@ -76,7 +82,7 @@ h2, h3, h4, h5, h6 {
   padding: 8px 20px;
   border: 5px solid #A9A9A9;
   border-radius: 10px;
-  margin-bottom: 20px;
+  margin-bottom: 100px;
   width: 45%;
   height: 400px;
   margin-left: auto;
@@ -100,28 +106,37 @@ h2, h3, h4, h5, h6 {
 }
 
 .metric-section {
-  background: #ffffff;
-  padding: 5px 8px;
+  background: #FFEBCD;
+  padding: 3px 8px;
   border: 5px solid #A9A9A9;
-  border-radius: 10px;
-  margin-bottom: 20px;
-  width: 20%;
+  border-radius: 25px;
+  margin-bottom: 25px;
+  width: 60%;
   margin-top: 30px;
-  margin-left: 15px;
+  margin-left: 220px;
+  box-shadow: 0 40px 80px 0 rgba(0, 0, 0, 0.2), 0 60px 80px 0 rgba(0, 0, 0, 0.19);
+}
+
+.row {
+  margin: auto;
+  width: 90%;
+  padding-bottom: 120px;
+  padding-top: 120px;
+  box-shadow: 0 40px 80px 0 rgba(0, 0, 0, 0.2), 0 60px 80px 0 rgba(0, 0, 0, 0.19);
 }
 
 .article-metadata {
   padding-bottom: 0px;
-  margin-bottom: 4px;
-  border-bottom: 2px solid #000000
+  margin-bottom: 0px;
+  border-bottom: 1px solid #ffffff;
+  text-align: center;
+  background-color: #FFEBCD;
+  box-shadow: 0 40px 80px 0 rgba(0, 0, 0, 0.2), 0 60px 80px 0 rgba(0, 0, 0, 0.19);
 }
 
-.metric-section .media-body .list-group .list-group-item {
-  background: #FFF8DC;
+.list-group .list-group-item {
+  background: #A9A9A9;
 }
-
-
-
 
 
 .notice h1{
@@ -130,9 +145,29 @@ h2, h3, h4, h5, h6 {
   color: black;
   text-align: center;
   font-size: 15px;
-  margin-top: 300px;
+  margin-bottom: auto;
 }
 
+.progress-bar{
+  border-radius: 10px;
+  color: black;
+}
+
+
+.dot {
+  margin-top: 8px;
+  margin-left: 10px;
+  height: 25px;
+  width: 25px;
+  border-radius: 50%;
+}
+
+.source{
+  width:25px;
+  height:25px;
+  display: block-inline;
+  border-radius: 100%;
+}
 
 
 

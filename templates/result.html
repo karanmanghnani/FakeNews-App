@@ -10,94 +10,441 @@
   </div>
 </article>
 
+  <section id="hero">
 
+ <div class="row" >
 
- <div class="row">
-  <article class="media metric-section">
+  <button type="button" class="media metric-section" data-toggle="modal" data-target="#EmotionModal">
     <div class="media-body">
-      <div class="article-metadata">
-        <h2>Emotion: {{ total_emotion }} %</h2>
-      </div>
-      {% for key in emotion_ratio %}
-        <ul class="list-group">
-          <li class="list-group-item">{{ key  }}: {{ emotion_ratio[key] }} %</li>
-          <p></p>
-        </ul>   
-      {% endfor %}
+        <h2 align="center">Emotion</h2>
+        {% if total_emotion <= 10 %}
+                <div class="progress-bar  bg-success" role="progressbar"
+        aria-valuenow="40" aria-valuemin="0" aria-valuemax="100" style="width:{{ total_emotion +2 }}%">
+        {% endif %}
+
+        {% if total_emotion > 10 and total_emotion <= 20  %}
+                <div class="progress-bar  bg-warning" role="progressbar"
+        aria-valuenow="40" aria-valuemin="0" aria-valuemax="100" style="width:{{ total_emotion }}%">
+        {% endif %}
+
+        {% if total_emotion > 20 %}
+                <div class="progress-bar bg-danger" role="progressbar"
+        aria-valuenow="40" aria-valuemin="0" aria-valuemax="100" style="width:{{ total_emotion }}%">
+        {% endif %}
+
+          {{ total_emotion }}%
+        </div>
     </div>
-  </article>
+  </button>
+
+ <!-- The Modal -->
+  <div class="modal fade" id="EmotionModal">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+      
+        <!-- Modal Header -->
+        <div class="modal-header">
+          <h4 class="modal-title">Emotion: {{ total_emotion }}%-&nbsp;</h4>
+        {% if total_emotion <= 10 %}
+          <h4 class="modal-title">Trustable</h4>
+          <h4 class="dot" style="background-color: green"></h4>
+        {% endif %}
+
+        {% if total_emotion > 10 and total_emotion <= 20  %}
+          <h4 class="modal-title">Dubious</h4>
+          <h4 class="dot" style="background-color: yellow"></h4>
+        {% endif %}
+
+        {% if total_emotion > 20 %}
+          <h4 class="modal-title">Not Trustable</h4>
+          <h4 class="dot" style="background-color: red"></h4>
+        {% endif %}
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+        </div>
+        
+        <!-- Modal body -->
+        <div class="modal-body">
+          <div class="metric_description">
+            <h5>Description: One characteristic of disinformation is that it may make an inflammatory emotional appeal to the reader, so it is important to detect the emotions that the news transmits</h5>
+            {% for key in emotion_ratio %}
+              <ul class="list-group">
+                <li class="list-group-item">{{ key  }}: {{ emotion_ratio[key] }} %</li>
+                <p></p>
+              </ul>   
+            {% endfor %}
+          </div>
+
+        </div>
+        
+        <!-- Modal footer -->
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        </div>
+        
+      </div>
+    </div>
+  </div>
+  <!-- End of the Modal -->
 
 
-  <article class="media metric-section">
+  <button type="button" class="media metric-section" data-toggle="modal" data-target="#SubjectivityModal">
     <div class="media-body">
-      <div class="article-metadata">
-        <h2>Subjectivity: {{ totalsubj }} %</h2>
-      </div>
-      {% for key in subj_feats %}
-        <ul class="list-group">
-          <li class="list-group-item">{{ key  }}: {{ subj_feats[key] }} %</li>
-          <p></p>
-        </ul>   
-      {% endfor %}
-    </div>
-  </article>
+        <h2 align="center">Subjectivity</h2>
+        {% if totalsubj <= 10 %}
+                <div class="progress-bar  bg-success" role="progressbar"
+        aria-valuenow="40" aria-valuemin="0" aria-valuemax="100" style="width:{{ totalsubj +2 }}%">
+        {% endif %}
 
-    <article class="media metric-section">
-    <div class="media-body">
-      <div class="article-metadata">
-        <h2>Affective: {{ vad_features['total_vad'] }}%</h2>
-      </div>
-        <ul class="list-group">
-          <li class="list-group-item"> Valence: {{ vad_features['valence_avg'] }} %</li>
-          <p></p>
-          <li class="list-group-item"> Arousal: {{ vad_features['arousal_avg'] }} %</li>
-          <p></p>
-          <li class="list-group-item"> Dominance: {{ vad_features['dominance_avg'] }} %</li>
-          <p></p>
-        </ul>   
-    </div>
-  </article>
+        {% if totalsubj > 10 and totalsubj <= 20  %}
+                <div class="progress-bar  bg-warning" role="progressbar"
+        aria-valuenow="40" aria-valuemin="0" aria-valuemax="100" style="width:{{ totalsubj }}%">
+        {% endif %}
 
-  <article class="media metric-section">
-    <div class="media-body">
-      <div class="article-metadata">
-        <h2>Polarity: {{ polarity['total_pol'] }} %</h2>
-      </div>
-        <ul class="list-group">
-          <li class="list-group-item"> Positive ratio: {{ polarity['positive_ratio'] }} %</li>
-          <p></p>
-          <li class="list-group-item"> Negative ratio: {{ polarity['negative_ratio'] }} %</li>
-          <p></p>
-          <li class="list-group-item"> Positive contrast: {{ polarity['positive_contrast'] }}</li>
-          <p></p>
-          <li class="list-group-item"> Negative contrast: {{ polarity['negative_contrast'] }}</li>
-          <p></p>
-        </ul>   
+        {% if totalsubj > 20 %}
+                <div class="progress-bar bg-danger" role="progressbar"
+        aria-valuenow="40" aria-valuemin="0" aria-valuemax="100" style="width:{{ totalsubj }}%">
+        {% endif %}
+        
+          {{ totalsubj }}%
+        </div>
     </div>
-  </article>
+  </button>
 
-  <article class="media metric-section">
-    <div class="media-body">
-      <div class="article-metadata">
-        <h2>Behavioral and Physiological: {{ bp_stats['total_bp'] }} %</h2>
+ <!-- The Modal -->
+  <div class="modal fade" id="SubjectivityModal">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+      
+        <!-- Modal Header -->
+        <div class="modal-header">
+          <h4 class="modal-title">Subjectivity: {{ totalsubj }}%-&nbsp;</h4>
+        {% if totalsubj <= 10 %}
+          <h4 class="modal-title">Trustable</h4>
+          <h4 class="dot" style="background-color: green"></h4>
+        {% endif %}
+
+        {% if totalsubj > 10 and totalsubj <= 20  %}
+          <h4 class="modal-title">Dubious</h4>
+          <h4 class="dot" style="background-color: yellow"></h4>
+        {% endif %}
+
+        {% if totalsubj > 20 %}
+          <h4 class="modal-title">Not Trustable</h4>
+          <h4 class="dot" style="background-color: red"></h4>
+        {% endif %}
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+        </div>
+        
+        <!-- Modal body -->
+        <div class="modal-body">
+          <div class="metric_description">
+            <h5>Disinformation often contains a lot of subjective expressions. This category is responsible to distinguish factual information from subjective information. Subjective expressions are used to express an opinion, emotion, evaluation, stance, speculation by the author. </h5>
+            {% for key in subj_feats %}
+              <ul class="list-group">
+                <li class="list-group-item">{{ key  }}: {{ subj_feats[key] }} %</li>
+                <p></p>
+              </ul>   
+            {% endfor %}
+          </div>
+
+        </div>
+        
+        <!-- Modal footer -->
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        </div>
+        
       </div>
-        <ul class="list-group">
-          <li class="list-group-item"> Perceptuality: {{ bp_stats['perceptuality'] }} %</li>
-          <p></p>
-          <li class="list-group-item"> Relativity: {{ bp_stats['relativity'] }} %</li>
-          <p></p>
-          <li class="list-group-item"> Cognitivity: {{ bp_stats['cognitivity'] }} %</li>
-          <p></p>
-          <li class="list-group-item"> Personal concerns: {{ bp_stats['personal_concerns'] }} %</li>
-          <p></p>
-          <li class="list-group-item"> Biological processes: {{ bp_stats['biological_processes'] }} %</li>
-          <p></p>
-          <li class="list-group-item"> Social processes: {{ bp_stats['social_processes'] }} %</li>
-          <p></p>
-        </ul>   
     </div>
-  </article>
+  </div>
+  <!-- End of the Modal -->
+
+  <button type="button" class="media metric-section" data-toggle="modal" data-target="#AffectiveModal">
+    <div class="media-body">
+        <h2 align="center">Affective</h2>
+        {% if vad_features['total_vad'] <= 10 %}
+                <div class="progress-bar  bg-success" role="progressbar"
+        aria-valuenow="40" aria-valuemin="30" aria-valuemax="100" style="width:{{ vad_features['total_vad'] +2 }}%">
+        {% endif %}
+
+        {% if vad_features['total_vad'] > 10 and vad_features['total_vad'] <= 20  %}
+                <div class="progress-bar  bg-warning" role="progressbar"
+        aria-valuenow="40" aria-valuemin="0" aria-valuemax="100" style="width:{{ vad_features['total_vad'] }}%">
+        {% endif %}
+
+        {% if vad_features['total_vad'] > 20 %}
+                <div class="progress-bar bg-danger" role="progressbar"
+        aria-valuenow="40" aria-valuemin="0" aria-valuemax="100" style="width:{{ vad_features['total_vad'] }}%">
+        {% endif %}
+        
+          {{ vad_features['total_vad'] }}%
+        </div>
+    </div>
+  </button>
+
+   <!-- The Modal -->
+  <div class="modal fade" id="AffectiveModal">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+      
+        <!-- Modal Header -->
+        <div class="modal-header">
+          <h4 class="modal-title">Affective: {{ vad_features['total_vad'] }}%-&nbsp;</h4>
+        {% if vad_features['total_vad'] <= 10 %}
+          <h4 class="modal-title">Trustable</h4>
+          <h4 class="dot" style="background-color: green"></h4>
+        {% endif %}
+
+        {% if vad_features['total_vad'] > 10 and vad_features['total_vad'] <= 20  %}
+          <h4 class="modal-title">Dubious</h4>
+          <h4 class="dot" style="background-color: yellow"></h4>
+        {% endif %}
+
+        {% if vad_features['total_vad'] > 20 %}
+          <h4 class="modal-title">Not Trustable</h4>
+          <h4 class="dot" style="background-color: red"></h4>
+        {% endif %}
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+        </div>
+        
+        <!-- Modal body -->
+        <div class="modal-body">
+          <div class="metric_description">
+            <h5>Disinformation often employs a higher number of emotional words than informative text ( Fuhr et al. 2017).
+                Affective metrics compute statistics on emotional words present in text and highlight variations to informative content. </h5>
+            <ul class="list-group">
+              <li class="list-group-item"> Valence: {{ vad_features['valence_avg'] }} %</li>
+              <p></p>
+              <li class="list-group-item"> Arousal: {{ vad_features['arousal_avg'] }} %</li>
+              <p></p>
+              <li class="list-group-item"> Dominance: {{ vad_features['dominance_avg'] }} %</li>
+              <p></p>
+            </ul> 
+          </div>
+        </div>
+        
+        <!-- Modal footer -->
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        </div>
+        
+      </div>
+    </div>
+  </div>
+  <!-- End of the Modal -->
+
+  <button type="button" class="media metric-section" data-toggle="modal" data-target="#PolarityModal">
+    <div class="media-body">
+        <h2 align="center">Polarity</h2>
+        {% if polarity['total_pol'] <= 10 %}
+                <div class="progress-bar  bg-success" role="progressbar"
+        aria-valuenow="40" aria-valuemin="0" aria-valuemax="100" style="width:{{ polarity['total_pol']+2 }}%">
+        {% endif %}
+
+        {% if polarity['total_pol'] > 10 and polarity['total_pol'] <= 20  %}
+                <div class="progress-bar  bg-warning" role="progressbar"
+        aria-valuenow="40" aria-valuemin="0" aria-valuemax="100" style="width:{{ polarity['total_pol'] }}%">
+        {% endif %}
+
+        {% if polarity['total_pol'] > 20 %}
+                <div class="progress-bar bg-danger" role="progressbar"
+        aria-valuenow="40" aria-valuemin="0" aria-valuemax="100" style="width:{{ polarity['total_pol'] }}%">
+        {% endif %}
+        
+          {{ polarity['total_pol'] }}%
+        </div>
+    </div>
+  </button>
+
+   <!-- The Modal -->
+  <div class="modal fade" id="PolarityModal">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+      
+        <!-- Modal Header -->
+        <div class="modal-header">
+          <h4 class="modal-title">Polarity: {{ polarity['total_pol'] }}%-&nbsp;</h4>
+        {% if vad_features['total_vad'] <= 10 %}
+          <h4 class="modal-title">Trustable</h4>
+          <h4 class="dot" style="background-color: green"></h4>
+        {% endif %}
+
+        {% if polarity['total_pol'] > 10 and polarity['total_pol'] <= 20  %}
+          <h4 class="modal-title">Dubious</h4>
+          <h4 class="dot" style="background-color: yellow"></h4>
+        {% endif %}
+
+        {% if polarity['total_pol'] > 20 %}
+          <h4 class="modal-title">Not Trustable</h4>
+          <h4 class="dot" style="background-color: red"></h4>
+        {% endif %}
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+        </div>
+        
+        <!-- Modal body -->
+        <div class="modal-body">
+          <div class="metric_description">
+            <h5>Disinformation employs a lot of opinions expressed by the author. The metrics in this category deal with
+                sentiments that are expressed through subjective expressions to describe people's opinions or feelings towards a given target. </h5>
+            <ul class="list-group">
+              <li class="list-group-item"> Positive ratio: {{ polarity['positive_ratio'] }} %</li>
+              <p></p>
+              <li class="list-group-item"> Negative ratio: {{ polarity['negative_ratio'] }} %</li>
+              <p></p>
+              <li class="list-group-item"> Positive contrast: {{ polarity['positive_contrast'] }} words</li>
+              <p></p>
+              <li class="list-group-item"> Negative contrast: {{ polarity['negative_contrast'] }} words</li>
+              <p></p>
+            </ul>   
+          </div>
+        </div>
+        
+        <!-- Modal footer -->
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        </div>
+        
+      </div>
+    </div>
+  </div>
+  <!-- End of the Modal -->
+
+  <button type="button" class="media metric-section" data-toggle="modal" data-target="#BPModal">
+    <div class="media-body">
+        <h2 align="center">Behavioral and Physiological</h2>
+        {% if bp_stats['total_bp'] <= 10 %}
+                <div class="progress-bar  bg-success" role="progressbar"
+        aria-valuenow="40" aria-valuemin="0" aria-valuemax="100" style="width:{{ bp_stats['total_bp']+2 }}%">
+        {% endif %}
+
+        {% if bp_stats['total_bp'] > 10 and bp_stats['total_bp'] <= 20  %}
+                <div class="progress-bar  bg-warning" role="progressbar"
+        aria-valuenow="40" aria-valuemin="0" aria-valuemax="100" style="width:{{ bp_stats['total_bp'] }}%">
+        {% endif %}
+
+        {% if bp_stats['total_bp'] > 20 %}
+                <div class="progress-bar bg-danger" role="progressbar"
+        aria-valuenow="40" aria-valuemin="0" aria-valuemax="100" style="width:{{ bp_stats['total_bp'] }}%">
+        {% endif %}
+        
+          {{ bp_stats['total_bp'] }}%
+        </div>
+    </div>
+  </button>
+
+   <!-- The Modal -->
+  <div class="modal fade" id="BPModal">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+      
+        <!-- Modal Header -->
+        <div class="modal-header">
+          <h4 class="modal-title">BP: {{ bp_stats['total_bp'] }}%-&nbsp;</h4>
+        {% if bp_stats['total_bp'] <= 10 %}
+          <h4 class="modal-title">Trustable</h4>
+          <h4 class="dot" style="background-color: green"></h4>
+        {% endif %}
+
+        {% if bp_stats['total_bp']> 10 and bp_stats['total_bp'] <= 20  %}
+          <h4 class="modal-title">Dubious</h4>
+          <h4 class="dot" style="background-color: yellow"></h4>
+        {% endif %}
+
+        {% if bp_stats['total_bp'] > 20 %}
+          <h4 class="modal-title">Not Trustable</h4>
+          <h4 class="dot" style="background-color: red"></h4>
+        {% endif %}
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+        </div>
+        
+        <!-- Modal body -->
+        <div class="modal-body">
+          <div class="metric_description">
+            <h5>In a news article, the author also shows the feelings that he had, the information that he gathered. These feelings depends on his behaviour and psychological processes and can help to detect disinformation </h5>
+            <ul class="list-group">
+              <li class="list-group-item"> Perceptuality: {{ bp_stats['perceptuality'] }} %</li>
+              <p></p>
+              <li class="list-group-item"> Relativity: {{ bp_stats['relativity'] }} %</li>
+              <p></p>
+              <li class="list-group-item"> Cognitivity: {{ bp_stats['cognitivity'] }} %</li>
+              <p></p>
+              <li class="list-group-item"> Personal concerns: {{ bp_stats['personal_concerns'] }} %</li>
+              <p></p>
+              <li class="list-group-item"> Biological processes: {{ bp_stats['biological_processes'] }} %</li>
+              <p></p>
+              <li class="list-group-item"> Social processes: {{ bp_stats['social_processes'] }} %</li>
+              <p></p>
+            </ul>   
+          </div>
+        </div>
+        
+        <!-- Modal footer -->
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        </div>
+        
+      </div>
+    </div>
+  </div>
+  <!-- End of the Modal -->
+
+  <button type="button" class="media metric-section" data-toggle="modal" data-target="#SourceModal">
+    <div class="media-body">
+        {% if source == True %}
+          <h2 align="center">Source <img class="source"  src="static/Images/verified.png" alt="verified Icon"> </h2>
+          
+        {% else %}
+          <h2 align="center">Source  <img class="source" align="middle" src="static/Images/not_verified.png" alt="not verified Icon" > </h2>
+         
+        {% endif %}
+
+        </div>
+    </div>
+  </button>
+
+ <!-- The Modal -->
+  <div class="modal fade" id="SourceModal">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+      
+        <!-- Modal Header -->
+        <div class="modal-header">
+
+        {% if source == True %}
+          <h4 align="center">Source <img class="source"  src="static/Images/verified.png" alt="verified Icon"> </h4>
+        {% else %}
+          <h4 align="center">Source  <img class="source" align="middle" src="static/Images/not_verified.png" alt="not verified Icon" > </h4>       
+        {% endif %}
+
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+        </div>
+        
+        <!-- Modal body -->
+        <div class="modal-body">
+          <div class="metric_description">
+            <h5>Description: It is important to know if it is a trusted and registered source or not. Fake article often come from unknown sources.</h5>
+            {% if source == True %}
+              <h7>This is a verified source. You can check the website <a href={{ url }}>{{ url }}</a> </h7>
+              
+            {% else %}
+              <h7 align="center">This is not a registed website.</h7>
+             
+            {% endif %}
+          </div>
+
+        </div>
+        
+        <!-- Modal footer -->
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        </div>
+        
+      </div>
+    </div>
+  </div>
+  <!-- End of the Modal -->
+
 
 </div>
-
+  </section><!-- End Hero -->
 {% endblock content %}
