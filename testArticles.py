@@ -2,7 +2,7 @@
 # Program extracting first column 
 import xlrd 
 import unidecode
-import get_metrics as metrics
+import /home/karan/Desktop/FakeNews-App/get_metrics as metrics
 
 news = {}
 loc = ("Noticías_BD.xlsx") 

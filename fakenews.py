@@ -37,20 +37,28 @@ def parse(website):
 @app.route("/HomePage",methods = ['POST', 'GET'])
 def HomePage():
 	if request.method == 'POST': 
+		#metrics.prepare_lexicons()
+
+		liwc_tags, sentilex, anew_extended, emotion_words, subjective_words = metrics.load_lexicons()
+
 		if('url' in request.values ):
 			url = request.form['url']
 			article_text = parse(url)
+			sentences = metrics.tokenize_sentences(article_text)
+			lemmas = metrics.lemmatize_words(sentences)
+			words = metrics.tokenize_words(sentences)
 
-			#emotion_count,emotion_ratio,total_emotion = metrics.get_emotions(article_text)
-			total_emotion=5
+			#meter o ficheiro e corrigir da maneira mais eficiente
+			emotion_count,emotion_ratio,total_emotion = metrics.get_emotions(article_text)
+			"""total_emotion=5
 			emotion_ratio = {'Happiness' : 10, 'Disgust' : 20, 'Fear' : 30, 'Anger':40, 'Surprise':50, 'Sadness':60} 
-			emotion_count = {'Happiness' : 0, 'Disgust' : 0, 'Fear' : 0, 'Anger':0, 'Surprise':0, 'Sadness':0}
+			emotion_count = {'Happiness' : 0, 'Disgust' : 0, 'Fear' : 0, 'Anger':0, 'Surprise':0, 'Sadness':0}"""
 			
-			#totalsubj, subj_feats = metrics.get_subjective_ratio(article_text)
-			totalsubj = 20
-			subj_feats = {'strongsubj':10, 'weaksubj':20}
+			totalsubj, subj_feats = metrics.get_subjective_ratio(words, subjective_words)
+			"""totalsubj = 20
+			subj_feats = {'strongsubj':10, 'weaksubj':20}"""
 
-			vad_features = {
+			"""vad_features = {
 			'total_vad': 0,
 			'valence_avg': 0,
 			'valence_std': 0,
@@ -67,26 +75,26 @@ def HomePage():
 			'dominance_max': 0,
 			'dominance_min': 0,
 			'dominance_dif': 0,
-			}
-            #vad_features = metrics.get_vad_features(article_text)
+			}"""
+			vad_features = metrics.get_vad_features(lemmas, anew_extended)
 
-            #polarity = metrics.sentiment_polarity(article_text)
-			polarity = {}
+			polarity = metrics.sentiment_polarity(words, sentilex)
+			"""polarity = {}
 			polarity['positive_ratio'] = 10
 			polarity['negative_ratio'] = 10
 			polarity['positive_contrast'] = 20
 			polarity['negative_contrast'] = 20
-			polarity['total_pol'] = 5
+			polarity['total_pol'] = 5"""
 
-			#bp_stats = metrics.behavioral_physiological(article_text)
-			bp_stats = {}
+			bp_stats = metrics.behavioral_physiological(words, liwc_tags)
+			"""bp_stats = {}
 			bp_stats['perceptuality'] = 5
 			bp_stats['relativity'] = 3
 			bp_stats['cognitivity'] = 5
 			bp_stats['personal_concerns'] = 6
 			bp_stats['biological_processes'] = 4
 			bp_stats['social_processes'] = 7
-			bp_stats['total_bp'] = 80
+			bp_stats['total_bp'] = 80"""
 
 			source, url = metrics.source(url)
 			print(source)

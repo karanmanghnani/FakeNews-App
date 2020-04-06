@@ -2,15 +2,84 @@ from nltk.tokenize import sent_tokenize, word_tokenize
 import nltk
 import spacy
 import get_metrics as metrics
+import get_lexicons as lex
 import statistics 
 from urllib.parse import urlparse
 import re
 import xlrd 
+import pickle
 
 import get_lexicons as lex
 
 STEMMER = nltk.stem.SnowballStemmer('portuguese')
 sp = spacy.load('pt_core_news_sm')
+
+
+####################################################
+#		Prepare and Load get_lexicons              #
+####################################################
+
+def prepare_lexicons():
+
+    liwc_pt_path = 'lexicons/LIWC2007_Portugues_win.dic.txt'
+    oplexicon_path = 'lexicons/oplexico_v3.0.txt'
+    sentilex_path = 'lexicons/SentiLex-flex-PT02.txt'
+    filename_anew = 'lexicons/anew-pt.csv'
+    filename_anew_extended = 'lexicons/BRM-emot-submit-pt.csv'
+    filename_emotions = 'lexicons/emotions'
+    filename_subjectivity = 'lexicons/subjectivity-clues-pt.csv'
+
+    liwc_tags = lex.load_liwc(liwc_pt_path)
+    with open('proc_lexicons/liwc.pkl', 'wb') as f:
+        pickle.dump(liwc_tags,f)
+    print('Done LIWC.')
+
+    oplexicon = lex.load_valence_emotions_from_oplexicon(oplexicon_path)
+    sentilex = lex.load_valence_emotions_from_sentilex(sentilex_path)
+    sentilex = lex.complement_sentilex(sentilex,oplexicon)
+    with open('proc_lexicons/sentilex.pkl', 'wb') as f:
+        pickle.dump(sentilex,f)
+    print('Done Sentilex.')
+    
+    anew = lex.load_anew_pt(filename_anew)
+    anew_extended = lex.load_anew_extended_pt(filename_anew_extended)
+    anew_extended.update(anew)
+    with open('proc_lexicons/anew.pkl', 'wb') as f:
+        pickle.dump(anew_extended,f)
+    print('Done ANEW.')
+
+    emotion_words = lex.load_six_emotions(filename_emotions)
+    with open('proc_lexicons/emotion_words.pkl', 'wb') as f:
+        pickle.dump(emotion_words,f)
+    print('Done Emotion words.')
+
+    subjective_words = lex.load_subjectivity_lexicon(filename_subjectivity)
+    with open('proc_lexicons/subjective_words.pkl', 'wb') as f:
+        pickle.dump(subjective_words,f)
+    print('Done Subjective words.')
+
+def load_lexicons():
+    with open('proc_lexicons/liwc.pkl', 'rb') as f:
+        liwc_tags = pickle.load(f)
+    print('Done LIWC.')
+
+    with open('proc_lexicons/sentilex.pkl', 'rb') as f:
+        sentilex = pickle.load(f)
+    print('Done Sentilex.')
+    
+    with open('proc_lexicons/anew.pkl', 'rb') as f:
+        anew_extended = pickle.load(f)
+    print('Done ANEW.')
+
+    with open('proc_lexicons/emotion_words.pkl', 'rb') as f:
+        emotion_words = pickle.load(f)
+    print('Done Emotion words.')
+
+    with open('proc_lexicons/subjective_words.pkl', 'rb') as f:
+        subjective_words = pickle.load(f)
+    print('Done Subjective words.')
+
+    return liwc_tags, sentilex, anew_extended, emotion_words, subjective_words
 
 def tokenize_sentences(document):
     sent_tokens = sent_tokenize(document)
@@ -105,12 +174,8 @@ def get_emotions(text):
 
 
 
-def get_vad_features(text):
-	sentences = tokenize_sentences(text)
-	lemmas = lemmatize_words(sentences)
-	anew_not_extended = lex.load_anew_pt('lexicons/anew-pt.csv')
-	anew = lex.load_anew_extended_pt('lexicons/BRM-emot-submit-pt.csv')
-	anew.update(anew_not_extended)
+def get_vad_features(lemmas, anew):
+
 	V, A, D = [], [], []
 	total_vad = 0
 
@@ -148,12 +213,7 @@ def get_vad_features(text):
 	print(vad_features)
 	return  vad_features
 
-def sentiment_polarity(text):
-	sentences = tokenize_sentences(text)
-	words = tokenize_words(sentences)
-	oplexicon = lex.load_valence_emotions_from_oplexicon('lexicons/oplexico_v3.0.txt')
-	sentilex = lex.load_valence_emotions_from_sentilex('lexicons/SentiLex-flex-PT02.txt')
-	sentilex = lex.complement_sentilex(sentilex,oplexicon)
+def sentiment_polarity(words, sentilex):
 
 	polarity = {}
 	total_pos, polarity['positive_ratio'] = get_positive_words_ratio(sentilex, words)
@@ -166,10 +226,8 @@ def sentiment_polarity(text):
 	return polarity
 
 
-def behavioral_physiological(text):
-	sentences = tokenize_sentences(text)
-	words = tokenize_words(sentences)
-	liwc_tags = lex.load_liwc('lexicons/LIWC2007_Portugues_win.dic.txt')
+def behavioral_physiological(words, liwc_tags):
+
 	doc_stats = {}
 	n_perceptual_words, doc_stats['perceptuality'] = get_perceptuality(liwc_tags, words)
 	n_relativity_words, doc_stats['relativity'] = get_relativity(liwc_tags, words)
@@ -185,38 +243,36 @@ def behavioral_physiological(text):
 	doc_stats['total_bp'] = round(total_bp,1)
 	return doc_stats
 
-def get_subjective_ratio(text):
+def get_subjective_ratio(words, subjective_words):
 
-    total_subj_words = 0
-    totalsubj = 0
-    words = text.split()
-    subjective_words = lex.load_subjectivity_lexicon('lexicons/subjectivity-clues-pt.csv')
-    subj_feats = {'strongsubj':0, 'weaksubj':0}
-    n_words = len(words)
+	total_subj_words = 0
+	totalsubj = 0
+	subj_feats = {'strongsubj':0, 'weaksubj':0}
+	n_words = len(words)
 
-    for word in words:
-        stem = STEMMER.stem(word)
-        if stem in subjective_words['strongsubj']:
-        	subj_feats['strongsubj'] += 1
-        	total_subj_words += 1
-        	#print('strongsubj', word, stem)
-        elif stem in subjective_words['weaksubj']:
-        	subj_feats['weaksubj'] += 1
-        	total_subj_words += 1
-        	#print('weaksubj', word, stem)
+	for word in words:
+		stem = STEMMER.stem(word)
+		if stem in subjective_words['strongsubj']:
+			subj_feats['strongsubj'] += 1
+			total_subj_words += 1
+			#print('strongsubj', word, stem)
+		elif stem in subjective_words['weaksubj']:
+			subj_feats['weaksubj'] += 1
+			total_subj_words += 1
+			#print('weaksubj', word, stem)
 
-    total_subj_ratio = (round(total_subj_words/n_words, 3))*100
+	total_subj_ratio = (round(total_subj_words/n_words, 3))*100
 
-    #Regra 3 simples para calculo de % em relaçao ao total e depois *100 (para meter em %)
-    total_strongsubj_ratio = (((subj_feats.get('strongsubj')/n_words)*100)/total_subj_ratio)*100
-    total_weeksubj_ratio = (((subj_feats.get('weaksubj')*100)/n_words)/total_subj_ratio)*100
+	#Regra 3 simples para calculo de % em relaçao ao total e depois *100 (para meter em %)
+	total_strongsubj_ratio = (((subj_feats.get('strongsubj')/n_words)*100)/total_subj_ratio)*100
+	total_weeksubj_ratio = (((subj_feats.get('weaksubj')*100)/n_words)/total_subj_ratio)*100
 
-    subj_feats['strongsubj'] = round(total_strongsubj_ratio, 1)
-    subj_feats['weaksubj'] = round(total_weeksubj_ratio, 1)
-    
-    print(total_subj_words, n_words)
-    print(subj_feats)
-    return total_subj_ratio, subj_feats
+	subj_feats['strongsubj'] = round(total_strongsubj_ratio, 1)
+	subj_feats['weaksubj'] = round(total_weeksubj_ratio, 1)
+
+	print(total_subj_words, n_words)
+	print(subj_feats)
+	return total_subj_ratio, subj_feats
 
 def source(url):
 	hostname = urlparse(url).hostname 
