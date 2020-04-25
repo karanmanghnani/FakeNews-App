@@ -149,8 +149,14 @@ h2, h3, h4, h5, h6 {
 }
 
 .progress-bar{
-  border-radius: 10px;
   color: black;
+
+}
+
+.progress-bar1{
+  color: black;
+  text-align:right;
+  background:linear-gradient(to right, green 33%, yellow 34%, yellow 66%, red 0);
 }
 
 

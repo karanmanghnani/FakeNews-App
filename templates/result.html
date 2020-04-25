@@ -17,23 +17,34 @@
   <button type="button" class="media metric-section" data-toggle="modal" data-target="#EmotionModal">
     <div class="media-body">
         <h2 align="center">Emotion</h2>
-        {% if total_emotion <= 10 %}
-                <div class="progress-bar  bg-success" role="progressbar"
-        aria-valuenow="40" aria-valuemin="0" aria-valuemax="100" style="width:{{ total_emotion +2 }}%">
+        {% if total_emotion <= 33 %}
+          <div class="progress">
+            <div class="progress-bar" role="progressbar" aria-valuenow="33" aria-valuemin="0" aria-valuemax="100" style="width:33%; background-color: green !important;">{{ total_emotion }}%</div>
+            <div class="progress-bar" role="progressbar" aria-valuenow="33" aria-valuemin="0" aria-valuemax="100" style="width:33%; background-color:#ffffb3 !important;"></div>
+            <div class="progress-bar" role="progressbar" aria-valuenow="33" aria-valuemin="0" aria-valuemax="100" style="width:34%; background-color:#ffcccc !important;">
+    {{ total_emotion }}%</div>
+          </div>
         {% endif %}
 
-        {% if total_emotion > 10 and total_emotion <= 20  %}
-                <div class="progress-bar  bg-warning" role="progressbar"
-        aria-valuenow="40" aria-valuemin="0" aria-valuemax="100" style="width:{{ total_emotion }}%">
+        {% if total_emotion > 33 and total_emotion <= 66  %}
+          <div class="progress">
+            <div class="progress-bar" role="progressbar" aria-valuenow="33" aria-valuemin="0" aria-valuemax="100" style="width:33%; background-color: #ccffcc !important;"></div>
+            <div class="progress-bar" role="progressbar" aria-valuenow="33" aria-valuemin="0" aria-valuemax="100" style="width:33%; background-color: yellow !important;">{{ total_emotion }}%</div>
+            <div class="progress-bar" role="progressbar" aria-valuenow="33" aria-valuemin="0" aria-valuemax="100" style="width:34%; background-color:#ffcccc !important;">
+    </div>
+          </div>
         {% endif %}
 
-        {% if total_emotion > 20 %}
-                <div class="progress-bar bg-danger" role="progressbar"
-        aria-valuenow="40" aria-valuemin="0" aria-valuemax="100" style="width:{{ total_emotion }}%">
+        {% if total_emotion > 66 %}
+          <div class="progress">
+            <div class="progress-bar" role="progressbar" aria-valuenow="33" aria-valuemin="0" aria-valuemax="100" style="width:33%; background-color: #ccffcc !important;"></div>
+            <div class="progress-bar" role="progressbar" aria-valuenow="33" aria-valuemin="0" aria-valuemax="100" style="width:33%; background-color:#ffffb3 !important;"></div>
+            <div class="progress-bar" role="progressbar" aria-valuenow="33" aria-valuemin="0" aria-valuemax="100" style="width:34%; background-color: red !important;">
+    {{ total_emotion }}%</div>
+          </div>
+                
         {% endif %}
 
-          {{ total_emotion }}%
-        </div>
     </div>
   </button>
 
@@ -45,17 +56,17 @@
         <!-- Modal Header -->
         <div class="modal-header">
           <h4 class="modal-title">Emotion: {{ total_emotion }}%-&nbsp;</h4>
-        {% if total_emotion <= 10 %}
+        {% if total_emotion <= 33 %}
           <h4 class="modal-title">Trustable</h4>
           <h4 class="dot" style="background-color: green"></h4>
         {% endif %}
 
-        {% if total_emotion > 10 and total_emotion <= 20  %}
+        {% if total_emotion > 33 and total_emotion <= 66  %}
           <h4 class="modal-title">Dubious</h4>
           <h4 class="dot" style="background-color: yellow"></h4>
         {% endif %}
 
-        {% if total_emotion > 20 %}
+        {% if total_emotion > 66 %}
           <h4 class="modal-title">Not Trustable</h4>
           <h4 class="dot" style="background-color: red"></h4>
         {% endif %}
@@ -90,23 +101,32 @@
   <button type="button" class="media metric-section" data-toggle="modal" data-target="#SubjectivityModal">
     <div class="media-body">
         <h2 align="center">Subjectivity</h2>
-        {% if totalsubj <= 10 %}
-                <div class="progress-bar  bg-success" role="progressbar"
-        aria-valuenow="40" aria-valuemin="0" aria-valuemax="100" style="width:{{ totalsubj +2 }}%">
+        {% if totalsubj <= 33 %}
+          <div class="progress">
+            <div class="progress-bar" role="progressbar" aria-valuenow="33" aria-valuemin="0" aria-valuemax="100" style="width:33%; background-color: green !important;">{{ totalsubj }}%</div>
+            <div class="progress-bar" role="progressbar" aria-valuenow="33" aria-valuemin="0" aria-valuemax="100" style="width:33%; background-color:#ffffb3 !important;"></div>
+            <div class="progress-bar" role="progressbar" aria-valuenow="33" aria-valuemin="0" aria-valuemax="100" style="width:34%; background-color: #ffcccc !important;">
+    </div>
+          </div>
         {% endif %}
 
-        {% if totalsubj > 10 and totalsubj <= 20  %}
-                <div class="progress-bar  bg-warning" role="progressbar"
-        aria-valuenow="40" aria-valuemin="0" aria-valuemax="100" style="width:{{ totalsubj }}%">
+        {% if totalsubj > 33 and totalsubj <= 66  %}
+          <div class="progress">
+            <div class="progress-bar" role="progressbar" aria-valuenow="33" aria-valuemin="0" aria-valuemax="100" style="width:33%; background-color: #ccffcc !important;"></div>
+            <div class="progress-bar" role="progressbar" aria-valuenow="33" aria-valuemin="0" aria-valuemax="100" style="width:33%; background-color:yellow !important;">{{ totalsubj }}%</div>
+            <div class="progress-bar" role="progressbar" aria-valuenow="33" aria-valuemin="0" aria-valuemax="100" style="width:34%; background-color: #ffcccc !important;">
+    </div>
+          </div>
         {% endif %}
 
-        {% if totalsubj > 20 %}
-                <div class="progress-bar bg-danger" role="progressbar"
-        aria-valuenow="40" aria-valuemin="0" aria-valuemax="100" style="width:{{ totalsubj }}%">
+        {% if totalsubj > 66 %}
+          <div class="progress">
+            <div class="progress-bar" role="progressbar" aria-valuenow="33" aria-valuemin="0" aria-valuemax="100" style="width:33%; background-color: #ccffcc !important;"></div>
+            <div class="progress-bar" role="progressbar" aria-valuenow="33" aria-valuemin="0" aria-valuemax="100" style="width:33%; background-color:#ffffb3 !important;"></div>
+            <div class="progress-bar" role="progressbar" aria-valuenow="33" aria-valuemin="0" aria-valuemax="100" style="width:34%; background-color: red !important;">
+    {{ totalsubj }}%</div>
+          </div>
         {% endif %}
-        
-          {{ totalsubj }}%
-        </div>
     </div>
   </button>
 
@@ -118,17 +138,17 @@
         <!-- Modal Header -->
         <div class="modal-header">
           <h4 class="modal-title">Subjectivity: {{ totalsubj }}%-&nbsp;</h4>
-        {% if totalsubj <= 10 %}
+        {% if totalsubj <= 33 %}
           <h4 class="modal-title">Trustable</h4>
           <h4 class="dot" style="background-color: green"></h4>
         {% endif %}
 
-        {% if totalsubj > 10 and totalsubj <= 20  %}
+        {% if totalsubj > 33 and totalsubj <= 66  %}
           <h4 class="modal-title">Dubious</h4>
           <h4 class="dot" style="background-color: yellow"></h4>
         {% endif %}
 
-        {% if totalsubj > 20 %}
+        {% if totalsubj > 66 %}
           <h4 class="modal-title">Not Trustable</h4>
           <h4 class="dot" style="background-color: red"></h4>
         {% endif %}
@@ -162,23 +182,33 @@
   <button type="button" class="media metric-section" data-toggle="modal" data-target="#AffectiveModal">
     <div class="media-body">
         <h2 align="center">Affective</h2>
-        {% if vad_features['total_vad'] <= 10 %}
-                <div class="progress-bar  bg-success" role="progressbar"
-        aria-valuenow="40" aria-valuemin="30" aria-valuemax="100" style="width:{{ vad_features['total_vad'] +2 }}%">
+        {% if vad_features['total_vad'] <= 33 %}
+          <div class="progress">
+            <div class="progress-bar" role="progressbar" aria-valuenow="33" aria-valuemin="0" aria-valuemax="100" style="width:33%; background-color: green !important;">{{ vad_features['total_vad'] }}%</div>
+            <div class="progress-bar" role="progressbar" aria-valuenow="33" aria-valuemin="0" aria-valuemax="100" style="width:33%; background-color:#ffffb3 !important;"></div>
+            <div class="progress-bar" role="progressbar" aria-valuenow="33" aria-valuemin="0" aria-valuemax="100" style="width:34%; background-color: #ffcccc !important;">
+    </div>
+          </div>
         {% endif %}
 
-        {% if vad_features['total_vad'] > 10 and vad_features['total_vad'] <= 20  %}
-                <div class="progress-bar  bg-warning" role="progressbar"
-        aria-valuenow="40" aria-valuemin="0" aria-valuemax="100" style="width:{{ vad_features['total_vad'] }}%">
+        {% if vad_features['total_vad'] > 33 and vad_features['total_vad'] <= 66  %}
+          <div class="progress">
+            <div class="progress-bar" role="progressbar" aria-valuenow="33" aria-valuemin="0" aria-valuemax="100" style="width:33%; background-color: #ccffcc !important;"></div>
+            <div class="progress-bar" role="progressbar" aria-valuenow="33" aria-valuemin="0" aria-valuemax="100" style="width:33%; background-color:yellow !important;">{{ vad_features['total_vad'] }}%</div>
+            <div class="progress-bar" role="progressbar" aria-valuenow="33" aria-valuemin="0" aria-valuemax="100" style="width:34%; background-color: #ffcccc !important;">
+    </div>
+          </div>
         {% endif %}
 
-        {% if vad_features['total_vad'] > 20 %}
-                <div class="progress-bar bg-danger" role="progressbar"
-        aria-valuenow="40" aria-valuemin="0" aria-valuemax="100" style="width:{{ vad_features['total_vad'] }}%">
+        {% if vad_features['total_vad'] > 66 %}
+          <div class="progress">
+            <div class="progress-bar" role="progressbar" aria-valuenow="33" aria-valuemin="0" aria-valuemax="100" style="width:33%; background-color: #ccffcc !important;"></div>
+            <div class="progress-bar" role="progressbar" aria-valuenow="33" aria-valuemin="0" aria-valuemax="100" style="width:33%; background-color:#ffffb3 !important;"></div>
+            <div class="progress-bar" role="progressbar" aria-valuenow="33" aria-valuemin="0" aria-valuemax="100" style="width:34%; background-color: red !important;">
+    {{ vad_features['total_vad'] }}%</div>
+          </div>
         {% endif %}
         
-          {{ vad_features['total_vad'] }}%
-        </div>
     </div>
   </button>
 
@@ -190,17 +220,17 @@
         <!-- Modal Header -->
         <div class="modal-header">
           <h4 class="modal-title">Affective: {{ vad_features['total_vad'] }}%-&nbsp;</h4>
-        {% if vad_features['total_vad'] <= 10 %}
+        {% if vad_features['total_vad'] <= 33 %}
           <h4 class="modal-title">Trustable</h4>
           <h4 class="dot" style="background-color: green"></h4>
         {% endif %}
 
-        {% if vad_features['total_vad'] > 10 and vad_features['total_vad'] <= 20  %}
+        {% if vad_features['total_vad'] > 33 and vad_features['total_vad'] <= 66  %}
           <h4 class="modal-title">Dubious</h4>
           <h4 class="dot" style="background-color: yellow"></h4>
         {% endif %}
 
-        {% if vad_features['total_vad'] > 20 %}
+        {% if vad_features['total_vad'] > 66 %}
           <h4 class="modal-title">Not Trustable</h4>
           <h4 class="dot" style="background-color: red"></h4>
         {% endif %}
@@ -236,23 +266,33 @@
   <button type="button" class="media metric-section" data-toggle="modal" data-target="#PolarityModal">
     <div class="media-body">
         <h2 align="center">Polarity</h2>
-        {% if polarity['total_pol'] <= 10 %}
-                <div class="progress-bar  bg-success" role="progressbar"
-        aria-valuenow="40" aria-valuemin="0" aria-valuemax="100" style="width:{{ polarity['total_pol']+2 }}%">
+                {% if polarity['total_pol'] <= 33 %}
+          <div class="progress">
+            <div class="progress-bar" role="progressbar" aria-valuenow="33" aria-valuemin="0" aria-valuemax="100" style="width:33%; background-color: green !important;">{{ polarity['total_pol'] }}%</div>
+            <div class="progress-bar" role="progressbar" aria-valuenow="33" aria-valuemin="0" aria-valuemax="100" style="width:33%; background-color:#ffffb3 !important;"></div>
+            <div class="progress-bar" role="progressbar" aria-valuenow="33" aria-valuemin="0" aria-valuemax="100" style="width:34%; background-color: #ffcccc !important;">
+    </div>
+          </div>
         {% endif %}
 
-        {% if polarity['total_pol'] > 10 and polarity['total_pol'] <= 20  %}
-                <div class="progress-bar  bg-warning" role="progressbar"
-        aria-valuenow="40" aria-valuemin="0" aria-valuemax="100" style="width:{{ polarity['total_pol'] }}%">
+        {% if polarity['total_pol'] > 33 and polarity['total_pol'] <= 66  %}
+          <div class="progress">
+            <div class="progress-bar" role="progressbar" aria-valuenow="33" aria-valuemin="0" aria-valuemax="100" style="width:33%; background-color: #ccffcc !important;"></div>
+            <div class="progress-bar" role="progressbar" aria-valuenow="33" aria-valuemin="0" aria-valuemax="100" style="width:33%; background-color:yellow !important;">{{ polarity['total_pol'] }}%</div>
+            <div class="progress-bar" role="progressbar" aria-valuenow="33" aria-valuemin="0" aria-valuemax="100" style="width:34%; background-color: #ffcccc !important;">
+    </div>
+          </div>
         {% endif %}
 
-        {% if polarity['total_pol'] > 20 %}
-                <div class="progress-bar bg-danger" role="progressbar"
-        aria-valuenow="40" aria-valuemin="0" aria-valuemax="100" style="width:{{ polarity['total_pol'] }}%">
+        {% if polarity['total_pol'] > 66 %}
+          <div class="progress">
+            <div class="progress-bar" role="progressbar" aria-valuenow="33" aria-valuemin="0" aria-valuemax="100" style="width:33%; background-color: #ccffcc !important;"></div>
+            <div class="progress-bar" role="progressbar" aria-valuenow="33" aria-valuemin="0" aria-valuemax="100" style="width:33%; background-color:#ffffb3 !important;"></div>
+            <div class="progress-bar" role="progressbar" aria-valuenow="33" aria-valuemin="0" aria-valuemax="100" style="width:34%; background-color: red !important;">
+    {{ polarity['total_pol'] }}%</div>
+          </div>
         {% endif %}
-        
-          {{ polarity['total_pol'] }}%
-        </div>
+
     </div>
   </button>
 
@@ -264,17 +304,17 @@
         <!-- Modal Header -->
         <div class="modal-header">
           <h4 class="modal-title">Polarity: {{ polarity['total_pol'] }}%-&nbsp;</h4>
-        {% if vad_features['total_vad'] <= 10 %}
+        {% if vad_features['total_vad'] <= 33 %}
           <h4 class="modal-title">Trustable</h4>
           <h4 class="dot" style="background-color: green"></h4>
         {% endif %}
 
-        {% if polarity['total_pol'] > 10 and polarity['total_pol'] <= 20  %}
+        {% if polarity['total_pol'] > 33 and polarity['total_pol'] <= 66  %}
           <h4 class="modal-title">Dubious</h4>
           <h4 class="dot" style="background-color: yellow"></h4>
         {% endif %}
 
-        {% if polarity['total_pol'] > 20 %}
+        {% if polarity['total_pol'] > 66 %}
           <h4 class="modal-title">Not Trustable</h4>
           <h4 class="dot" style="background-color: red"></h4>
         {% endif %}
@@ -312,23 +352,33 @@
   <button type="button" class="media metric-section" data-toggle="modal" data-target="#BPModal">
     <div class="media-body">
         <h2 align="center">Behavioral and Physiological</h2>
-        {% if bp_stats['total_bp'] <= 10 %}
-                <div class="progress-bar  bg-success" role="progressbar"
-        aria-valuenow="40" aria-valuemin="0" aria-valuemax="100" style="width:{{ bp_stats['total_bp']+2 }}%">
+        {% if bp_stats['total_bp'] <= 33 %}
+          <div class="progress">
+            <div class="progress-bar" role="progressbar" aria-valuenow="33" aria-valuemin="0" aria-valuemax="100" style="width:33%; background-color: green !important;">{{ bp_stats['total_bp'] }}%</div>
+            <div class="progress-bar" role="progressbar" aria-valuenow="33" aria-valuemin="0" aria-valuemax="100" style="width:33%; background-color:#ffffb3 !important;"></div>
+            <div class="progress-bar" role="progressbar" aria-valuenow="33" aria-valuemin="0" aria-valuemax="100" style="width:34%; background-color: #ffcccc !important;">
+    </div>
+          </div>
         {% endif %}
 
-        {% if bp_stats['total_bp'] > 10 and bp_stats['total_bp'] <= 20  %}
-                <div class="progress-bar  bg-warning" role="progressbar"
-        aria-valuenow="40" aria-valuemin="0" aria-valuemax="100" style="width:{{ bp_stats['total_bp'] }}%">
+        {% if bp_stats['total_bp'] > 33 and bp_stats['total_bp'] <= 66  %}
+          <div class="progress">
+            <div class="progress-bar" role="progressbar" aria-valuenow="33" aria-valuemin="0" aria-valuemax="100" style="width:33%; background-color: #ccffcc !important;"></div>
+            <div class="progress-bar" role="progressbar" aria-valuenow="33" aria-valuemin="0" aria-valuemax="100" style="width:33%; background-color:yellow !important;">{{ bp_stats['total_bp'] }}%</div>
+            <div class="progress-bar" role="progressbar" aria-valuenow="33" aria-valuemin="0" aria-valuemax="100" style="width:34%; background-color: #ffcccc !important;">
+    </div>
+          </div>
         {% endif %}
 
-        {% if bp_stats['total_bp'] > 20 %}
-                <div class="progress-bar bg-danger" role="progressbar"
-        aria-valuenow="40" aria-valuemin="0" aria-valuemax="100" style="width:{{ bp_stats['total_bp'] }}%">
+        {% if bp_stats['total_bp'] > 66 %}
+          <div class="progress">
+            <div class="progress-bar" role="progressbar" aria-valuenow="33" aria-valuemin="0" aria-valuemax="100" style="width:33%; background-color: #ccffcc !important;"></div>
+            <div class="progress-bar" role="progressbar" aria-valuenow="33" aria-valuemin="0" aria-valuemax="100" style="width:33%; background-color:#ffffb3 !important;"></div>
+            <div class="progress-bar" role="progressbar" aria-valuenow="33" aria-valuemin="0" aria-valuemax="100" style="width:34%; background-color: red !important;">
+    {{ bp_stats['total_bp'] }}%</div>
+          </div>
         {% endif %}
         
-          {{ bp_stats['total_bp'] }}%
-        </div>
     </div>
   </button>
 
@@ -340,17 +390,17 @@
         <!-- Modal Header -->
         <div class="modal-header">
           <h4 class="modal-title">BP: {{ bp_stats['total_bp'] }}%-&nbsp;</h4>
-        {% if bp_stats['total_bp'] <= 10 %}
+        {% if bp_stats['total_bp'] <= 33 %}
           <h4 class="modal-title">Trustable</h4>
           <h4 class="dot" style="background-color: green"></h4>
         {% endif %}
 
-        {% if bp_stats['total_bp']> 10 and bp_stats['total_bp'] <= 20  %}
+        {% if bp_stats['total_bp']> 33 and bp_stats['total_bp'] <= 66  %}
           <h4 class="modal-title">Dubious</h4>
           <h4 class="dot" style="background-color: yellow"></h4>
         {% endif %}
 
-        {% if bp_stats['total_bp'] > 20 %}
+        {% if bp_stats['total_bp'] > 66 %}
           <h4 class="modal-title">Not Trustable</h4>
           <h4 class="dot" style="background-color: red"></h4>
         {% endif %}

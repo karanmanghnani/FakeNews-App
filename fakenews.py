@@ -40,6 +40,7 @@ def HomePage():
 		#metrics.prepare_lexicons()
 
 		liwc_tags, sentilex, anew_extended, emotion_words, subjective_words = metrics.load_lexicons()
+		emotionDB, subjectivityDB, affectiveDB, polarityDB, bpDB = metrics.prepareMetricsDB()
 
 		if('url' in request.values ):
 			url = request.form['url']
@@ -50,51 +51,19 @@ def HomePage():
 
 			#meter o ficheiro e corrigir da maneira mais eficiente
 			emotion_count,emotion_ratio,total_emotion = metrics.get_emotions(article_text)
-			"""total_emotion=5
-			emotion_ratio = {'Happiness' : 10, 'Disgust' : 20, 'Fear' : 30, 'Anger':40, 'Surprise':50, 'Sadness':60} 
-			emotion_count = {'Happiness' : 0, 'Disgust' : 0, 'Fear' : 0, 'Anger':0, 'Surprise':0, 'Sadness':0}"""
+			total_emotion = metrics.fakeProbability(emotionDB,total_emotion)
 			
 			totalsubj, subj_feats = metrics.get_subjective_ratio(words, subjective_words)
-			"""totalsubj = 20
-			subj_feats = {'strongsubj':10, 'weaksubj':20}"""
+			totalsubj = metrics.fakeProbability(subjectivityDB, totalsubj)
 
-			"""vad_features = {
-			'total_vad': 0,
-			'valence_avg': 0,
-			'valence_std': 0,
-			'valence_max': 0,
-			'valence_min': 0,
-			'valence_dif': 0,
-			'arousal_avg': 0,
-			'arousal_std': 0,
-			'arousal_max': 0,
-			'arousal_min': 0,
-			'arousal_dif': 0,
-			'dominance_avg': 0,
-			'dominance_std': 0,
-			'dominance_max': 0,
-			'dominance_min': 0,
-			'dominance_dif': 0,
-			}"""
 			vad_features = metrics.get_vad_features(lemmas, anew_extended)
+			vad_features['total_vad'] = metrics.fakeProbability(affectiveDB, vad_features['total_vad'])
 
 			polarity = metrics.sentiment_polarity(words, sentilex)
-			"""polarity = {}
-			polarity['positive_ratio'] = 10
-			polarity['negative_ratio'] = 10
-			polarity['positive_contrast'] = 20
-			polarity['negative_contrast'] = 20
-			polarity['total_pol'] = 5"""
+			polarity['total_pol'] = metrics.fakeProbability(polarityDB, polarity['total_pol'])
 
 			bp_stats = metrics.behavioral_physiological(words, liwc_tags)
-			"""bp_stats = {}
-			bp_stats['perceptuality'] = 5
-			bp_stats['relativity'] = 3
-			bp_stats['cognitivity'] = 5
-			bp_stats['personal_concerns'] = 6
-			bp_stats['biological_processes'] = 4
-			bp_stats['social_processes'] = 7
-			bp_stats['total_bp'] = 80"""
+			bp_stats['total_bp'] = metrics.fakeProbability(bpDB, bp_stats['total_bp'])
 
 			source, url = metrics.source(url)
 			print(source)
@@ -103,24 +72,6 @@ def HomePage():
 			article_text = request.form['ArticleText']
 			emotion_count,emotion_ratio,total_emotion = metrics.get_emotions(article_text)
 			totalsubj, subj_feats = metrics.get_subjective_ratio(article_text)
-			"""vad_features = {
-			'total_vad': 0,
-			'valence_avg': 0,
-			'valence_std': 0,
-			'valence_max': 0,
-			'valence_min': 0,
-			'valence_dif': 0,
-			'arousal_avg': 0,
-			'arousal_std': 0,
-			'arousal_max': 0,
-			'arousal_min': 0,
-			'arousal_dif': 0,
-			'dominance_avg': 0,
-			'dominance_std': 0,
-			'dominance_max': 0,
-			'dominance_min': 0,
-			'dominance_dif': 0,
-			}"""
 			vad_features = metrics.get_vad_features(article_text)
 			polarity = metrics.sentiment_polarity(article_text)
 			bp_stats = metrics.behavioral_physiological(article_text)

@@ -8,6 +8,8 @@ from urllib.parse import urlparse
 import re
 import xlrd 
 import pickle
+import pandas as pd
+import numpy as np
 
 import get_lexicons as lex
 
@@ -289,6 +291,85 @@ def source(url):
 	    	value = True
 
 	return value, absolute_url
+
+
+#######################################
+#          Probability of fake        #
+#######################################
+
+
+def prepareMetricsDB():
+    emotion = []
+    subjectivity = []
+    affective = []
+    polarity = []
+    bp = []
+
+    colnames=['Grau', 'Emotion', 'Subjectivity', 'Affective', 'Polarity', 'BP'] 
+    df = pd.read_csv("noticias_BD_test.csv", names=colnames, header=None)
+
+    for i in range(len(df)):
+        emotion.append((df['Emotion'][i],df['Grau'][i]))
+        subjectivity.append((df['Subjectivity'][i],df['Grau'][i]))
+        affective.append((df['Affective'][i],df['Grau'][i]))
+        polarity.append((df['Polarity'][i],df['Grau'][i]))
+        bp.append((df['BP'][i],df['Grau'][i]))
+    return emotion, subjectivity, affective, polarity, bp
+
+def getKey(item):
+    return item[0]
+
+def doQuartil(lista):
+    temp_list = []
+    for element in lista:
+        temp_list.append(element[0])
+    quartil = np.percentile(temp_list, [25, 50, 75])
+    return quartil
+
+
+def getQuartilResultList(quartil, sorted_metric, metric):
+    result_list = []
+    if (metric <= quartil[0]):
+        for element in sorted_metric:
+            if(element[0] <= quartil[0]):
+                result_list.append(element[1])
+
+    elif (quartil[0] < metric <= quartil[1]):
+        for element in sorted_metric:
+            if(quartil[0] < element[0] <= quartil[1]):
+                result_list.append(element[1])
+
+    elif (quartil[1] < metric <= quartil[2]):
+        for element in sorted_metric:
+            if(quartil[1] < element[0] <= quartil[2]):
+                result_list.append(element[1])
+
+    elif (metric > quartil[2]):
+        for element in sorted_metric:
+            if(element[0] > quartil[2]):
+                result_list.append(element[1])
+
+    return result_list
+
+def getProb(result_list):
+    fake_count = 0
+    for i in result_list:
+        if i == 'Falso ':
+            fake_count += 1
+    return round(fake_count/len(result_list), 2)
+
+def fakeProbability(metric, metric_total):
+    sorted_metric = sorted(metric, key=getKey)
+    #print(sorted_metric)
+    quartil_metric = doQuartil(sorted_metric)
+    #print(quartil_metric)
+    metric_result = getQuartilResultList(quartil_metric, sorted_metric, metric_total)
+    #print(metric_result)
+    metric_prob = getProb(metric_result)
+    #print(metric_prob)
+    return float('%.1f' % ((metric_prob)*100))
+
+
 
 #######################################
 #          Auxiliar Functions		  #
