@@ -49,8 +49,9 @@ def HomePage():
 			lemmas = metrics.lemmatize_words(sentences)
 			words = metrics.tokenize_words(sentences)
 
-			#meter o ficheiro e corrigir da maneira mais eficiente
-			emotion_count,emotion_ratio,total_emotion = metrics.get_emotions(article_text)
+			emotion_ratio, total_emotion = metrics.get_emotions(words, emotion_words)
+			print("emotion")
+			print(total_emotion)
 			total_emotion = metrics.fakeProbability(emotionDB,total_emotion)
 			
 			totalsubj, subj_feats = metrics.get_subjective_ratio(words, subjective_words)
@@ -67,15 +68,15 @@ def HomePage():
 
 			source, url = metrics.source(url)
 			print(source)
-			return render_template('result.html', title='FakeNews',posts=posts, article_text=article_text, emotion_count=emotion_count, emotion_ratio=emotion_ratio, total_emotion=total_emotion, totalsubj=totalsubj, subj_feats=subj_feats, vad_features=vad_features, polarity=polarity, bp_stats=bp_stats, source=source, url=url)
+			return render_template('result.html', title='FakeNews',posts=posts, article_text=article_text, emotion_ratio=emotion_ratio, total_emotion=total_emotion, totalsubj=totalsubj, subj_feats=subj_feats, vad_features=vad_features, polarity=polarity, bp_stats=bp_stats, source=source, url=url)
 		else:
 			article_text = request.form['ArticleText']
-			emotion_count,emotion_ratio,total_emotion = metrics.get_emotions(article_text)
+			emotion_ratio,total_emotion = metrics.get_emotions(words, emotion_words)
 			totalsubj, subj_feats = metrics.get_subjective_ratio(article_text)
 			vad_features = metrics.get_vad_features(article_text)
 			polarity = metrics.sentiment_polarity(article_text)
 			bp_stats = metrics.behavioral_physiological(article_text)
-			return render_template('result.html', title='FakeNews',posts=posts, article_text=article_text, emotion_count=emotion_count, emotion_ratio=emotion_ratio, total_emotion=total_emotion, totalsubj=totalsubj, subj_feats=subj_feats, vad_features=vad_features, polarity=polarity, bp_stats=bp_stats)
+			return render_template('result.html', title='FakeNews',posts=posts, article_text=article_text, emotion_ratio=emotion_ratio, total_emotion=total_emotion, totalsubj=totalsubj, subj_feats=subj_feats, vad_features=vad_features, polarity=polarity, bp_stats=bp_stats)
 
 	else:
 		return render_template('HomePage.html', title='FakeNews')
