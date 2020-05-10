@@ -10,6 +10,7 @@ import xlrd
 import pickle
 import pandas as pd
 import numpy as np
+from sklearn.linear_model import LogisticRegression
 
 import get_lexicons as lex
 
@@ -136,8 +137,6 @@ def get_emotions(words, emotion_words):
 
     if n_emotions:
         emotion_feats.update({k:round(emotion_feats[k]/n_emotions, 4) for k in six_emotions})
-    print(emotion_feats)
-    print(n_emotions)
 
     return emotion_feats, round(n_emotions/len(words),3 )*100
 
@@ -179,7 +178,7 @@ def get_vad_features(lemmas, anew):
 	}
 
 	#print(V,A,D)
-	print(vad_features)
+	#print(vad_features)
 	return  vad_features
 
 def sentiment_polarity(words, sentilex):
@@ -204,9 +203,9 @@ def behavioral_physiological(words, liwc_tags):
 	n_personal_concerns_words, doc_stats['personal_concerns'] = get_personal_concerns(liwc_tags, words)
 	n_biological_words, doc_stats['biological_processes'] = get_biological_processes(liwc_tags, words)
 	n_social_words, doc_stats['social_processes'] = get_social_processes(liwc_tags, words)
-	print((n_perceptual_words + n_relativity_words + n_cognitive_words + n_personal_concerns_words + n_biological_words + n_social_words)/len(words))
-	print(n_perceptual_words + n_relativity_words + n_cognitive_words + n_personal_concerns_words + n_biological_words + n_social_words)
-	print(len(words))
+	#print((n_perceptual_words + n_relativity_words + n_cognitive_words + n_personal_concerns_words + n_biological_words + n_social_words)/len(words))
+	#print(n_perceptual_words + n_relativity_words + n_cognitive_words + n_personal_concerns_words + n_biological_words + n_social_words)
+	#print(len(words))
 	total_words = n_perceptual_words + n_relativity_words + n_cognitive_words + n_personal_concerns_words + n_biological_words + n_social_words
 	total_bp = (total_words/(len(words)*6))*100
 	doc_stats['total_bp'] = round(total_bp,1)
@@ -233,14 +232,11 @@ def get_subjective_ratio(words, subjective_words):
 	total_subj_ratio = (round(total_subj_words/n_words, 3))*100
 
 	#Regra 3 simples para calculo de % em relaçao ao total e depois *100 (para meter em %)
-	total_strongsubj_ratio = (((subj_feats.get('strongsubj')/n_words)*100)/total_subj_ratio)*100
-	total_weeksubj_ratio = (((subj_feats.get('weaksubj')*100)/n_words)/total_subj_ratio)*100
+	total_strongsubj_ratio = ((subj_feats.get('strongsubj'))/n_words)*100
+	total_weeksubj_ratio = ((subj_feats.get('weaksubj'))/n_words)*100
 
-	subj_feats['strongsubj'] = round(total_strongsubj_ratio, 1)
-	subj_feats['weaksubj'] = round(total_weeksubj_ratio, 1)
-
-	print(total_subj_words, n_words)
-	print(subj_feats)
+	#print(total_subj_words, n_words)
+	#print(subj_feats)
 	return total_subj_ratio, subj_feats
 
 def source(url):
@@ -334,10 +330,101 @@ def fakeProbability(metric, metric_total):
     #print(metric_result)
     metric_prob = getProb(metric_result)
     #print(metric_prob)
+
     return float('%.1f' % ((metric_prob)*100))
 
+def fakeProbability2(emotion,subj,val_avg,arou_avg,dom_avg,pos_words,neg_words,percep,relat,cogni,personal,bio,social):
+
+    df = pd.read_excel('BD_results.xlsx')
+    model = LogisticRegression()
+
+    # Emotion
+
+    lista = []
+    lista.append(emotion)
+
+    X_test = pd.DataFrame(lista, columns=['Emotion'])
+    X_train = df[['Emotion']]
+    y_train = df.Label
+
+    model.fit(X_train, y_train)
+
+    y_predicted = model.predict_proba(X_test)
+
+    emotion = float('%.0f' % ((y_predicted[0][0])*100))
+
+    # Subj
+
+    lista = []
+    lista.append(subj)
+
+    X_test = pd.DataFrame(lista, columns=['Subj'])
+    X_train = df[['Subj']]
+    y_train = df.Label
+
+    model.fit(X_train, y_train)
+
+    y_predicted = model.predict_proba(X_test)
+
+    subj = float('%.0f' % ((y_predicted[0][0])*100))
 
 
+    # Affective
+
+    lista = []
+    lista.append(val_avg)
+    lista.append(arou_avg)
+    lista.append(dom_avg)
+
+    X_test = pd.DataFrame([lista], columns=['val_avg','aro_avg','dom_avg'])
+    X_train = df[['val_avg','aro_avg','dom_avg']]
+    y_train = df.Label
+
+    model.fit(X_train, y_train)
+
+    y_predicted = model.predict_proba(X_test)
+
+    affective = float('%.0f' % ((y_predicted[0][0])*100))
+
+    # Polarity
+
+    lista = []
+    lista.append(pos_words)
+    lista.append(neg_words)
+
+    X_test = pd.DataFrame([lista], columns=['pos_words','neg_words'])
+    X_train = df[['pos_words','neg_words']]
+    y_train = df.Label
+
+    model.fit(X_train, y_train)
+
+    y_predicted = model.predict_proba(X_test)
+
+    polarity = float('%.0f' % ((y_predicted[0][0])*100))
+
+
+    # BP
+
+    lista = []
+    lista.append(percep)
+    lista.append(relat)
+    lista.append(cogni)
+    lista.append(personal)
+    lista.append(bio)
+    lista.append(social)
+
+    X_test = pd.DataFrame([lista], columns=['perceptuality','relativity','cognitivity','personal','biological','social'])
+    X_train = df[['perceptuality','relativity','cognitivity','personal','biological','social']]
+    y_train = df.Label
+
+    model.fit(X_train, y_train)
+
+    y_predicted = model.predict_proba(X_test)
+
+    bp = float('%.0f' % ((y_predicted[0][0])*100))
+
+
+    return emotion, subj, affective, polarity, bp
 #######################################
 #          Auxiliar Functions		  #
 #######################################

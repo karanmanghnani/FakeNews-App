@@ -14,8 +14,28 @@ h2, h3, h4, h5, h6 {
   color: black;
   font-size: 100px;
   line-height: 30px;
-  margin-bottom: 25px;
+  margin-bottom: 0px;
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.4), 0 20px 40px 0 rgba(0, 0, 0, 0.19);
+}
+
+.navbar-expand-sm{
+  background: #A9A9A9;
+  height: 50px;
+}
+
+
+
+.navbar-expand-sm .navbar-nav .nav-item .nav-link{
+  color: black;
+}
+
+.navbar-expand-sm .navbar-nav .nav-item .home{
+  width:25px;
+  height:25px;
+}
+
+.navbar-expand-sm .navbar-nav .nav-item {
+  padding-left: 15px;
 }
 
 #hero {
@@ -119,7 +139,7 @@ h2, h3, h4, h5, h6 {
 
 .row {
   margin: auto;
-  width: 90%;
+  width: 97%;
   padding-bottom: 120px;
   padding-top: 120px;
   box-shadow: 0 40px 80px 0 rgba(0, 0, 0, 0.2), 0 60px 80px 0 rgba(0, 0, 0, 0.19);

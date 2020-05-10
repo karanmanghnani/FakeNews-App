@@ -40,7 +40,6 @@ def HomePage():
 		#metrics.prepare_lexicons()
 
 		liwc_tags, sentilex, anew_extended, emotion_words, subjective_words = metrics.load_lexicons()
-		emotionDB, subjectivityDB, affectiveDB, polarityDB, bpDB = metrics.prepareMetricsDB()
 
 		if('url' in request.values ):
 			url = request.form['url']
@@ -50,25 +49,18 @@ def HomePage():
 			words = metrics.tokenize_words(sentences)
 
 			emotion_ratio, total_emotion = metrics.get_emotions(words, emotion_words)
-			print("emotion")
-			print(total_emotion)
-			total_emotion = metrics.fakeProbability(emotionDB,total_emotion)
-			
 			totalsubj, subj_feats = metrics.get_subjective_ratio(words, subjective_words)
-			totalsubj = metrics.fakeProbability(subjectivityDB, totalsubj)
-
 			vad_features = metrics.get_vad_features(lemmas, anew_extended)
-			vad_features['total_vad'] = metrics.fakeProbability(affectiveDB, vad_features['total_vad'])
-
 			polarity = metrics.sentiment_polarity(words, sentilex)
-			polarity['total_pol'] = metrics.fakeProbability(polarityDB, polarity['total_pol'])
-
 			bp_stats = metrics.behavioral_physiological(words, liwc_tags)
-			bp_stats['total_bp'] = metrics.fakeProbability(bpDB, bp_stats['total_bp'])
+
+			total_emotion, totalsubj, vad_features['total_vad'], polarity['total_pol'], bp_stats['total_bp'] = metrics.fakeProbability2(total_emotion,totalsubj,vad_features['valence_avg'],vad_features['arousal_avg'],vad_features['dominance_avg'],polarity['positive_ratio'],polarity['negative_ratio'],bp_stats['perceptuality'],bp_stats['relativity'],bp_stats['cognitivity'],bp_stats['personal_concerns'],bp_stats['biological_processes'],bp_stats['social_processes'])
 
 			source, url = metrics.source(url)
-			print(source)
+			
+
 			return render_template('result.html', title='FakeNews',posts=posts, article_text=article_text, emotion_ratio=emotion_ratio, total_emotion=total_emotion, totalsubj=totalsubj, subj_feats=subj_feats, vad_features=vad_features, polarity=polarity, bp_stats=bp_stats, source=source, url=url)
+		
 		else:
 			article_text = request.form['ArticleText']
 			emotion_ratio,total_emotion = metrics.get_emotions(words, emotion_words)
