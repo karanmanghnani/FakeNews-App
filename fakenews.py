@@ -30,7 +30,8 @@ def parse(website):
     article.download()
     article.parse()
     article_text = article.text
-    return article_text
+    article_title = article.title
+    return article_text, article_title
 
 
 @app.route("/")
@@ -43,7 +44,9 @@ def HomePage():
 
 		if('url' in request.values ):
 			url = request.form['url']
-			article_text = parse(url)
+			print(url)
+			print(type(url))
+			article_text, article_title = parse(url)
 			sentences = metrics.tokenize_sentences(article_text)
 			lemmas = metrics.lemmatize_words(sentences)
 			words = metrics.tokenize_words(sentences)
@@ -56,10 +59,10 @@ def HomePage():
 
 			total_emotion, totalsubj, vad_features['total_vad'], polarity['total_pol'], bp_stats['total_bp'] = metrics.fakeProbability2(total_emotion,totalsubj,vad_features['valence_avg'],vad_features['arousal_avg'],vad_features['dominance_avg'],polarity['positive_ratio'],polarity['negative_ratio'],bp_stats['perceptuality'],bp_stats['relativity'],bp_stats['cognitivity'],bp_stats['personal_concerns'],bp_stats['biological_processes'],bp_stats['social_processes'])
 
-			source, url = metrics.source(url)
+			source, absolute_url = metrics.source(url)
 			
 
-			return render_template('result.html', title='FakeNews',posts=posts, article_text=article_text, emotion_ratio=emotion_ratio, total_emotion=total_emotion, totalsubj=totalsubj, subj_feats=subj_feats, vad_features=vad_features, polarity=polarity, bp_stats=bp_stats, source=source, url=url)
+			return render_template('result.html', title='FakeNews',posts=posts, article_text=article_text, article_title=article_title, emotion_ratio=emotion_ratio, total_emotion=total_emotion, totalsubj=totalsubj, subj_feats=subj_feats, vad_features=vad_features, polarity=polarity, bp_stats=bp_stats, source=source, url=url,absolute_url=absolute_url)
 		
 		else:
 			article_text = request.form['ArticleText']

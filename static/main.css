@@ -1,5 +1,5 @@
 body {
-  background: #F0F8FF;
+  background: #ffffff;
   color: #333333;
 }
 
@@ -41,10 +41,14 @@ h2, h3, h4, h5, h6 {
 #hero {
 
   background: #213b52;
+  height: 1000px;
 
 }
 
-
+.media-body{
+  margin-top: 14px;
+  margin-left: 10px;
+}
 
 .content-section {
   background: #ffffff;
@@ -98,32 +102,83 @@ h2, h3, h4, h5, h6 {
 }
 
 .content-section-result {
-  background: #ffffff;
+  background: #f0f8ff;
   padding: 8px 20px;
-  border: 5px solid #A9A9A9;
+  border: 1px solid #A9A9A9;
   border-radius: 10px;
   margin-bottom: 100px;
-  width: 45%;
-  height: 400px;
-  margin-left: auto;
-  margin-right: auto;
+  width: 90%;
+  margin-left: 2.5%;
+  margin-right: 0px;
+}
+
+.content-section-result-metric {
+  background: #f0f8ff;
+  padding: 2px 20px;
+  border: 1px solid #A9A9A9;
+  border-radius: 10px;
+  margin-bottom: 100px;
+  width: 100%;
+  margin-left: 0px;
+  margin-right: 0px;
+  margin-top: 60px;
+}
+
+.title{
+  margin-top: 55px;
+  margin-left: 40px;
+  color: #003cb3;
+  width: 90%;
+
+}
+
+.indicators-title{
+  color: #ffffff;
+  text-align: center;
+  padding-top: 20px;
 }
 
 .content-section-result .article_size {
   display: block;
   width: auto;
-  height: 380px;
+  height: 375px;
   overflow: scroll;
   white-space: normal;
   text-overflow: ellipsis;
+  font-family: Arial, Helvetica, sans-serif;
 
 }
 
+.link-button{
+  display:inline;
+  margin-left:10px;
+  color: blue;
+  font-size: 25px;
+  text-decoration: underline;
+}
 
 
 .article-content {
   white-space: pre-line;
 }
+
+
+.orientation-1{
+    overflow: hidden;
+}
+
+.orientation-2{
+    float:left;
+    width: 60%;
+    margin-right: 0px;
+}
+
+.article-classification{
+    float:left;
+    margin-top: 120px;
+    font-size: 30px;
+}
+
 
 .metric-section {
   background: #FFEBCD;
@@ -136,6 +191,22 @@ h2, h3, h4, h5, h6 {
   margin-left: 220px;
   box-shadow: 0 40px 80px 0 rgba(0, 0, 0, 0.2), 0 60px 80px 0 rgba(0, 0, 0, 0.19);
 }
+
+
+.metric-section-2 {
+  background: #FFEBCD;
+  padding: 3px 8px;
+  border: 5px solid #A9A9A9;
+  border-radius: 15px;
+  margin-bottom: 25px;
+  width: 30%;
+  margin-top: 30px;
+  margin-left: 220px;
+  box-shadow: 0 40px 80px 0 rgba(0, 0, 0, 0.2), 0 60px 80px 0 rgba(0, 0, 0, 0.19);
+  display: inline;
+}
+
+
 
 .row {
   margin: auto;
@@ -196,7 +267,80 @@ h2, h3, h4, h5, h6 {
 }
 
 
+/* progress bar with gradient */
 
+
+.ref {
+    position: relative;
+    left: 50%;
+    width: 0.7%;
+    height: 90%;
+    background-color: black;
+    animation: cssAnimation 0s 7s forwards;
+    visibility: hidden;
+}
+.ref:before {
+    content: attr(data-ref);
+    position: absolute;
+    width: 100px;
+    left: -50px;
+    top: 100%;
+    color: #000;
+    text-align: center;
+    font-size: 15px;
+    margin-top: 6px;
+    animation: cssAnimation 0s 7s forwards;
+    visibility: hidden;
+
+}
+
+.container-gradient {
+  margin: 3% auto;
+  width: 135%;
+  text-align: center;
+}
+
+.progress-gradient {
+  padding: 1%;
+  background: rgba(0, 0, 0, 0.25);
+  border-radius: 6px;
+  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.25), 0 1px rgba(255, 255, 255, 0.08);
+}
+
+.progress-bar-gradient {  
+  height: 18px;
+  background-color: #ee303c;  
+  border-radius: 4px; 
+  transition: 0.4s linear;  
+  transition-property: width, background-color;    
+}
+
+.progress-striped .progress-bar-gradient {  
+  background-color: #FCBC51; 
+  width: 100%; 
+  background-image: linear-gradient( 90deg, green 20%, green 20%, yellow 40%, yellow 60%, red 80%, red 80%, red); 
+  animation: progressAnimationStrike 6s;
+}
+
+@keyframes cssAnimation {
+  to   { visibility: visible; }
+}
+
+@keyframes progressAnimationStrike {
+     from { width: 0 }
+     to   { width: 100% }
+}
+
+
+$green: #4cd964;
+$turquoise: #5ac8fa;
+$blue: #007aff;
+$light-blue: #7DC8E8;
+$purple: #5856d6;
+$red: #ff2d55;
+
+
+/* end of progress bar with gradient */
 
 
 .bg-steel {
