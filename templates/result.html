@@ -237,6 +237,16 @@
 
 
 
+
+
+
+
+
+
+
+
+
+
   <div class="row" >
 
   <button type="button" class="media metric-section" data-toggle="modal" data-target="#EmotionModal">
@@ -386,8 +396,13 @@
             <h5>Disinformation often contains a lot of subjective expressions. This category is responsible to distinguish factual information from subjective information. Subjective expressions are used to express an opinion, emotion, evaluation, stance, speculation by the author. </h5>
             {% for key in subj_feats %}
               <ul class="list-group">
-                <li class="list-group-item">{{ key  }}: {{ subj_feats[key] }} %</li>
-                <p></p>
+                {% if key == 'strongsubj' %}
+                  <li class="list-group-item">Strong Subjectivity: {{ subj_feats[key] }} %</li>
+                  <p></p>
+                {% else %}
+                  <li class="list-group-item">Weak Subjectivity: {{ subj_feats[key] }} %</li>
+                  <p></p>
+                {% endif %}
               </ul>   
             {% endfor %}
           </div>
@@ -550,9 +565,9 @@
             <h5>Disinformation employs a lot of opinions expressed by the author. The metrics in this category deal with
                 sentiments that are expressed through subjective expressions to describe people's opinions or feelings towards a given target. </h5>
             <ul class="list-group">
-              <li class="list-group-item"> Positive ratio: {{ polarity['positive_ratio'] }} %</li>
+              <li class="list-group-item"> Positive: {{ polarity['positive_ratio'] }} words %</li>
               <p></p>
-              <li class="list-group-item"> Negative ratio: {{ polarity['negative_ratio'] }} %</li>
+              <li class="list-group-item"> Negative: {{ polarity['negative_ratio'] }} words %</li>
               <p></p>
               <li class="list-group-item"> Positive contrast: {{ polarity['positive_contrast'] }} words</li>
               <p></p>

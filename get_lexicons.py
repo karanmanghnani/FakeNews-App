@@ -227,12 +227,12 @@ def load_anew_extended_pt(filepath):
 def load_six_emotions(filepath):
     """Ekman, Friesen, and Ellsworth : anger, disgust, fear, joy, sadness, surprise."""
     emotion_words = {
-        'alegria': _load_emotion_file_content('alegria', filepath),
-        'desgosto': _load_emotion_file_content('desgosto', filepath),
-        'medo': _load_emotion_file_content('medo', filepath),
-        'raiva': _load_emotion_file_content('raiva', filepath),
-        'surpresa': _load_emotion_file_content('surpresa', filepath),
-        'tristeza': _load_emotion_file_content('tristeza', filepath),
+        'Alegria': _load_emotion_file_content('Alegria', filepath),
+        'Desgosto': _load_emotion_file_content('Desgosto', filepath),
+        'Medo': _load_emotion_file_content('Medo', filepath),
+        'Raiva': _load_emotion_file_content('Raiva', filepath),
+        'Surpresa': _load_emotion_file_content('Surpresa', filepath),
+        'Tristeza': _load_emotion_file_content('Tristeza', filepath),
     }
     return emotion_words
 

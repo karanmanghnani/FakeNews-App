@@ -1,0 +1,86 @@
+{% extends "layout.html" %}
+{% block content %}
+
+<section style="  background: #ffddcc; height: 300px;">
+	<h1 style="margin-left: 3%;"> <br> Evaluation with indicators</h1>
+	<div style="margin-left: 3%; width: 55%;">
+		<p>This evaluation will have a set of 6 news articles in which 3 are fake and 3 are true. Your goal is to read the articles and classify each one. <br> On the other page we have the same news articles to be classified but this time it is presented the indicators proposed by our tool<br> With this classification we will make an evaluation of the indicators proposed by this tool and assess the usefulness and impact on the answers obtained.</p>
+	</div>
+</section>
+<form action="/evaluation_labels" method = 'POST'> 
+	{% for key in articles %}
+		<div style="display: inline;">
+			<div class="evaluation_article">
+				<article class="media content-section-evaluation" style="height: 300px;">
+				  <div>
+				    <p class="article_size"> {{ articles[key] }} </p>
+				  </div>
+				</article>
+
+				<div class="container">
+					<p style="font-size: 20px;">How do you classify this news:</p>
+			    	<label class="radio-inline">
+			      		<input type="radio" value=true name= {{ key }} >True
+			    	</label>
+			   		<label class="radio-inline">
+			      		<input type="radio" value=false name= {{ key }} >Fake
+			    	</label>
+				</div>
+			</div>
+
+			<div class="evaluation_metrics">
+				<h4 style="margin-top: 0%;">Indicators of disinformation</h4>
+				<p class="collapsible">Emotion: {{ metrics[key][0] }}% articles of this class are fake. </p>
+				<div class="content">
+				  <p style="width: 80%;">One characteristic of disinformation is that it may make an inflammatory emotional appeal to the reader, so it is important to detect the emotions that the news transmits.</p>
+				</div>
+				<p class="collapsible">Subjectivity: {{ metrics[key][1] }}% articles of this class are fake.</p>
+				<div class="content">
+				  <p style="width: 80%;">Disinformation often contains a lot of subjective expressions. This category is responsible to distinguish factual information from subjective information. Subjective expressions are used to express an opinion, emotion, evaluation, stance, speculation by the author.</p>
+				</div>
+				<p class="collapsible">Affectivity: {{ metrics[key][2] }}% articles of this class are fake.</p>
+				<div class="content">
+				  <p style="width: 80%;">Disinformation often employs a higher number of emotional words than informative text ( Fuhr et al. 2017).
+                Affective metrics compute statistics on emotional words present in text and highlight variations to informative content.</p>
+				</div>
+				<p class="collapsible">Polarity: {{ metrics[key][3] }}% articles of this class are fake.</p>
+				<div class="content">
+				  <p style="width: 80%;">Disinformation employs a lot of opinions expressed by the author. The metrics in this category deal with
+                sentiments that are expressed through subjective expressions to describe people's opinions or feelings towards a given target.</p>
+				</div>
+				<p class="collapsible">Behavioral & Physiological: {{ metrics[key][4] }}% articles of this class are fake.</p>
+				<div class="content">
+				  <p style="width: 80%;">In a news article, the author also shows the feelings that he had, the information that he gathered. These feelings depends on his behaviour and psychological processes and can help to detect disinformation.</p>
+				</div>
+				<p class="collapsible">Source: {{ metrics[key][5] }} </p>
+				<div class="content">
+				  <p style="width: 80%;">It is important to know if it is a trusted and registered source or not.</p>
+				</div>
+			</div>
+		</div>
+	{% endfor %}
+	
+	<input style="background-color: blue; color: white; margin-left: 15%; margin-top: 5%;" type="submit" class="btn btn-default" value="Submit"></input>
+</form>
+
+
+<script>
+var coll = document.getElementsByClassName("collapsible");
+var i;
+
+for (i = 0; i < coll.length; i++) {
+  coll[i].addEventListener("click", function() {
+    this.classList.toggle("active");
+    var content = this.nextElementSibling;
+    if (content.style.maxHeight){
+      content.style.maxHeight = null;
+    } else {
+      content.style.maxHeight = content.scrollHeight + "px";
+    } 
+  });
+}
+</script>
+
+<p><br></p>
+<h1> .</h1>
+{% endblock content %}

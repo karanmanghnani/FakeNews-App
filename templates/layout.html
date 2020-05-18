@@ -30,13 +30,20 @@
       <!-- Links -->
       <ul class="navbar-nav">
         <li class="nav-item">
-          <img class="nav-link" src="static/Images/home.png" href="#" style= "width:40px; height:40px; text-align: center;" ></img>
+          <a class="nav-link" href="HomePage"><img src="static/Images/home.png" style= "width:25px; height:25px; text-align: center;" ></img></a>
         </li>
         <li class="nav-item">
           <a class="nav-link" href="#">Fact-checks</a>
         </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#">Evaluation</a>
+        <!-- Dropdown -->
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="navbardrop" data-toggle="dropdown">
+            Evaluation
+          </a>
+          <div class="dropdown-menu">
+            <a class="dropdown-item" href="evaluation">Without labels</a>
+            <a class="dropdown-item" href="evaluation_labels">With Labels</a>
+          </div>
         </li>
         <li class="nav-item">
           <a class="nav-link" href="#">How it works</a>
@@ -45,17 +52,7 @@
           <a class="nav-link" href="#">About</a>
         </li>
 
-        <!-- Dropdown -->
-        <!--li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" href="#" id="navbardrop" data-toggle="dropdown">
-            Dropdown link
-          </a>
-          <div class="dropdown-menu">
-            <a class="dropdown-item" href="#">Link 1</a>
-            <a class="dropdown-item" href="#">Link 2</a>
-            <a class="dropdown-item" href="#">Link 3</a>
-          </div>
-        </li-->
+
       </ul>
     </nav>
 

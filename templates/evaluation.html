@@ -1,0 +1,39 @@
+{% extends "layout.html" %}
+{% block content %}
+
+<section style="  background: #ffddcc; height: 300px;">
+	<h1 style="margin-left: 3%;"> <br> Evaluation</h1>
+	<div style="margin-left: 3%; width: 55%;">
+		<p>This evaluation will have a set of 6 news articles in which 3 are fake and 3 are true. Your goal is to read the articles and classify each one. <br> On the other page we have the same news articles to be classified but this time it is presented the indicators proposed by our tool<br> With this classification we will make an evaluation of the indicators proposed by this tool and assess the usefulness and impact on the answers obtained.</p>
+	</div>
+</section>
+<form action="/evaluation" method = 'POST'> 
+	{% for key in articles %}
+		<div>
+			<article class="media content-section-evaluation" style="height: 300px;">
+			  <div>
+			    <p class="article_size"> {{ articles[key] }} </p>
+			  </div>
+			</article>
+
+			<div class="container">
+			  <p style="font-size: 20px;">How do you classify this news:</p>
+		    <label class="radio-inline">
+		      <input type="radio" value=true name= {{ key }} >True
+		    </label>
+		    <label class="radio-inline">
+		      <input type="radio" value=false name= {{ key }} >Fake
+		    </label>
+			</div>
+		</div> 
+	{% endfor %}
+	
+	<input style="background-color: blue; color: white; margin-left: 15%; margin-top: 5%;" type="submit" class="btn btn-default" value="Submit"></input>
+</form>
+
+
+
+
+<p><br></p>
+<h1> .</h1>
+{% endblock content %}
