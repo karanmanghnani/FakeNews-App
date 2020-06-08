@@ -10,13 +10,17 @@
 <form action="/evaluation_labels" method = 'POST'> 
 	{% for key in articles %}
 		<div style="display: inline;">
+			<div style="margin-top: 5%; width: 40%; margin-left: 6%;">
+				<h3 style=" display: inline;">{{ title_date[key][0] }}</h3>
+				<h7 style="margin-left:89%; display: inline;">{{ title_date[key][1] }}</h7>
+			</div>
 			<div class="evaluation_article">
 				<article class="media content-section-evaluation" style="height: 300px;">
 				  <div>
 				    <p class="article_size"> {{ articles[key] }} </p>
 				  </div>
 				</article>
-
+				<h7 style="margin-left:10%; margin-bottom: 2%">Source:{{ source_verification[key][0] }} </h7> 
 				<div class="container">
 					<p style="font-size: 20px;">How do you classify this news:</p>
 			    	<label class="radio-inline">
@@ -52,9 +56,9 @@
 				<div class="content">
 				  <p style="width: 80%;">In a news article, the author also shows the feelings that he had, the information that he gathered. These feelings depends on his behaviour and psychological processes and can help to detect disinformation.</p>
 				</div>
-				<p class="collapsible">Source: {{ metrics[key][5] }} </p>
+				<p class="collapsible">Source: {{ source_verification[key][1] }} </p>
 				<div class="content">
-				  <p style="width: 80%;">It is important to know if it is a trusted and registered source or not.</p>
+				  <p style="width: 80%;">It is important to know if the Source is registed by ERC (Entidade Reguladora para a Comunicação Social).</p>
 				</div>
 			</div>
 		</div>

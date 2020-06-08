@@ -346,7 +346,7 @@ def fakeProbability(metric, metric_total):
 
 def fakeProbability2(emotion,subj,val_avg,arou_avg,dom_avg,pos_words,neg_words,percep,relat,cogni,personal,bio,social):
 
-    df = pd.read_excel('BD_results.xlsx')
+    df = pd.read_excel('BD_results_corpus.xlsx')
     model = LogisticRegression()
 
     # Emotion

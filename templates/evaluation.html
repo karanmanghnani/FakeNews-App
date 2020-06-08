@@ -9,13 +9,17 @@
 </section>
 <form action="/evaluation" method = 'POST'> 
 	{% for key in articles %}
+	<div style="margin-top: 5%; width: 60%; margin-left: 10%;">
+		<h3 style=" display: inline;">{{ title_date[key][0] }}</h3>
+		<h7 style="margin-left:106%; display: inline;">{{ title_date[key][1] }}</h7>
+	</div>
 		<div>
 			<article class="media content-section-evaluation" style="height: 300px;">
 			  <div>
 			    <p class="article_size"> {{ articles[key] }} </p>
 			  </div>
 			</article>
-
+			<h7 style="margin-left:10%; margin-bottom: 2%">Source:{{ source_verification[key][0] }} </h7> 
 			<div class="container">
 			  <p style="font-size: 20px;">How do you classify this news:</p>
 		    <label class="radio-inline">

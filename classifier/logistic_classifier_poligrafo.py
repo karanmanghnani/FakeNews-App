@@ -4,6 +4,32 @@ from sklearn.model_selection import train_test_split
 from sklearn.linear_model import LogisticRegression
 from sklearn.svm import LinearSVC
 from sklearn.metrics import precision_recall_fscore_support, accuracy_score, confusion_matrix
+from sklearn.metrics import f1_score, precision_score,recall_score
+
+
+#y_predicted = model.predict_proba(X_test)
+#model._classes
+def evaluate(y_true,y_pred,metric):
+    f1 = f1_score(y_true, y_pred, average=None)
+    prec = precision_score(y_true, y_pred, average=None)
+    rec = recall_score(y_true, y_pred, average=None)
+    acc = accuracy_score(y_true, y_pred)
+
+    print(metric)
+    print('Precision: {:0.2f} {:0.2f}'.format(prec[0],prec[1]))
+    print('Recall: {:0.2f} {:0.2f}'.format(rec[0], rec[1]))
+    print('F1: {:0.2f} {:0.2f}'.format(f1[0],f1[1]))
+    print('Accuracy: {:0.2f}'.format(acc))
+    print('\n\n')
+
+
+def predict(df, model, metrics, name):
+	X_train, X_test, y_train, y_test = train_test_split(df[metrics],df.Label,train_size=0.8, random_state=0)
+
+	model.fit(X_train, y_train)
+	y_predicted = model.predict(X_test)
+
+	evaluate(y_test,y_predicted, name)
 
 
 #y_predicted = model.predict_proba(X_test)
@@ -11,89 +37,25 @@ from sklearn.metrics import precision_recall_fscore_support, accuracy_score, con
 
 df = pd.read_excel('BD_results.xlsx')
 
-#print(df)
-#print(df.Label)
-model = LogisticRegression()
-#model = LinearSVC(random_state=0, tol=1e-5)
 
-# Emotion
+model = LogisticRegression(max_iter=2000)
+#model = LinearSVC(random_state=0, tol=1e-5,max_iter=2000)
 
-#X_train, X_test, y_train, y_test = train_test_split(df[['Emotion']],df.Label,train_size=0.8)
-
-num = [5.2]
-X_test = pd.DataFrame(num,  columns=['Emotion'])
-
-X_train = df[['Emotion']]
-y_train = df.Label
-
-model.fit(X_train, y_train)
-
-
-print(model.classes_)
-y_predicted = model.predict_proba(X_test)
-print(y_predicted[0][0])
-
-
-"""acc = accuracy_score(y_test, y_predicted)
-print("Emotion: " + str(acc))
-
-confusion_matrix_1 = confusion_matrix(y_test, y_predicted)
-print(confusion_matrix_1)
-"""
-
-
-
+#Emotion
+predict(df,model,['Emotion'],'Emotion')
 
 #Subjectivity
-
-X_train, X_test, y_train, y_test = train_test_split(df[['Subj']],df.Label,train_size=0.8)
-
-model.fit(X_train, y_train)
-y_predicted = model.predict(X_test)
-acc = accuracy_score(y_test, y_predicted)
-print("Subjectivity: " + str(acc))
-
-
-confusion_matrix_2 = confusion_matrix(y_test, y_predicted)
-print(confusion_matrix_2)
-
-
+predict(df, model, ['Subj'], 'Subjectivity')
 
 # Affective
-
-X_train, X_test, y_train, y_test = train_test_split(df[['val_avg','aro_avg','dom_avg']],df.Label,train_size=0.8)
-
-model.fit(X_train, y_train)
-y_predicted = model.predict(X_test)
-acc = accuracy_score(y_test, y_predicted)
-print("Affective: " + str(acc))
-
-confusion_matrix_3 = confusion_matrix(y_test, y_predicted)
-print(confusion_matrix_3)
-
+predict(df, model, ['val_avg','aro_avg','dom_avg'], 'Affectivity')
 
 # Polarity
-
-X_train, X_test, y_train, y_test = train_test_split(df[['pos_words','neg_words']],df.Label,train_size=0.8)
-
-model.fit(X_train, y_train)
-y_predicted = model.predict(X_test)
-acc = accuracy_score(y_test, y_predicted)
-print("Polarity: " + str(acc))
-
-
-confusion_matrix_4 = confusion_matrix(y_test, y_predicted)
-print(confusion_matrix_4)
-
+predict(df, model,['pos_words','neg_words'],'Polarity' )
 
 # BP
+predict(df,model,['perceptuality','relativity','cognitivity','personal','biological','social'],'BP' )
 
-X_train, X_test, y_train, y_test = train_test_split(df[['perceptuality','relativity','cognitivity','personal','biological','social']],df.Label,train_size=0.8)
+# All
+predict(df, model, ['Emotion', 'Subj', 'val_avg','aro_avg','dom_avg', 'pos_words','neg_words', 'perceptuality','relativity','cognitivity','personal','biological','social'], 'All')
 
-model.fit(X_train, y_train)
-y_predicted = model.predict(X_test)
-acc = accuracy_score(y_test, y_predicted)
-print("BP: " + str(acc))
-
-confusion_matrix_5 = confusion_matrix(y_test, y_predicted)
-print(confusion_matrix_5)

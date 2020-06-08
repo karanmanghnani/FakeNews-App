@@ -7,9 +7,11 @@ import get_metrics as metrics
 import statistics 
 import xlrd
 from openpyxl import load_workbook
+from firebase import firebase
 
 app = Flask(__name__)
 
+firebase = firebase.FirebaseApplication('https://fakenews-app-d59dc.firebaseio.com/', None)
 
 
 posts = [
@@ -110,95 +112,59 @@ def result():
 
 @app.route("/evaluation_labels",methods = ['POST', 'GET'])
 def evaluation_labels():
+	result = firebase.get('/fakenews-app-d59dc/noticias/', '')
 
 	articles = {}
+	title_date = {}
+	source_verification = {}
 	metrics = {}
 	temp_list = []
-	loc = ("evaluation_answer_labels.xlsx") 
-	wb = xlrd.open_workbook(loc) 
-	sheet = wb.sheet_by_index(0) 
-	for i in range(1,sheet.nrows):
-		articles[i] = sheet.cell_value(i, 1)
-		for j in range(2,8):
-			print(sheet.cell_value(i, j))
-			temp_list.append(sheet.cell_value(i, j))
-		metrics[i] = temp_list
-		temp_list = []
+
+	for i in result.values():
+		for j in range(1,7):
+			if(i['id_noticia'] == str(j)):
+				articles[j] = i['noticia']
+				title_date[j] = [i['titulo'], i['data']]
+				source_verification[j] = [i['source'], i['verified']]
+				metrics[j] = [i['Emotion'], i['Subjectivity'],i['Affectivity'], i['Polarity'],i['BP']]	
+
 
 	if request.method == 'POST': 
 
-		loc = ("evaluation_answer_labels.xlsx") 
-		wb = xlrd.open_workbook(loc) 
-		sheet = wb.sheet_by_index(0)
-		row = 2
-		col = sheet.ncols + 1
-
-		wb = load_workbook(filename = "evaluation_answer_labels.xlsx")
-		ws = wb.active
-
-		ws.cell(row=row,column=col).value = request.form['1']
-		row+=1
-		ws.cell(row=row,column=col).value = request.form['2']
-		row+=1
-		ws.cell(row=row,column=col).value = request.form['3']
-		row+=1
-		ws.cell(row=row,column=col).value = request.form['4']
-		row+=1
-		ws.cell(row=row,column=col).value = request.form['5']
-		row+=1
-		ws.cell(row=row,column=col).value = request.form['6']
-		row+=1
-
-		wb.save("evaluation_answer_labels.xlsx")
+		data =  {  'answer1': request.form['1'], 'answer2': request.form['2'], 'answer3': request.form['3'], 'answer4': request.form['4'], 'answer5': request.form['5'], 'answer6': request.form['6']}
+		firebase.post('/fakenews-app-d59dc/with_labels/',data)
 
 
-		return render_template('evaluation_labels.html' ,posts=posts, articles=articles, metrics=metrics)
+		return render_template('evaluation_labels.html' ,posts=posts, articles=articles, metrics=metrics, title_date=title_date, source_verification=source_verification)
 		
 	else:
-		return render_template('evaluation_labels.html', posts=posts, articles=articles, metrics=metrics)
+		return render_template('evaluation_labels.html', posts=posts, articles=articles, metrics=metrics, title_date=title_date, source_verification=source_verification)
 
 @app.route("/evaluation",methods = ['POST', 'GET'])
 def evaluation():
+	result = firebase.get('/fakenews-app-d59dc/noticias/', '')
 
 	articles = {}
-	loc = ("evaluation_answer.xlsx") 
-	wb = xlrd.open_workbook(loc) 
-	sheet = wb.sheet_by_index(0) 
-	for i in range(1,sheet.nrows):
-		articles[i] = sheet.cell_value(i, 1)
-	print(articles)
+	title_date = {}
+	source_verification = {}
+
+	for i in result.values():
+		for j in range(1,7):
+			if(i['id_noticia'] == str(j)):
+				articles[j] = i['noticia']
+				title_date[j] = [i['titulo'], i['data']]
+				source_verification[j] = [i['source'], i['verified']]
 
 	if request.method == 'POST': 
-
-		loc = ("evaluation_answer.xlsx") 
-		wb = xlrd.open_workbook(loc) 
-		sheet = wb.sheet_by_index(0)
-		row = 2
-		col = sheet.ncols + 1
-
-		wb = load_workbook(filename = "evaluation_answer.xlsx")
-		ws = wb.active
-
-		ws.cell(row=row,column=col).value = request.form['1']
-		row+=1
-		ws.cell(row=row,column=col).value = request.form['2']
-		row+=1
-		ws.cell(row=row,column=col).value = request.form['3']
-		row+=1
-		ws.cell(row=row,column=col).value = request.form['4']
-		row+=1
-		ws.cell(row=row,column=col).value = request.form['5']
-		row+=1
-		ws.cell(row=row,column=col).value = request.form['6']
-		row+=1
-
-		wb.save("evaluation_answer.xlsx")
+ 
+		data =  {  'answer1': request.form['1'], 'answer2': request.form['2'], 'answer3': request.form['3'], 'answer4': request.form['4'], 'answer5': request.form['5'], 'answer6': request.form['6']}
+		firebase.post('/fakenews-app-d59dc/without_labels/',data)
 
 
-		return render_template('evaluation.html' ,posts=posts, articles=articles)
+		return render_template('evaluation.html' ,posts=posts, articles=articles, title_date=title_date, source_verification=source_verification)
 		
 	else:
-		return render_template('evaluation.html', posts=posts, articles=articles)
+		return render_template('evaluation.html', posts=posts, articles=articles, title_date=title_date, source_verification=source_verification)
 
 
 if __name__ == '__main__':
