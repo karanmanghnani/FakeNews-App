@@ -1,13 +1,14 @@
 {% extends "layout.html" %}
 {% block content %}
 
-<section style="  background: #ffddcc; height: 300px;">
+<section style="  background: #ffddcc; height: 250px;">
 	<h1 style="margin-left: 3%;"> <br> Evaluation with indicators</h1>
 	<div style="margin-left: 3%; width: 55%;">
-		<p>This evaluation will have a set of 6 news articles in which 3 are fake and 3 are true. Your goal is to read the articles and classify each one. <br> On the other page we have the same news articles to be classified but this time it is presented the indicators proposed by our tool<br> With this classification we will make an evaluation of the indicators proposed by this tool and assess the usefulness and impact on the answers obtained.</p>
+		<p>This evaluation have a set of news articles and presents the indicators provided by the tool. Your goal is to read the articles and answer each question below.<br> This assessment aims to evaluate the indicators proposed by this tool and assess the usefulness and impact on the answers obtained.</p>
 	</div>
 </section>
 <form action="/evaluation_labels" method = 'POST'> 
+	<div style="display: inline-block;">
 	{% for key in articles %}
 		<div style="display: inline;">
 			<div style="margin-top: 5%; width: 40%; margin-left: 6%;">
@@ -21,15 +22,133 @@
 				  </div>
 				</article>
 				<h7 style="margin-left:10%; margin-bottom: 2%">Source:{{ source_verification[key][0] }} </h7> 
-				<div class="container">
-					<p style="font-size: 20px;">How do you classify this news:</p>
-			    	<label class="radio-inline">
-			      		<input type="radio" value=true name= {{ key }} >True
-			    	</label>
-			   		<label class="radio-inline">
-			      		<input type="radio" value=false name= {{ key }} >Fake
-			    	</label>
+
+			<div class="container">
+			  	<p style="font-size: 20px;">Does the title reflect on the content of the article?</p>
+				<div class="radio">
+					<label class="radio"><input type="radio" value=1 name= "1_{{ key }}" > Completely Unrepresentative </label>
 				</div>
+				<div class="radio">
+					<label class="radio"><input type="radio" value=2 name= "1_{{ key }}"> Somewhat Unrepresentative </label>
+				</div>
+				<div class="radio">
+					<label class="radio"><input type="radio" value=3 name= "1_{{ key }}"> Somewhat Representative </label>
+				</div>
+				<div class="radio">
+					<label class="radio"><input type="radio" value=4 name= "1_{{ key }}"> Completely Representative </label>
+				</div>
+			</div>
+
+			<div class="container">
+			  	<p style="font-size: 20px;">If the title is unrepresentative of the content of the article, how is it?</p>
+				<div class="radio">
+					<label class="radio"><input type="radio" value=1 name= "2_{{ key }}" > It's representative </label>
+				</div>
+				<div class="radio">
+					<label class="radio"><input type="radio" value=2 name= "2_{{ key }}" > Title is on a different topic than the body </label>
+				</div>
+				<div class="radio">
+					<label class="radio"><input type="radio" value=3 name= "2_{{ key }}"> Title carries little information about the body </label>
+				</div>
+				<div class="radio">
+					<label class="radio"><input type="radio" value=4 name= "2_{{ key }}"> Title takes a different point of view than the body</label>
+				</div>
+				<div class="radio">
+					<label class="radio"><input type="radio" value=5 name= "2_{{ key }}"> Title overstates/understates claims or conclusions in the body</label>
+				</div>
+			</div>
+
+			<div class="container">
+			  	<p style="font-size: 20px;">Is the headline clickbaity?</p>
+				<div class="radio">
+					<label class="radio"><input type="radio" value=1 name= "3_{{ key }}" > Very much clickbaity </label>
+				</div>
+				<div class="radio">
+					<label class="radio"><input type="radio" value=2 name= "3_{{ key }}"> Somewhat clickbaity </label>
+				</div>
+				<div class="radio">
+					<label class="radio"><input type="radio" value=3 name= "3_{{ key }}"> A little bit clickbaity </label>
+				</div>
+				<div class="radio">
+					<label class="radio"><input type="radio" value=4 name= "3_{{ key }}"> Not at all clickbaity </label>
+				</div>
+			</div>
+
+			<div class="container">
+			  	<p style="font-size: 20px;">If you think the headline is clickbaity, what makes you think?</p>
+				<label for="comment">Answer:</label>
+				<div class="form-group">
+			    	<input type="text" class="form-control" id="text" name="4_{{ key }}">
+				</div>
+			</div>
+
+			<div class="container">
+			  	<p style="font-size: 20px;">Is the article subjective (it is expressed an opinion)?</p>
+				<div class="radio">
+					<label class="radio"><input type="radio" value=1 name= "5_{{ key }}" > Very much subjective </label>
+				</div>
+				<div class="radio">
+					<label class="radio"><input type="radio" value=2 name= "5_{{ key }}"> Somewhat subjective </label>
+				</div>
+				<div class="radio">
+					<label class="radio"><input type="radio" value=3 name= "5_{{ key }}"> A little bit subjective </label>
+				</div>
+				<div class="radio">
+					<label class="radio"><input type="radio" value=4 name= "5_{{ key }}"> Not at all subjective </label>
+				</div>
+			</div>
+
+			<div class="container">
+			  	<p style="font-size: 20px;">How do you classify this news?</p>
+			  	<div class="radio">
+			    	<label class="radio"><input type="radio" value=true name= "6_{{ key }}" >True</label>
+				</div>
+				<div class="radio">
+			    	<label class="radio"><input type="radio" value=true name= "6_{{ key }}" >Dubious</label>
+				</div>
+				<div class="radio">
+			    	<label class="radio"><input type="radio" value=false name= "6_{{ key }}" >Fake</label>
+				</div>
+			</div>
+
+			<div class="container">
+			  	<p style="font-size: 20px;">Did the indicators made an impact in the credibility of the article?</p>
+			  	<div class="radio">
+			    	<label class="radio"><input type="radio" value=1 name= "7_{{ key }}" >Big impact</label>
+				</div>
+				<div class="radio">
+			    	<label class="radio"><input type="radio" value=2 name= "7_{{ key }}" >Small impact</label>
+				</div>
+				<div class="radio">
+			    	<label class="radio"><input type="radio" value=3 name= "7_{{ key }}" >No impact</label>
+				</div>
+			</div>
+
+			<div class="container">
+			  	<p style="font-size: 20px;">Which indicator made the biggest impact?</p>
+			  	<div class="radio">
+			    	<label class="radio"><input type="radio" value=Emotion name= "8_{{ key }}" >Emotion</label>
+				</div>
+				<div class="radio">
+			    	<label class="radio"><input type="radio" value=Subjectivity name= "8_{{ key }}" >Subjectivity</label>
+				</div>
+				<div class="radio">
+			    	<label class="radio"><input type="radio" value=Affectivity name= "8_{{ key }}" >Affectivity</label>
+				</div>
+			  	<div class="radio">
+			    	<label class="radio"><input type="radio" value=Polarity name= "8_{{ key }}" >Polarity</label>
+				</div>
+				<div class="radio">
+			    	<label class="radio"><input type="radio" value=BP name= "8_{{ key }}" >Behavioral & Physiological</label>
+				</div>
+				<div class="radio">
+			    	<label class="radio"><input type="radio" value=Source name= "8_{{ key }}" >Source</label>
+				</div>
+				<div class="radio">
+			    	<label class="radio"><input type="radio" value=None name= "8_{{ key }}" >None of them</label>
+				</div>
+			</div>
+
 			</div>
 
 			<div class="evaluation_metrics">
@@ -58,13 +177,14 @@
 				</div>
 				<p class="collapsible">Source: {{ source_verification[key][1] }} </p>
 				<div class="content">
-				  <p style="width: 80%;">It is important to know if the Source is registed by ERC (Entidade Reguladora para a Comunicação Social).</p>
+				  <p style="width: 80%;">This indicator shows us if the source of the article is registed by ERC (Entidade Reguladora para a Comunicação Social).</p>
 				</div>
 			</div>
 		</div>
 	{% endfor %}
+	</div>
 	
-	<input style="background-color: blue; color: white; margin-left: 15%; margin-top: 5%;" type="submit" class="btn btn-default" value="Submit"></input>
+	<input style="background-color: blue; color: white; margin-left: 10%; margin-bottom: 5%;" type="submit" class="btn btn-default" value="Submit"></input>
 </form>
 
 
@@ -86,5 +206,5 @@ for (i = 0; i < coll.length; i++) {
 </script>
 
 <p><br></p>
-<h1> .</h1>
+<h1> </h1>
 {% endblock content %}

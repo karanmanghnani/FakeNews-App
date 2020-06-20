@@ -48,8 +48,8 @@ def HomePage():
 
 		if('url' in request.values ):
 			url = request.form['url']
-			print(url)
-			print(type(url))
+			#print(url)
+			#print(type(url))
 			article_text, article_title = parse(url)
 			sentences = metrics.tokenize_sentences(article_text)
 			lemmas, original_lemmas = metrics.lemmatize_words(sentences)
@@ -78,7 +78,10 @@ def HomePage():
 
 			source, absolute_url = metrics.source(url)
 
-			return render_template('result.html', title='FakeNews',posts=posts, article_text=article_text, article_title=article_title, emotion_ratio=emotion_ratio, total_emotion=total_emotion, totalsubj=totalsubj, subj_feats=subj_feats, vad_features=vad_features, polarity=polarity, bp_stats=bp_stats, source=source, url=url,absolute_url=absolute_url)
+			tweets = metrics.createTweetsDB(article_title)
+			#metrics.runMetricsOnTweets()
+
+			return render_template('result.html', title='FakeNews',posts=posts, article_text=article_text, article_title=article_title, emotion_ratio=emotion_ratio, total_emotion=total_emotion, totalsubj=totalsubj, subj_feats=subj_feats, vad_features=vad_features, polarity=polarity, bp_stats=bp_stats, source=source, url=url,absolute_url=absolute_url, tweets=tweets)
 		
 		else:
 			article_title = "No title"
@@ -130,10 +133,9 @@ def evaluation_labels():
 
 
 	if request.method == 'POST': 
-
-		data =  {  'answer1': request.form['1'], 'answer2': request.form['2'], 'answer3': request.form['3'], 'answer4': request.form['4'], 'answer5': request.form['5'], 'answer6': request.form['6']}
-		firebase.post('/fakenews-app-d59dc/with_labels/',data)
-
+		for i in range(1,7):
+			data =  {  'article': i, 'Q1': request.form['1_'+str(i)], 'Q2': request.form['2_'+str(i)], 'Q3': request.form['3_'+str(i)], 'Q4': request.form['4_'+str(i)], 'Q5': request.form['5_'+str(i)], 'Q6': request.form['6_'+str(i)], 'Q7': request.form['7_'+str(i)], 'Q8': request.form['8_'+str(i)]}
+			firebase.post('/fakenews-app-d59dc/with_labels/',data)
 
 		return render_template('evaluation_labels.html' ,posts=posts, articles=articles, metrics=metrics, title_date=title_date, source_verification=source_verification)
 		
@@ -156,10 +158,11 @@ def evaluation():
 				source_verification[j] = [i['source'], i['verified']]
 
 	if request.method == 'POST': 
- 
-		data =  {  'answer1': request.form['1'], 'answer2': request.form['2'], 'answer3': request.form['3'], 'answer4': request.form['4'], 'answer5': request.form['5'], 'answer6': request.form['6']}
-		firebase.post('/fakenews-app-d59dc/without_labels/',data)
+		#print(request.form)
 
+		for i in range(1,7):
+			data =  {  'article': i, 'Q1': request.form['1_'+str(i)], 'Q2': request.form['2_'+str(i)], 'Q3': request.form['3_'+str(i)], 'Q4': request.form['4_'+str(i)], 'Q5': request.form['5_'+str(i)], 'Q6': request.form['6_'+str(i)]}
+			firebase.post('/fakenews-app-d59dc/without_labels/',data)
 
 		return render_template('evaluation.html' ,posts=posts, articles=articles, title_date=title_date, source_verification=source_verification)
 		

@@ -1,5 +1,6 @@
-from nltk.tokenize import sent_tokenize, word_tokenize
 import nltk
+from nltk.tokenize import sent_tokenize, word_tokenize
+from nltk.corpus import stopwords
 import spacy
 import get_metrics as metrics
 import get_lexicons as lex
@@ -11,6 +12,15 @@ import pickle
 import pandas as pd
 import numpy as np
 from sklearn.linear_model import LogisticRegression
+from sklearn.feature_extraction.text import TfidfVectorizer
+from tweepy import Stream
+from tweepy import OAuthHandler
+from tweepy.streaming import StreamListener
+import json
+import xlsxwriter
+import tweepy
+
+
 
 import get_lexicons as lex
 
@@ -35,52 +45,52 @@ def prepare_lexicons():
     liwc_tags = lex.load_liwc(liwc_pt_path)
     with open('proc_lexicons/liwc.pkl', 'wb') as f:
         pickle.dump(liwc_tags,f)
-    print('Done LIWC.')
+    #print('Done LIWC.')
 
     oplexicon = lex.load_valence_emotions_from_oplexicon(oplexicon_path)
     sentilex = lex.load_valence_emotions_from_sentilex(sentilex_path)
     sentilex = lex.complement_sentilex(sentilex,oplexicon)
     with open('proc_lexicons/sentilex.pkl', 'wb') as f:
         pickle.dump(sentilex,f)
-    print('Done Sentilex.')
+    #print('Done Sentilex.')
     
     anew = lex.load_anew_pt(filename_anew)
     anew_extended = lex.load_anew_extended_pt(filename_anew_extended)
     anew_extended.update(anew)
     with open('proc_lexicons/anew.pkl', 'wb') as f:
         pickle.dump(anew_extended,f)
-    print('Done ANEW.')
+    #print('Done ANEW.')
 
     emotion_words = lex.load_six_emotions(filename_emotions)
     with open('proc_lexicons/emotion_words.pkl', 'wb') as f:
         pickle.dump(emotion_words,f)
-    print('Done Emotion words.')
+    #print('Done Emotion words.')
 
     subjective_words = lex.load_subjectivity_lexicon(filename_subjectivity)
     with open('proc_lexicons/subjective_words.pkl', 'wb') as f:
         pickle.dump(subjective_words,f)
-    print('Done Subjective words.')
+    #print('Done Subjective words.')
 
 def load_lexicons():
     with open('proc_lexicons/liwc.pkl', 'rb') as f:
         liwc_tags = pickle.load(f)
-    print('Done LIWC.')
+    #print('Done LIWC.')
 
     with open('proc_lexicons/sentilex.pkl', 'rb') as f:
         sentilex = pickle.load(f)
-    print('Done Sentilex.')
+    #print('Done Sentilex.')
     
     with open('proc_lexicons/anew.pkl', 'rb') as f:
         anew_extended = pickle.load(f)
-    print('Done ANEW.')
+    #print('Done ANEW.')
 
     with open('proc_lexicons/emotion_words.pkl', 'rb') as f:
         emotion_words = pickle.load(f)
-    print('Done Emotion words.')
+    #print('Done Emotion words.')
 
     with open('proc_lexicons/subjective_words.pkl', 'rb') as f:
         subjective_words = pickle.load(f)
-    print('Done Subjective words.')
+    #print('Done Subjective words.')
 
     return liwc_tags, sentilex, anew_extended, emotion_words, subjective_words
 
@@ -266,6 +276,92 @@ def source(url):
 
 	return value, absolute_url
 
+
+def createTweetsDB(query):
+    #consumer key, consumer secret, access token, access secret.
+    ckey="Tv5EtsTe3qwD6YEyWojE3aQqf"
+    csecret="YUP782Rjzt81bGtEMs8EYpjQT11kIOxvmDjnspjDQS9YPFyxPx"
+    atoken="1263626260514824198-3TvxVC4E2eZc5jJ64AiTAlAwLoBoA9"
+    asecret="Vzz4tLSRhAJO5M1cowxyybIWR1vHWC0L2LIsxMbjSV6dY"
+
+    auth = tweepy.OAuthHandler(ckey, csecret)
+    auth.set_access_token(atoken, asecret)
+
+    api = tweepy.API(auth)
+
+    workbook = xlsxwriter.Workbook('tweets.xlsx')
+    worksheet = workbook.add_worksheet()
+
+    # take out the stoppwords
+    """    filtered_words = []
+    query = query.split()
+    stopwords_pt = stopwords.words('portuguese')
+    for word in query:
+        if word not in stopwords_pt:
+            filtered_words.append(word)
+    print(filtered_words)"""
+
+    # select half of the important words
+    """    vectorizer = TfidfVectorizer()
+    X = vectorizer.fit_transform(filtered_words)
+    query = vectorizer.get_feature_names()  
+    size = int(len(query)/2)
+    if(len(query[:size]) != 0):
+        query = query[:size]
+    print(query)"""
+    
+
+
+    # semantica OR
+    #query = " OR ".join(filtered_words)
+    #ver reetweet
+    #print(query)
+    max_tweets = 100
+    #result_type="popular" Posso meter so os resultados mais populares 
+    # meter a lingua portuguesa
+    searched_tweets = [status for status in tweepy.Cursor(api.search, q=query,lang="pt",tweet_mode="extended").items(max_tweets)]
+    count = 0
+    #[name, date, verified, followers, text, likes, retweets ]
+    tweet = []
+    for i in range(len(searched_tweets)):
+        status = searched_tweets[i]
+        status_dic = status._json
+        if('retweeted_status' not in status_dic.keys()):
+            date = status_dic['created_at'].split()
+            short_date = date[2] + " " + date[1] + " " + date[5]
+            #print(short_date)
+            #print(status_dic['user']['entities'])
+            worksheet.write(count, 0, status_dic["full_text"])
+            worksheet.write(count, 1, status_dic['created_at'])
+            worksheet.write(count, 2, status_dic['user']['verified'])
+            tweet.append([status_dic['user']['screen_name'], short_date, status_dic['user']['verified'], status_dic['user']['followers_count'], status_dic["full_text"], status_dic["favorite_count"], status_dic["retweet_count"]])
+            count += 1
+            #print(tweet)
+        if(count == 10):
+            break
+
+
+    workbook.close()
+    
+    return tweet
+
+def runMetricsOnTweets():
+
+    """stats = pd.read_excel('tweets.xlsx',usecols="text,date,verified") 
+    print(stats.text)"""
+"""        liwc_tags, sentilex, anew_extended, emotion_words, subjective_words = metrics.load_lexicons()
+
+        
+        sentences = metrics.tokenize_sentences(article_text)
+        lemmas, original_lemmas = metrics.lemmatize_words(sentences)
+        words, original_words = metrics.tokenize_words(sentences)
+
+
+        emotion_ratio, total_emotion, emotion_list = metrics.get_emotions(words, emotion_words)
+        totalsubj, subj_feats, subj_list = metrics.get_subjective_ratio(words, subjective_words)
+        vad_features, vad_list = metrics.get_vad_features(lemmas, anew_extended)
+        polarity = metrics.sentiment_polarity(words, sentilex)
+        bp_stats = metrics.behavioral_physiological(words, liwc_tags)"""
 
 #######################################
 #          Probability of fake        #
