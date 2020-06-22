@@ -592,9 +592,25 @@ text-align: center;
   margin: 0px !important;
   border: 2px solid #fff;
 }
-
+.modal-content {
+    background: #f7f7f7;
+    position: relative;
+    z-index: 20;
+    border-radius: 5px;
+}
 
 
 
 
 /*  Twitter tweets END  */
+
+.message-evaluation{
+  background-color: white;
+  width: 40%;
+  border: 3px solid black;
+  padding: 50px;
+  margin: auto;
+  margin-top: 10%;
+  margin-bottom: 30%;
+  border-radius: 25px;
+}

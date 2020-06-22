@@ -7,115 +7,124 @@
 		<p>This evaluation will have a set of news articles to assess. Your goal is to read the articles and answer each question below. <br> On the other section we have the same news articles to be classified but this time it is presented the indicators proposed by the tool<br> This assessment aims to evaluate the indicators proposed by this tool and assess the usefulness and impact on the answers obtained.</p>
 	</div>
 </section>
-<form action="/evaluation" method = 'POST'> 
-	{% for key in articles %}
-	<div style="margin-top: 5%; width: 60%; margin-left: 10%;">
-		<h3 style=" display: inline;">{{ title_date[key][0] }}</h3>
-		<h7 style="margin-left:106%; display: inline;">{{ title_date[key][1] }}</h7>
-	</div>
-		<div>
-			<article class="media content-section-evaluation" style="height: 300px;">
-			  <div>
-			    <p class="article_size"> {{ articles[key] }} </p>
-			  </div>
-			</article>
-
-			<div class="container">
-			  	<p style="font-size: 20px;">Does the title reflect on the content of the article?</p>
-				<div class="radio">
-					<label class="radio"><input type="radio" value=1 name= "1_{{ key }}" > Completely Unrepresentative </label>
-				</div>
-				<div class="radio">
-					<label class="radio"><input type="radio" value=2 name= "1_{{ key }}"> Somewhat Unrepresentative </label>
-				</div>
-				<div class="radio">
-					<label class="radio"><input type="radio" value=3 name= "1_{{ key }}"> Somewhat Representative </label>
-				</div>
-				<div class="radio">
-					<label class="radio"><input type="radio" value=4 name= "1_{{ key }}"> Completely Representative </label>
-				</div>
+<form action="/evaluation" method = 'POST'>
+    {% if key == 6 %}
+		<div class="message-evaluation">
+			<p>There are no more assessements!</p>
+			<p>Thank you very much for answering all the assessements.</p>
+		</div>
+    {% else %}
+		{% for key in articles %}
+			<div style="margin-top: 5%; width: 60%; margin-left: 10%;">
+				<h3 style=" display: inline;">{{ title_date[key][0] }}</h3>
+				<h7 style="margin-left:106%; display: inline;">{{ title_date[key][1] }}</h7>
 			</div>
+				<div>
+					<article class="media content-section-evaluation" style="height: 300px;">
+					  <div>
+					    <p class="article_size"> {{ articles[key] }} </p>
+					  </div>
+					</article>
 
-			<div class="container">
-			  	<p style="font-size: 20px;">If the title is unrepresentative of the content of the article, how is it?</p>
-				<div class="radio">
-					<label class="radio"><input type="radio" value=1 name= "2_{{ key }}" > It's representative </label>
-				</div>
-				<div class="radio">
-					<label class="radio"><input type="radio" value=2 name= "2_{{ key }}" > Title is on a different topic than the body </label>
-				</div>
-				<div class="radio">
-					<label class="radio"><input type="radio" value=3 name= "2_{{ key }}"> Title carries little information about the body </label>
-				</div>
-				<div class="radio">
-					<label class="radio"><input type="radio" value=4 name= "2_{{ key }}"> Title takes a different point of view than the body</label>
-				</div>
-				<div class="radio">
-					<label class="radio"><input type="radio" value=5 name= "2_{{ key }}"> Title overstates/understates claims or conclusions in the body</label>
-				</div>
-			</div>
+					<div class="container">
+					  	<p style="font-size: 20px;">Does the title reflect on the content of the article?</p>
+						<div class="radio">
+							<label class="radio"><input type="radio" value=1 name= "1_{{ key }}" > Completely Unrepresentative </label>
+						</div>
+						<div class="radio">
+							<label class="radio"><input type="radio" value=2 name= "1_{{ key }}"> Somewhat Unrepresentative </label>
+						</div>
+						<div class="radio">
+							<label class="radio"><input type="radio" value=3 name= "1_{{ key }}"> Somewhat Representative </label>
+						</div>
+						<div class="radio">
+							<label class="radio"><input type="radio" value=4 name= "1_{{ key }}"> Completely Representative </label>
+						</div>
+					</div>
 
-			<div class="container">
-			  	<p style="font-size: 20px;">Is the headline clickbaity?</p>
-				<div class="radio">
-					<label class="radio"><input type="radio" value=1 name= "3_{{ key }}" > Very much clickbaity </label>
-				</div>
-				<div class="radio">
-					<label class="radio"><input type="radio" value=2 name= "3_{{ key }}"> Somewhat clickbaity </label>
-				</div>
-				<div class="radio">
-					<label class="radio"><input type="radio" value=3 name= "3_{{ key }}"> A little bit clickbaity </label>
-				</div>
-				<div class="radio">
-					<label class="radio"><input type="radio" value=4 name= "3_{{ key }}"> Not at all clickbaity </label>
-				</div>
-			</div>
+					<div class="container">
+					  	<p style="font-size: 20px;">If the title is unrepresentative of the content of the article, how is it?</p>
+						<div class="radio">
+							<label class="radio"><input type="radio" value=1 name= "2_{{ key }}" > It's representative </label>
+						</div>
+						<div class="radio">
+							<label class="radio"><input type="radio" value=2 name= "2_{{ key }}" > Title is on a different topic than the body </label>
+						</div>
+						<div class="radio">
+							<label class="radio"><input type="radio" value=3 name= "2_{{ key }}"> Title carries little information about the body </label>
+						</div>
+						<div class="radio">
+							<label class="radio"><input type="radio" value=4 name= "2_{{ key }}"> Title takes a different point of view than the body</label>
+						</div>
+						<div class="radio">
+							<label class="radio"><input type="radio" value=5 name= "2_{{ key }}"> Title overstates/understates claims or conclusions in the body</label>
+						</div>
+					</div>
 
-			<div class="container">
-			  	<p style="font-size: 20px;">If you think the headline is clickbaity, what makes you think?</p>
-				<label for="comment">Answer:</label>
-				<div class="form-group">
-			    	<input type="text" class="form-control" id="text" name="4_{{ key }}">
-				</div>
-			</div>
+					<div class="container">
+					  	<p style="font-size: 20px;">Is the headline clickbaity?</p>
+						<div class="radio">
+							<label class="radio"><input type="radio" value=1 name= "3_{{ key }}" > Very much clickbaity </label>
+						</div>
+						<div class="radio">
+							<label class="radio"><input type="radio" value=2 name= "3_{{ key }}"> Somewhat clickbaity </label>
+						</div>
+						<div class="radio">
+							<label class="radio"><input type="radio" value=3 name= "3_{{ key }}"> A little bit clickbaity </label>
+						</div>
+						<div class="radio">
+							<label class="radio"><input type="radio" value=4 name= "3_{{ key }}"> Not at all clickbaity </label>
+						</div>
+					</div>
 
-			<div class="container">
-			  	<p style="font-size: 20px;">Is the article subjective (it is expressed an opinion)?</p>
-				<div class="radio">
-					<label class="radio"><input type="radio" value=1 name= "5_{{ key }}" > Very much subjective </label>
-				</div>
-				<div class="radio">
-					<label class="radio"><input type="radio" value=2 name= "5_{{ key }}"> Somewhat subjective </label>
-				</div>
-				<div class="radio">
-					<label class="radio"><input type="radio" value=3 name= "5_{{ key }}"> A little bit subjective </label>
-				</div>
-				<div class="radio">
-					<label class="radio"><input type="radio" value=4 name= "5_{{ key }}"> Not at all subjective </label>
-				</div>
-			</div>
+					<div class="container">
+					  	<p style="font-size: 20px;">If you think the headline is clickbaity, what makes you think?</p>
+						<label for="comment">Answer:</label>
+						<div class="form-group">
+					    	<input type="text" class="form-control" id="text" name="4_{{ key }}">
+						</div>
+					</div>
 
-			<div class="container">
-			  	<p style="font-size: 20px;">How do you classify this news?</p>
-			  	<div class="radio">
-			    	<label class="radio"><input type="radio" value=true name= "6_{{ key }}" >True</label>
-				</div>
-				<div class="radio">
-			    	<label class="radio"><input type="radio" value=true name= "6_{{ key }}" >Dubious</label>
-				</div>
-				<div class="radio">
-			    	<label class="radio"><input type="radio" value=false name= "6_{{ key }}" >Fake</label>
-				</div>
-			</div>
-		</div> 
-	{% endfor %}
+					<div class="container">
+					  	<p style="font-size: 20px;">Is the article subjective (it is expressed an opinion)?</p>
+						<div class="radio">
+							<label class="radio"><input type="radio" value=1 name= "5_{{ key }}" > Very much subjective </label>
+						</div>
+						<div class="radio">
+							<label class="radio"><input type="radio" value=2 name= "5_{{ key }}"> Somewhat subjective </label>
+						</div>
+						<div class="radio">
+							<label class="radio"><input type="radio" value=3 name= "5_{{ key }}"> A little bit subjective </label>
+						</div>
+						<div class="radio">
+							<label class="radio"><input type="radio" value=4 name= "5_{{ key }}"> Not at all subjective </label>
+						</div>
+					</div>
+
+					<div class="container">
+					  	<p style="font-size: 20px;">How do you classify this news?</p>
+					  	<div class="radio">
+					    	<label class="radio"><input type="radio" value=true name= "6_{{ key }}" >True</label>
+						</div>
+						<div class="radio">
+					    	<label class="radio"><input type="radio" value=true name= "6_{{ key }}" >Dubious</label>
+						</div>
+						<div class="radio">
+					    	<label class="radio"><input type="radio" value=false name= "6_{{ key }}" >Fake</label>
+						</div>
+					</div>
+				</div> 
+			{% endfor %}
+			
+			<input style="background-color: blue; color: white; margin-left: 15%; margin-top: 5%;" type="submit" class="btn btn-default" value="Submit"></input>
+		</form>
+
+
+
+
+		<p><br></p>
+		<h1> .</h1>
+
+    {% endif %} 
 	
-	<input style="background-color: blue; color: white; margin-left: 15%; margin-top: 5%;" type="submit" class="btn btn-default" value="Submit"></input>
-</form>
-
-
-
-
-<p><br></p>
-<h1> .</h1>
 {% endblock content %}

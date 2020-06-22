@@ -1,4 +1,4 @@
-from flask import Flask, render_template, url_for, request
+from flask import Flask, render_template, url_for, request, make_response
 from newspaper import Article
 from nltk.tokenize import sent_tokenize, word_tokenize
 import nltk
@@ -115,6 +115,13 @@ def result():
 
 @app.route("/evaluation_labels",methods = ['POST', 'GET'])
 def evaluation_labels():
+
+	evaluation = request.cookies.get('evaluation')
+	if(evaluation == None):
+		key = 1
+	else:
+		key = len(evaluation.split()) + 1
+
 	result = firebase.get('/fakenews-app-d59dc/noticias/', '')
 
 	articles = {}
@@ -123,52 +130,102 @@ def evaluation_labels():
 	metrics = {}
 	temp_list = []
 
+
 	for i in result.values():
-		for j in range(1,7):
-			if(i['id_noticia'] == str(j)):
-				articles[j] = i['noticia']
-				title_date[j] = [i['titulo'], i['data']]
-				source_verification[j] = [i['source'], i['verified']]
-				metrics[j] = [i['Emotion'], i['Subjectivity'],i['Affectivity'], i['Polarity'],i['BP']]	
+		if(i['id_noticia'] == str(key)):
+			articles[key] = i['noticia']
+			title_date[key] = [i['titulo'], i['data']]
+			source_verification[key] = [i['source'], i['verified']]
+			metrics[key] = [i['Emotion'], i['Subjectivity'],i['Affectivity'], i['Polarity'],i['BP']]	
 
 
 	if request.method == 'POST': 
-		for i in range(1,7):
-			data =  {  'article': i, 'Q1': request.form['1_'+str(i)], 'Q2': request.form['2_'+str(i)], 'Q3': request.form['3_'+str(i)], 'Q4': request.form['4_'+str(i)], 'Q5': request.form['5_'+str(i)], 'Q6': request.form['6_'+str(i)], 'Q7': request.form['7_'+str(i)], 'Q8': request.form['8_'+str(i)]}
-			firebase.post('/fakenews-app-d59dc/with_labels/',data)
 
-		return render_template('evaluation_labels.html' ,posts=posts, articles=articles, metrics=metrics, title_date=title_date, source_verification=source_verification)
+		evaluation = request.cookies.get('evaluation')
+		if(evaluation == None):
+			key = 1
+		else:
+			print('puta')
+			print(len(evaluation.split()) + 1)
+			key = len(evaluation.split()) + 1
+		value = 6 - key
+		
+		data =  {  'article': key, 'Q1': request.form['1_'+str(key)], 'Q2': request.form['2_'+str(key)], 'Q3': request.form['3_'+str(key)], 'Q4': request.form['4_'+str(key)], 'Q5': request.form['5_'+str(key)], 'Q6': request.form['6_'+str(key)], 'Q7': request.form['7_'+str(key)], 'Q8': request.form['8_'+str(key)]}
+		firebase.post('/fakenews-app-d59dc/with_labels/',data)
+
+		resp = make_response(render_template('evaluation_message.html', posts=posts, articles=articles, title_date=title_date, metrics=metrics, source_verification=source_verification,value=value))
+		
+		value = ''
+		for i in range(1,key+1):
+			value += ' '.join(str(i)) + ' '
+		print(value)
+
+		key = value
+		resp.set_cookie('evaluation', str(key))
+
+		return resp
 		
 	else:
 		return render_template('evaluation_labels.html', posts=posts, articles=articles, metrics=metrics, title_date=title_date, source_verification=source_verification)
 
 @app.route("/evaluation",methods = ['POST', 'GET'])
 def evaluation():
+
+	evaluation = request.cookies.get('evaluation')
+	if(evaluation == None):
+		key = 1
+	else:
+		key = len(evaluation.split()) + 1
+
 	result = firebase.get('/fakenews-app-d59dc/noticias/', '')
 
 	articles = {}
 	title_date = {}
 	source_verification = {}
+	metrics = {}
 
 	for i in result.values():
-		for j in range(1,7):
-			if(i['id_noticia'] == str(j)):
-				articles[j] = i['noticia']
-				title_date[j] = [i['titulo'], i['data']]
-				source_verification[j] = [i['source'], i['verified']]
+		if(i['id_noticia'] == str(key)):
+			articles[key] = i['noticia']
+			title_date[key] = [i['titulo'], i['data']]
+			source_verification[key] = [i['source'], i['verified']]
+			metrics[key] = [i['Emotion'], i['Subjectivity'],i['Affectivity'], i['Polarity'],i['BP']]
+
+	
 
 	if request.method == 'POST': 
 		#print(request.form)
+		print(key)
 
-		for i in range(1,7):
-			data =  {  'article': i, 'Q1': request.form['1_'+str(i)], 'Q2': request.form['2_'+str(i)], 'Q3': request.form['3_'+str(i)], 'Q4': request.form['4_'+str(i)], 'Q5': request.form['5_'+str(i)], 'Q6': request.form['6_'+str(i)]}
-			firebase.post('/fakenews-app-d59dc/without_labels/',data)
+		evaluation = request.cookies.get('evaluation')
+		if(evaluation == None):
+			key = 1
+		else:
+			key = len(evaluation.split()) + 1
 
-		return render_template('evaluation.html' ,posts=posts, articles=articles, title_date=title_date, source_verification=source_verification)
+		data =  {  'article': key, 'Q1': request.form['1_'+str(key)], 'Q2': request.form['2_'+str(key)], 'Q3': request.form['3_'+str(key)], 'Q4': request.form['4_'+str(key)], 'Q5': request.form['5_'+str(key)], 'Q6': request.form['6_'+str(key)]}
+		firebase.post('/fakenews-app-d59dc/without_labels/',data)
+
+		return render_template('evaluation_labels.html', posts=posts, articles=articles, title_date=title_date, metrics=metrics, source_verification=source_verification)
 		
 	else:
-		return render_template('evaluation.html', posts=posts, articles=articles, title_date=title_date, source_verification=source_verification)
 
+		evaluation = request.cookies.get('evaluation')
+		if(evaluation == None):
+			key = 1
+		else:
+			key = len(evaluation.split())
+		return render_template('evaluation.html' ,posts=posts, articles=articles, title_date=title_date, metrics=metrics, source_verification=source_verification, key=key)
+
+@app.route("/evaluation_message",methods = ['POST', 'GET'])
+def evaluation_message():	
+	if request.method == 'POST': 
+
+		return render_template('evaluation.html', posts=posts, articles=articles, title_date=title_date, metrics=metrics, source_verification=source_verification)
+
+	else:
+
+		return render_template('evaluation_message.html' ,posts=posts, articles=articles, title_date=title_date, metrics=metrics, source_verification=source_verification)
 
 if __name__ == '__main__':
     app.run(debug=True)
