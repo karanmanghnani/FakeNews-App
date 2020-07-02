@@ -145,8 +145,6 @@ def evaluation_labels():
 		if(evaluation == None):
 			key = 1
 		else:
-			print('puta')
-			print(len(evaluation.split()) + 1)
 			key = len(evaluation.split()) + 1
 		value = 6 - key
 		
@@ -158,7 +156,7 @@ def evaluation_labels():
 		value = ''
 		for i in range(1,key+1):
 			value += ' '.join(str(i)) + ' '
-		print(value)
+		#print(value)
 
 		key = value
 		resp.set_cookie('evaluation', str(key))
@@ -195,7 +193,7 @@ def evaluation():
 
 	if request.method == 'POST': 
 		#print(request.form)
-		print(key)
+		#print(key)
 
 		evaluation = request.cookies.get('evaluation')
 		if(evaluation == None):

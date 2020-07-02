@@ -299,12 +299,12 @@ def _get_stopwords():
 
 def generate_corpus(documents=None, debug=False):
     assert len(documents) > 0
-    if debug: print('Iniciando processamento...')
+    #if debug: print('Iniciando processamento...')
     tokenized_docs = documents
     #with concurrent.futures.ProcessPoolExecutor() as procs:
     #    if debug: print('Executando processo de remoção das stopwords...')
     #    tokenized_frases = procs.map(tokenizer, tokenized_docs, chunksize=25)
-    if debug: print('Finalizado...')
+    #if debug: print('Finalizado...')
     return list(tokenized_frases)
 
 
@@ -414,7 +414,7 @@ RM = [
 
 
 def main():
-    print('Hello')
+    #print('Hello')
     filename_oplexicon = '/home/revy/Work/lexicons/oplexico_v3.0.txt'
     filename_sentilex = '/home/revy/Work/lexicons/SentiLex-flex-PT02.txt'
     #filename_anew = '/home/revy/Work/lexicons/anew-pt.csv'

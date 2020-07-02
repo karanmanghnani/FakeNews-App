@@ -723,17 +723,17 @@ def replace_original_words(emotion_list, words, original_words):
     #print(words)
     #print(words)
     #print(emotion_list)
-    print(original_words)
+    #print(original_words)
     sp = spacy.load('pt_core_news_sm')
     for i in range(len(words)):
         words[i] = sp(words[i])
         words[i] = words[i].text.lower()
-    print("wordssssssssssssssssssssssssssssssssssssssssssssss")
+    #print("wordssssssssssssssssssssssssssssssssssssssssssssss")
 
     #print(words)
-    print("original wordssssssssssssssssssssssssssssssssssssssssssssss")
+    #print("original wordssssssssssssssssssssssssssssssssssssssssssssss")
 
-    print(original_words)
+    #print(original_words)
     for emo in emotion_list:
         for i in range (len(emotion_list[emo])):
             for j in range(len(words)):
@@ -743,5 +743,5 @@ def replace_original_words(emotion_list, words, original_words):
                     #print(emotion_list[emo][i])
                     emotion_list[emo][i] = original_words[j]
                     #print(original_words[j])
-    print("emotion listttttttttttttttttttttttttttttttttt")
+    #print("emotion listttttttttttttttttttttttttttttttttt")
     #print(emotion_list)
