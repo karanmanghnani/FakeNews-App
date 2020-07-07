@@ -1,30 +1,30 @@
 {% extends "layout.html" %}
 {% block content %}
 
-<section style="  background: #ffddcc; height: 250px;">
+<section style="  background: #ffddcc; height: 280px;">
 	<h1 style="margin-left: 3%;"> <br> Evaluation with indicators</h1>
 	<div style="margin-left: 3%; width: 55%;">
-		<p>This evaluation have a set of news articles and presents the indicators provided by the tool. Your goal is to read the articles and answer each question below.<br> This assessment aims to evaluate the indicators proposed by this tool and assess the usefulness and impact on the answers obtained.</p>
+		<p>This evaluation contains a news to be evaluated and the indicators of desinformation provided by the tool. <br>Your goal is to read the article and interpret the indicators to answer the questions associated with the credibility of the article.<br> This assessment aims to evaluate the indicators proposed by this tool and assess the usefulness and impact on the answers obtained.</p>
 	</div>
 </section>
 <form action="/evaluation_labels" method = 'POST'> 
 	<div style="display: inline-block;">
 	{% for key in articles %}
 		<div style="display: inline;">
-			<div style="margin-top: 5%; width: 40%; margin-left: 6%;">
+			<div style="margin-top: 5%; width: 40%; margin-left: 3%;">
 				<h3 style=" display: inline;">{{ title_date[key][0] }}</h3>
-				<h7 style="margin-left:89%; display: inline;">{{ title_date[key][1] }}</h7>
+				<h7 style="margin-left:77%; display: inline;">{{ title_date[key][1] }}</h7>
 			</div>
-			<div class="evaluation_article">
+			<div id="div1" class="evaluation_article">
 				<article class="media content-section-evaluation" style="height: 300px;">
 				  <div>
 				    <p class="article_size"> {{ articles[key] }} </p>
 				  </div>
 				</article>
-				<h7 style="margin-left:10%; margin-bottom: 2%">Source:{{ source_verification[key][0] }} </h7> 
+				<h7 style="margin-left:7%; margin-bottom: 2%"><b>Source: {{ source_verification[key][0] }} </b> </h7> 
 
 			<div class="container">
-			  	<p style="font-size: 20px;">Does the title reflect on the content of the article?</p>
+			  	<p style="font-size: 20px;">Does the title represent the content of the article?</p>
 				<div class="radio">
 					<label class="radio"><input type="radio" value=1 name= "1_{{ key }}" > Completely Unrepresentative </label>
 				</div>
@@ -40,9 +40,9 @@
 			</div>
 
 			<div class="container">
-			  	<p style="font-size: 20px;">If the title is unrepresentative of the content of the article, how is it?</p>
+			  	<p style="font-size: 20px;">Why do you think the title does not represent the content of the article?</p>
 				<div class="radio">
-					<label class="radio"><input type="radio" value=1 name= "2_{{ key }}" > It's representative </label>
+					<label class="radio"><input type="radio" value=1 name= "2_{{ key }}" > It's representative (If you selected Completely Representative) </label>
 				</div>
 				<div class="radio">
 					<label class="radio"><input type="radio" value=2 name= "2_{{ key }}" > Title is on a different topic than the body </label>
@@ -54,28 +54,28 @@
 					<label class="radio"><input type="radio" value=4 name= "2_{{ key }}"> Title takes a different point of view than the body</label>
 				</div>
 				<div class="radio">
-					<label class="radio"><input type="radio" value=5 name= "2_{{ key }}"> Title overstates/understates claims or conclusions in the body</label>
+					<label class="radio"><input type="radio" value=5 name= "2_{{ key }}"> Title overstates/understates claims or conclusions</label>
 				</div>
 			</div>
 
 			<div class="container">
-			  	<p style="font-size: 20px;">Is the headline clickbaity?</p>
+			  	<p style="font-size: 20px;">Is the title clickbaity (form of false advertisement to attract attention and to make users read the news)? <br> Rank on a scale of 1 (Not clickbaity) to 4 (Very clickbaity)</p>
 				<div class="radio">
-					<label class="radio"><input type="radio" value=1 name= "3_{{ key }}" > Very much clickbaity </label>
+					<label class="radio"><input type="radio" value=1 name= "3_{{ key }}" > 1 </label>
 				</div>
 				<div class="radio">
-					<label class="radio"><input type="radio" value=2 name= "3_{{ key }}"> Somewhat clickbaity </label>
+					<label class="radio"><input type="radio" value=2 name= "3_{{ key }}"> 2 </label>
 				</div>
 				<div class="radio">
-					<label class="radio"><input type="radio" value=3 name= "3_{{ key }}"> A little bit clickbaity </label>
+					<label class="radio"><input type="radio" value=3 name= "3_{{ key }}"> 3 </label>
 				</div>
 				<div class="radio">
-					<label class="radio"><input type="radio" value=4 name= "3_{{ key }}"> Not at all clickbaity </label>
+					<label class="radio"><input type="radio" value=4 name= "3_{{ key }}"> 4</label>
 				</div>
 			</div>
 
 			<div class="container">
-			  	<p style="font-size: 20px;">If you think the headline is clickbaity, what makes you think?</p>
+			  	<p style="font-size: 20px;">If you think the headline is clickbaity, what makes you think it is?</p>
 				<label for="comment">Answer:</label>
 				<div class="form-group">
 			    	<input type="text" class="form-control" id="text" name="4_{{ key }}">
@@ -83,18 +83,18 @@
 			</div>
 
 			<div class="container">
-			  	<p style="font-size: 20px;">Is the article subjective (it is expressed an opinion)?</p>
+			  	<p style="font-size: 20px;">Is the article subjective (it is expressed an opinion)? <br> Rank on a scale of 1 (Not subjective) to 4 (Very subjective)</p>
 				<div class="radio">
-					<label class="radio"><input type="radio" value=1 name= "5_{{ key }}" > Very much subjective </label>
+					<label class="radio"><input type="radio" value=1 name= "5_{{ key }}" > 1 </label>
 				</div>
 				<div class="radio">
-					<label class="radio"><input type="radio" value=2 name= "5_{{ key }}"> Somewhat subjective </label>
+					<label class="radio"><input type="radio" value=2 name= "5_{{ key }}"> 2 </label>
 				</div>
 				<div class="radio">
-					<label class="radio"><input type="radio" value=3 name= "5_{{ key }}"> A little bit subjective </label>
+					<label class="radio"><input type="radio" value=3 name= "5_{{ key }}"> 3 </label>
 				</div>
 				<div class="radio">
-					<label class="radio"><input type="radio" value=4 name= "5_{{ key }}"> Not at all subjective </label>
+					<label class="radio"><input type="radio" value=4 name= "5_{{ key }}"> 4 </label>
 				</div>
 			</div>
 
@@ -153,31 +153,31 @@
 
 			<div class="evaluation_metrics">
 				<h4 style="margin-top: 0%;">Indicators of disinformation</h4>
-				<p class="collapsible">Emotion: {{ metrics[key][0] }}% articles of this class are fake. </p>
+				<p class="collapsible"><i class='fas fa-angle-down'></i>&ensp; Emotion: {{ metrics[key][0] }}% of articles with this emotivity level are fake.</p>
 				<div class="content">
 				  <p style="width: 80%;">One characteristic of disinformation is that it may make an inflammatory emotional appeal to the reader, so it is important to detect the emotions that the news transmits.</p>
 				</div>
-				<p class="collapsible">Subjectivity: {{ metrics[key][1] }}% articles of this class are fake.</p>
+				<p class="collapsible"><i class='fas fa-angle-down'></i>&ensp; Subjectivity: {{ metrics[key][1] }}% of articles with this subjectivity level are fake.</p>
 				<div class="content">
 				  <p style="width: 80%;">Disinformation often contains a lot of subjective expressions. This category is responsible to distinguish factual information from subjective information. Subjective expressions are used to express an opinion, emotion, evaluation, stance, speculation by the author.</p>
 				</div>
-				<p class="collapsible">Affectivity: {{ metrics[key][2] }}% articles of this class are fake.</p>
+				<p class="collapsible"><i class='fas fa-angle-down'></i>&ensp; Affectivity: {{ metrics[key][2] }}% of articles with this affectivity level are fake.</p>
 				<div class="content">
-				  <p style="width: 80%;">Disinformation often employs a higher number of emotional words than informative text ( Fuhr et al. 2017).
+				  <p style="width: 80%;">Disinformation often employs a higher number of emotional words than informative text.
                 Affective metrics compute statistics on emotional words present in text and highlight variations to informative content.</p>
 				</div>
-				<p class="collapsible">Polarity: {{ metrics[key][3] }}% articles of this class are fake.</p>
+				<p class="collapsible"><i class='fas fa-angle-down'></i>&ensp; Polarity: {{ metrics[key][3] }}% of articles with this polarity level are fake.</p>
 				<div class="content">
 				  <p style="width: 80%;">Disinformation employs a lot of opinions expressed by the author. The metrics in this category deal with
                 sentiments that are expressed through subjective expressions to describe people's opinions or feelings towards a given target.</p>
 				</div>
-				<p class="collapsible">Behavioral & Physiological: {{ metrics[key][4] }}% articles of this class are fake.</p>
+				<p class="collapsible"><i class='fas fa-angle-down'></i>&ensp; Behavioral & Physiological (BP): {{ metrics[key][4] }}% of articles with this BP level are fake.</p>
 				<div class="content">
 				  <p style="width: 80%;">In a news article, the author also shows the feelings that he had, the information that he gathered. These feelings depends on his behaviour and psychological processes and can help to detect disinformation.</p>
 				</div>
-				<p class="collapsible">Source: {{ source_verification[key][1] }} </p>
+				<p class="collapsible"><i class='fas fa-angle-down'></i>&ensp; Source: {{ source_verification[key][0] }} ({{ source_verification[key][1] }})</p>
 				<div class="content">
-				  <p style="width: 80%;">This indicator shows us if the source of the article is registed by ERC (Entidade Reguladora para a Comunicação Social).</p>
+				  <p style="width: 80%;">This indicator shows us if the source of the article is registed or not by ERC (Entidade Reguladora para a Comunicação Social).</p>
 				</div>
 			</div>
 		</div>

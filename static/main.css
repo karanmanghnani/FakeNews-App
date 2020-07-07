@@ -10,9 +10,9 @@ h2, h3, h4, h5, h6 {
 .header h1{
   padding: 50px;
   text-align: center;
-  background: #008B8B;
-  color: black;
-  font-size: 100px;
+  background: #213b52;
+  color: white;
+  font-size: 85px;
   line-height: 30px;
   margin-bottom: 0px;
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.4), 0 20px 40px 0 rgba(0, 0, 0, 0.19);
@@ -23,6 +23,9 @@ h2, h3, h4, h5, h6 {
   height: 50px;
 }
 
+.fa-angle-down{
+  height: 1000%;
+}
 
 
 .navbar-expand-sm .navbar-nav .nav-item .nav-link{
@@ -148,9 +151,9 @@ h2, h3, h4, h5, h6 {
   border-radius: 5px;
   margin-bottom: 10px;
   margin-top: 0%;
-  width: 70%;
+  width: 80%;
   margin-right: auto;
-  margin-left: 10%;
+  margin-left: 7%;
   -webkit-box-shadow: 0px 0px 19px 4px rgba(150,141,150,1);
   -moz-box-shadow: 0px 0px 19px 4px rgba(150,141,150,1);
   box-shadow: 0px 0px 19px 4px rgba(150,141,150,1);
@@ -220,12 +223,12 @@ h2, h3, h4, h5, h6 {
 
 .evaluation_article{
   float: left;
-  max-width: 60%;
+  max-width: 46%;
 }
 
 .evaluation_metrics{
   float: left;
-  max-width: 40%;
+  max-width: 54%;
 }
 
 .link-button{
@@ -315,10 +318,9 @@ h2, h3, h4, h5, h6 {
   color: black;
   text-align: center;
   font-size: 15px;
-  position: fixed;
-   left: 0;
-   bottom: 0;
-   width: 100%;
+  left: 0;
+  bottom: 0;
+  width: 100%;
 }
 
 .progress-bar2{

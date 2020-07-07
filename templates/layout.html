@@ -13,7 +13,7 @@
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 
     {% if title %}
-        <title>Flask Blog - {{ title }}</title>
+        <title>{{ title }}</title>
     {% else %}
         <title>Flask Blog</title>
     {% endif %}
@@ -21,7 +21,7 @@
 <body>
     <div >
     <div class="header">
-      <h1>Fake News</h1>
+      <h1> <span class="notranslate"> Misinformation Detector</span></h1>
     </div>
 
     <nav class="navbar navbar-expand-sm">
@@ -47,9 +47,9 @@
         <li class="nav-item">
           <a class="nav-link" href="#">About</a>
         </li>
-
-
+        
       </ul>
+      <div id="google_translate_element" style="text-align: center; margin-left: 45%;"></div>
     </nav>
 
       {% block content %}{% endblock %}
@@ -63,11 +63,55 @@
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    <script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
     <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
     <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <link href="https://fonts.googleapis.com/css?family=Rokkitt" rel="stylesheet"> 
     <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <script src='https://kit.fontawesome.com/a076d05399.js'></script>
+    <script type="text/javascript">
+        function googleTranslateElementInit() {
+            new google.translate.TranslateElement({
+                pageLanguage: 'en',
+                autoDisplay: false,
+                layout: google.translate.TranslateElement.InlineLayout.SIMPLE
+            }, 'google_translate_element');
+            function changeGoogleStyles() {
+                if($('.goog-te-menu-frame').contents().find('.goog-te-menu2').length) {
+                    $('.goog-te-menu-frame').contents().find('.goog-te-menu2').css({
+                        'max-width':'100%',
+                        'overflow-x':'auto',
+                        'box-sizing':'border-box',
+                        'height':'auto'
+                    });
+                } else {
+                    setTimeout(changeGoogleStyles, 50);
+                }
+            }
+            changeGoogleStyles();
+        }
+    </script>
+    <script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+         <style>
+        .goog-te-banner-frame.skiptranslate {
+            display: none !important;
+        } 
+        body {
+            top: 0px !important; 
+        }
+
+        .goog-te-menu-frame {
+        max-width:100% !important; 
+        }
+        .goog-te-menu2 { 
+        max-width: 100% !important;
+        overflow-x: scroll !important;
+        box-sizing:border-box !important; 
+        height:auto !important; 
+        }
+    </style>
+
 
 </body>
 </html>

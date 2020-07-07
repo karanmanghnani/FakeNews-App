@@ -81,7 +81,7 @@ def HomePage():
 			tweets = metrics.createTweetsDB(article_title)
 			#metrics.runMetricsOnTweets()
 
-			return render_template('result.html', title='FakeNews',posts=posts, article_text=article_text, article_title=article_title, emotion_ratio=emotion_ratio, total_emotion=total_emotion, totalsubj=totalsubj, subj_feats=subj_feats, vad_features=vad_features, polarity=polarity, bp_stats=bp_stats, source=source, url=url,absolute_url=absolute_url, tweets=tweets)
+			return render_template('result.html', title='Misinformation Detector',posts=posts, article_text=article_text, article_title=article_title, emotion_ratio=emotion_ratio, total_emotion=total_emotion, totalsubj=totalsubj, subj_feats=subj_feats, vad_features=vad_features, polarity=polarity, bp_stats=bp_stats, source=source, url=url,absolute_url=absolute_url, tweets=tweets)
 		
 		else:
 			article_title = "No title"
@@ -103,10 +103,10 @@ def HomePage():
 			absolute_url = "No url"
 			url = "No url"
 
-			return render_template('result.html', title='FakeNews',posts=posts, article_text=article_text, article_title=article_title, emotion_ratio=emotion_ratio, total_emotion=total_emotion, totalsubj=totalsubj, subj_feats=subj_feats, vad_features=vad_features, polarity=polarity, bp_stats=bp_stats, source=source, url=url,absolute_url=absolute_url)
+			return render_template('result.html', title='Misinformation Detector',posts=posts, article_text=article_text, article_title=article_title, emotion_ratio=emotion_ratio, total_emotion=total_emotion, totalsubj=totalsubj, subj_feats=subj_feats, vad_features=vad_features, polarity=polarity, bp_stats=bp_stats, source=source, url=url,absolute_url=absolute_url)
 		
 	else:
-		return render_template('HomePage.html', title='FakeNews')
+		return render_template('HomePage.html', title='Misinformation Detector')
 
 
 @app.route("/result",methods = ['POST', 'GET'])
@@ -149,7 +149,16 @@ def evaluation_labels():
 		value = 6 - key
 		
 		data =  {  'article': key, 'Q1': request.form['1_'+str(key)], 'Q2': request.form['2_'+str(key)], 'Q3': request.form['3_'+str(key)], 'Q4': request.form['4_'+str(key)], 'Q5': request.form['5_'+str(key)], 'Q6': request.form['6_'+str(key)], 'Q7': request.form['7_'+str(key)], 'Q8': request.form['8_'+str(key)]}
-		firebase.post('/fakenews-app-d59dc/with_labels/',data)
+
+		# 0 = both 1 = with indicator
+		result = firebase.get('/fakenews-app-d59dc/evaluation_needed/noticias', 'noticia_' + str(key))
+
+		if(result == '0'):
+			firebase.post('/fakenews-app-d59dc/with_labels/',data)
+			firebase.put('/fakenews-app-d59dc/evaluation_needed/noticias','noticia_' + str(key),'1')
+		else:
+			firebase.post('/fakenews-app-d59dc/with_labels_only/',data)
+			firebase.put('/fakenews-app-d59dc/evaluation_needed/noticias','noticia_' + str(key),'0')
 
 		resp = make_response(render_template('evaluation_message.html', posts=posts, articles=articles, title_date=title_date, metrics=metrics, source_verification=source_verification,value=value))
 		
@@ -211,9 +220,19 @@ def evaluation():
 		evaluation = request.cookies.get('evaluation')
 		if(evaluation == None):
 			key = 1
+			result = firebase.get('/fakenews-app-d59dc/evaluation_needed/noticias', 'noticia_'+str(key))
 		else:
 			key = len(evaluation.split())
-		return render_template('evaluation.html' ,posts=posts, articles=articles, title_date=title_date, metrics=metrics, source_verification=source_verification, key=key)
+			result = firebase.get('/fakenews-app-d59dc/evaluation_needed/noticias', 'noticia_'+str(key+1))
+
+		# 0 = both 1 = with indicator
+		if(result == '1'):
+			value = True
+			return render_template('evaluation_labels.html' ,posts=posts, articles=articles, title_date=title_date, metrics=metrics, source_verification=source_verification, key=key, value=value)
+		else:
+			value = False
+			return render_template('evaluation.html' ,posts=posts, articles=articles, title_date=title_date, metrics=metrics, source_verification=source_verification, key=key, value=value)
+		
 
 @app.route("/evaluation_message",methods = ['POST', 'GET'])
 def evaluation_message():	
