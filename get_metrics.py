@@ -139,6 +139,7 @@ def lemmatize_words(sentences):
 def get_emotions(words, emotion_words):
     six_emotions = list(emotion_words.keys())
     emotion_feats = {k:0 for k in six_emotions}
+    emotion_n_words = {k:0 for k in six_emotions}
     n_emotions = 0
     emotions_list = {}
 
@@ -151,13 +152,13 @@ def get_emotions(words, emotion_words):
             if stem in emotion_words[emo]:
                 #print(word, stem, emo)
                 emotion_feats[emo] += 1
+                emotion_n_words[emo] += 1
                 n_emotions +=1
                 emotions_list[emo].append(word) 
-
     if n_emotions:
-        emotion_feats.update({k:round(emotion_feats[k]/n_emotions, 4) for k in six_emotions})
+        emotion_feats.update({k:float('%.1f' % ((emotion_feats[k]/len(words))*100)) for k in six_emotions})
 
-    return emotion_feats, round(n_emotions/len(words),3 )*100, emotions_list
+    return emotion_feats,emotion_n_words, round(n_emotions/len(words),3 )*100, emotions_list
 
 
 
@@ -196,17 +197,17 @@ def get_vad_features(lemmas, anew):
 	}
 
     #print(V,A,D)
-    return  vad_features, vad_list
+    return  vad_features, vad_list, total_vad
 
 def sentiment_polarity(words, sentilex):
 
 	polarity = {}
-	total_pos, polarity['positive_ratio'], polarity['pos_list'] = get_positive_words_ratio(sentilex, words)
-	total_neg, polarity['negative_ratio'], polarity['neg_list'] = get_negative_words_ratio(sentilex, words)
-	polarity['positive_contrast'], polarity['pos_cons_list'] = get_positive_contrast(sentilex, words)
-	polarity['negative_contrast'], polarity['neg_cons_list'] = get_negative_contrast(sentilex, words)
+	polarity['total_pos'], polarity['positive_ratio'], polarity['pos_list'] = get_positive_words_ratio(sentilex, words)
+	polarity['total_neg'], polarity['negative_ratio'], polarity['neg_list'] = get_negative_words_ratio(sentilex, words)
+	polarity['positive_contrast'], polarity['pos_cons_ratio'], polarity['pos_cons_list'] = get_positive_contrast(sentilex, words)
+	polarity['negative_contrast'], polarity['neg_cons_ratio'], polarity['neg_cons_list'] = get_negative_contrast(sentilex, words)
 	#print(polarity)
-	total_pol = round((total_pos + total_neg)/len(words), 3)
+	total_pol = round((polarity['total_pos'] + polarity['total_neg'])/len(words), 3)
 	polarity['total_pol'] = total_pol*100
 	return polarity
 
@@ -214,16 +215,16 @@ def sentiment_polarity(words, sentilex):
 def behavioral_physiological(words, liwc_tags):
 
 	doc_stats = {}
-	n_perceptual_words, doc_stats['perceptuality'], doc_stats['perc_list'] = get_perceptuality(liwc_tags, words)
-	n_relativity_words, doc_stats['relativity'], doc_stats['rel_list'] = get_relativity(liwc_tags, words)
-	n_cognitive_words, doc_stats['cognitivity'], doc_stats['cog_list'] = get_cognitivity(liwc_tags, words)
-	n_personal_concerns_words, doc_stats['personal_concerns'], doc_stats['pers_list'] = get_personal_concerns(liwc_tags, words)
-	n_biological_words, doc_stats['biological_processes'], doc_stats['soc_list'] = get_biological_processes(liwc_tags, words)
-	n_social_words, doc_stats['social_processes'], doc_stats['bio_list'] = get_social_processes(liwc_tags, words)
+	doc_stats['n_perceptual_words'], doc_stats['perceptuality'], doc_stats['perc_list'] = get_perceptuality(liwc_tags, words)
+	doc_stats['n_relativity_words'], doc_stats['relativity'], doc_stats['rel_list'] = get_relativity(liwc_tags, words)
+	doc_stats['n_cognitive_words'], doc_stats['cognitivity'], doc_stats['cog_list'] = get_cognitivity(liwc_tags, words)
+	doc_stats['n_personal_concerns_words'], doc_stats['personal_concerns'], doc_stats['pers_list'] = get_personal_concerns(liwc_tags, words)
+	doc_stats['n_biological_words'], doc_stats['biological_processes'], doc_stats['soc_list'] = get_biological_processes(liwc_tags, words)
+	doc_stats['n_social_words'], doc_stats['social_processes'], doc_stats['bio_list'] = get_social_processes(liwc_tags, words)
 	#print((n_perceptual_words + n_relativity_words + n_cognitive_words + n_personal_concerns_words + n_biological_words + n_social_words)/len(words))
 	#print(n_perceptual_words + n_relativity_words + n_cognitive_words + n_personal_concerns_words + n_biological_words + n_social_words)
 	#print(len(words))
-	total_words = n_perceptual_words + n_relativity_words + n_cognitive_words + n_personal_concerns_words + n_biological_words + n_social_words
+	total_words = doc_stats['n_perceptual_words'] + doc_stats['n_relativity_words'] + doc_stats['n_cognitive_words'] + doc_stats['n_personal_concerns_words'] + doc_stats['n_biological_words'] + doc_stats['n_social_words']
 	total_bp = (total_words/(len(words)*6))*100
 	doc_stats['total_bp'] = round(total_bp,1)
 	return doc_stats
@@ -237,6 +238,7 @@ def get_subjective_ratio(words, subjective_words):
     subj_list = {}
     subj_list['strongsubj'] = []
     subj_list['weaksubj'] = []
+    ratio_of_each_subj = {'strongsubj':0, 'weaksubj':0}
 	
     for word in words:
         stem = STEMMER.stem(word)
@@ -252,29 +254,32 @@ def get_subjective_ratio(words, subjective_words):
             #print('weaksubj', word, stem)
     total_subj_ratio = (round(total_subj_words/n_words, 3))*100
 
+    ratio_of_each_subj['weaksubj'] = float('%.1f' % ((subj_feats['weaksubj']/n_words)*100))
+    ratio_of_each_subj['strongsubj'] = float('%.1f' % ((subj_feats['strongsubj']/n_words)*100))
+
     #Regra 3 simples para calculo de % em relaçao ao total e depois *100 (para meter em %)
     total_strongsubj_ratio = ((subj_feats.get('strongsubj'))/n_words)*100
     total_weeksubj_ratio = ((subj_feats.get('weaksubj'))/n_words)*100
 
     #print(total_subj_words, n_words)
     #print(subj_feats)
-    return total_subj_ratio, subj_feats, subj_list
+    return total_subj_ratio, subj_feats, subj_list, ratio_of_each_subj
 
 def source(url):
-	hostname = urlparse(url).hostname 
-	absolute_url = re.sub('www.', '', hostname)
+    hostname = urlparse(url).hostname
+    absolute_url = re.sub('www.', '', hostname)
 
-	loc = ("Entidades registadas.xlsx") 
-	  
-	wb = xlrd.open_workbook(loc) 
-	sheet = wb.sheet_by_index(0) 
+    loc = ("Entidades registadas.xlsx") 
+      
+    wb = xlrd.open_workbook(loc) 
+    sheet = wb.sheet_by_index(0) 
 
-	value = False
-	for i in range(2,sheet.nrows):
-	    if(absolute_url in sheet.cell_value(i, 12)):
-	    	value = True
+    value = False
+    for i in range(2,sheet.nrows):
+        if(absolute_url in sheet.cell_value(i, 12)):
+            value = True
 
-	return value, absolute_url
+    return value, absolute_url
 
 
 def createTweetsDB(query):
@@ -703,7 +708,7 @@ def get_positive_contrast(sentilex, words):
             pos_cons_list.append(words[i])
             pos_cons_list.append(words[i+1])
 
-    return n_pos_contrast, pos_cons_list
+    return n_pos_contrast, round(n_pos_contrast/len(words), 3)*100, pos_cons_list
 
 
 def get_negative_contrast(sentilex, words):
@@ -717,7 +722,7 @@ def get_negative_contrast(sentilex, words):
             neg_cons_list.append(words[i])
             neg_cons_list.append(words[i+1])
 
-    return n_neg_contrast, neg_cons_list
+    return n_neg_contrast, round(n_neg_contrast/len(words), 3)*100, neg_cons_list
 
 def replace_original_words(emotion_list, words, original_words):
     #print(words)

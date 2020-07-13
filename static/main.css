@@ -49,8 +49,9 @@ h2, h3, h4, h5, h6 {
 }
 
 .media-body{
-  margin-top: 14px;
-  margin-left: 10px;
+  margin: auto;
+  margin-left: 3%;
+  text-align: center;
 }
 
 .content-section {
@@ -135,13 +136,13 @@ h2, h3, h4, h5, h6 {
 .content-section-result-metric {
   background: #ffffff;
   padding: 2px 20px;
-  border: 1px solid #A9A9A9;
+  border: 1px solid #000000;
   border-radius: 100px;
-  margin-bottom: 50px;
+  margin-bottom: 30px;
   width: 100%;
   margin-left: 0px;
   margin-right: 0px;
-  margin-top: 60px;
+  margin-top: 20px;
 }
 
 .content-section-evaluation {
@@ -223,7 +224,7 @@ h2, h3, h4, h5, h6 {
 
 .evaluation_article{
   float: left;
-  max-width: 46%;
+  max-width: 56%;
 }
 
 .evaluation_metrics{
@@ -256,11 +257,16 @@ h2, h3, h4, h5, h6 {
 }
 
 .article-classification{
-    float:left;
-    margin-top: 120px;
+    float:right;
+    margin-right: 5%;
     font-size: 30px;
 }
 
+.article-classification2{
+    float:right;
+    margin-top: 10%;
+    font-size: 30px;
+}
 
 .metric-section {
   background: #FFEBCD;
@@ -353,10 +359,11 @@ h2, h3, h4, h5, h6 {
 }
 
 .source{
-  width:25px;
-  height:25px;
+  width:23px;
+  height:23px;
   display: block-inline;
   border-radius: 100%;
+  margin:auto;
 }
 
 

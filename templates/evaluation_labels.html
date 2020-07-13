@@ -11,9 +11,9 @@
 	<div style="display: inline-block;">
 	{% for key in articles %}
 		<div style="display: inline;">
-			<div style="margin-top: 5%; width: 40%; margin-left: 3%;">
+			<div style="margin-top: 5%; width: 47%; margin-left: 3%;">
 				<h3 style=" display: inline;">{{ title_date[key][0] }}</h3>
-				<h7 style="margin-left:77%; display: inline;">{{ title_date[key][1] }}</h7>
+				<h7 style="margin-left:83%; display: inline;">{{ title_date[key][1] }}</h7>
 			</div>
 			<div id="div1" class="evaluation_article">
 				<article class="media content-section-evaluation" style="height: 300px;">
@@ -150,36 +150,621 @@
 			</div>
 
 			</div>
+	<div class="article-classification">
+		<div>
+	      <h2>Indicators of Desinformation</h2>
+	      <div style="width: 500px;">
+	        <div  class="media content-section-result-metric" >
+	              <h2 align="left" style="margin: auto; font-size: 20px;">Emotion</h2>
+	              <div class="media-body">
+	                  <div>
+	                  {% if total_emotion <= 33 %}
+	                    <div class="progress">
+	                      <div class="progress-bar2" role="progressbar" aria-valuenow="33" aria-valuemin="0" aria-valuemax="100" style="width:33%; background-color: green !important;">{{ total_emotion }}%</div>
+	                      <div class="progress-bar2" role="progressbar" aria-valuenow="33" aria-valuemin="0" aria-valuemax="100" style="width:33%; background-color:#ffffb3 !important;"></div>
+	                      <div class="progress-bar2" role="progressbar" aria-valuenow="33" aria-valuemin="0" aria-valuemax="100" style="width:34%; background-color:#ffe6e6 !important;">
+	                      </div>
+	                    </div>
+	                  {% endif %}
 
-			<div class="evaluation_metrics">
-				<h4 style="margin-top: 0%;">Indicators of disinformation</h4>
-				<p class="collapsible"><i class='fas fa-angle-down'></i>&ensp; Emotion: {{ metrics[key][0] }}% of articles with this emotivity level are fake.</p>
-				<div class="content">
-				  <p style="width: 80%;">One characteristic of disinformation is that it may make an inflammatory emotional appeal to the reader, so it is important to detect the emotions that the news transmits.</p>
-				</div>
-				<p class="collapsible"><i class='fas fa-angle-down'></i>&ensp; Subjectivity: {{ metrics[key][1] }}% of articles with this subjectivity level are fake.</p>
-				<div class="content">
-				  <p style="width: 80%;">Disinformation often contains a lot of subjective expressions. This category is responsible to distinguish factual information from subjective information. Subjective expressions are used to express an opinion, emotion, evaluation, stance, speculation by the author.</p>
-				</div>
-				<p class="collapsible"><i class='fas fa-angle-down'></i>&ensp; Affectivity: {{ metrics[key][2] }}% of articles with this affectivity level are fake.</p>
-				<div class="content">
-				  <p style="width: 80%;">Disinformation often employs a higher number of emotional words than informative text.
-                Affective metrics compute statistics on emotional words present in text and highlight variations to informative content.</p>
-				</div>
-				<p class="collapsible"><i class='fas fa-angle-down'></i>&ensp; Polarity: {{ metrics[key][3] }}% of articles with this polarity level are fake.</p>
-				<div class="content">
-				  <p style="width: 80%;">Disinformation employs a lot of opinions expressed by the author. The metrics in this category deal with
-                sentiments that are expressed through subjective expressions to describe people's opinions or feelings towards a given target.</p>
-				</div>
-				<p class="collapsible"><i class='fas fa-angle-down'></i>&ensp; Behavioral & Physiological (BP): {{ metrics[key][4] }}% of articles with this BP level are fake.</p>
-				<div class="content">
-				  <p style="width: 80%;">In a news article, the author also shows the feelings that he had, the information that he gathered. These feelings depends on his behaviour and psychological processes and can help to detect disinformation.</p>
-				</div>
-				<p class="collapsible"><i class='fas fa-angle-down'></i>&ensp; Source: {{ source_verification[key][0] }} ({{ source_verification[key][1] }})</p>
-				<div class="content">
-				  <p style="width: 80%;">This indicator shows us if the source of the article is registed or not by ERC (Entidade Reguladora para a Comunicação Social).</p>
-				</div>
-			</div>
+	                  {% if total_emotion > 33 and total_emotion <= 66  %}
+	                    <div class="progress">
+	                      <div class="progress-bar2" role="progressbar" aria-valuenow="33" aria-valuemin="0" aria-valuemax="100" style="width:33%; background-color: #ccffcc !important;"></div>
+	                      <div class="progress-bar2" role="progressbar" aria-valuenow="33" aria-valuemin="0" aria-valuemax="100" style="width:33%; background-color: yellow !important;">{{ total_emotion }}%</div>
+	                      <div class="progress-bar2" role="progressbar" aria-valuenow="33" aria-valuemin="0" aria-valuemax="100" style="width:34%; background-color:#ffe6e6 !important;">
+	                      </div>
+	                    </div>
+	                  {% endif %}
+
+	                  {% if total_emotion > 66 %}
+	                    <div class="progress">
+	                      <div class="progress-bar2" role="progressbar" aria-valuenow="33" aria-valuemin="0" aria-valuemax="100" style="width:33%; background-color: #ccffcc !important;"></div>
+	                      <div class="progress-bar2" role="progressbar" aria-valuenow="33" aria-valuemin="0" aria-valuemax="100" style="width:33%; background-color:#ffffb3 !important;"></div>
+	                      <div class="progress-bar2" role="progressbar" aria-valuenow="33" aria-valuemin="0" aria-valuemax="100" style="width:34%; background-color: red !important;">
+	                      {{ total_emotion }}%</div>
+	                    </div>
+	                          
+	                  {% endif %}
+	                </div>
+	                <div>
+	                  <h5 style="margin: auto; font-size: 45%;">{{ total_emotion }}% of articles with this emotivity level are fake.</h5>
+	                </div>
+	              </div>
+	              <span data-toggle="modal" data-target="#EmotionModal" class="material-icons" style="font-size:23px; margin: auto; margin-left:2%;">info_outline</span> <br>
+	        </div>
+	      </div>
+	      <div style="width: 500px;">
+	        <div  class="media content-section-result-metric" >
+	      
+	              <h2 align="left" style="margin: auto; font-size: 20px;">Subjectivity</h2>
+	              <div class="media-body">
+	                <div>
+	                  {% if totalsubj <= 33 %}
+	                    <div class="progress">
+	                      <div class="progress-bar2" role="progressbar" aria-valuenow="33" aria-valuemin="0" aria-valuemax="100" style="width:33%; background-color: green !important;">{{ totalsubj }}%</div>
+	                      <div class="progress-bar2" role="progressbar" aria-valuenow="33" aria-valuemin="0" aria-valuemax="100" style="width:33%; background-color:#ffffb3 !important;"></div>
+	                      <div class="progress-bar2" role="progressbar" aria-valuenow="33" aria-valuemin="0" aria-valuemax="100" style="width:34%; background-color:#ffe6e6 !important;">
+	                      </div>
+	                    </div>
+	                  {% endif %}
+
+	                  {% if totalsubj > 33 and totalsubj <= 66  %}
+	                    <div class="progress">
+	                      <div class="progress-bar2" role="progressbar" aria-valuenow="33" aria-valuemin="0" aria-valuemax="100" style="width:33%; background-color: #ccffcc !important;"></div>
+	                      <div class="progress-bar2" role="progressbar" aria-valuenow="33" aria-valuemin="0" aria-valuemax="100" style="width:33%; background-color: yellow !important;">{{ totalsubj }}%</div>
+	                      <div class="progress-bar2" role="progressbar" aria-valuenow="33" aria-valuemin="0" aria-valuemax="100" style="width:34%; background-color:#ffe6e6 !important;">
+	                      </div>
+	                    </div>
+	                  {% endif %}
+
+	                  {% if totalsubj > 66 %}
+	                    <div class="progress">
+	                      <div class="progress-bar2" role="progressbar" aria-valuenow="33" aria-valuemin="0" aria-valuemax="100" style="width:33%; background-color: #ccffcc !important;"></div>
+	                      <div class="progress-bar2" role="progressbar" aria-valuenow="33" aria-valuemin="0" aria-valuemax="100" style="width:33%; background-color:#ffffb3 !important;"></div>
+	                      <div class="progress-bar2" role="progressbar" aria-valuenow="33" aria-valuemin="0" aria-valuemax="100" style="width:34%; background-color: red !important;">
+	                      {{ totalsubj }}%</div>
+	                    </div>
+	                          
+	                  {% endif %}
+	                </div>
+	                <div>
+	                  <h5 style="margin: auto; font-size: 45%;">{{ totalsubj }}% of articles with this subjectivity level are fake.</h5>
+	                </div>
+	              </div>
+	              <span data-toggle="modal" data-target="#SubjectivityModal" class="material-icons" style="font-size:23px;margin: auto; margin-left:2%;">info_outline</span>
+	        </div>
+	      </div>
+	      <div style="width: 500px;">
+	        <div  class="media content-section-result-metric" >
+	      
+	              <h2 align="left" style="margin: auto; font-size: 20px;">Affectivity</h2>
+	              <div class="media-body">
+	                  <div>
+	                    {% if vad_features['total_vad'] <= 33 %}
+	                      <div class="progress">
+	                        <div class="progress-bar2" role="progressbar" aria-valuenow="33" aria-valuemin="0" aria-valuemax="100" style="width:33%; background-color: green !important;">{{ vad_features['total_vad'] }}%</div>
+	                        <div class="progress-bar2" role="progressbar" aria-valuenow="33" aria-valuemin="0" aria-valuemax="100" style="width:33%; background-color:#ffffb3 !important;"></div>
+	                        <div class="progress-bar2" role="progressbar" aria-valuenow="33" aria-valuemin="0" aria-valuemax="100" style="width:34%; background-color:#ffe6e6 !important;">
+	                        </div>
+	                      </div>
+	                    {% endif %}
+
+	                    {% if vad_features['total_vad'] > 33 and vad_features['total_vad'] <= 66  %}
+	                      <div class="progress">
+	                        <div class="progress-bar2" role="progressbar" aria-valuenow="33" aria-valuemin="0" aria-valuemax="100" style="width:33%; background-color: #ccffcc !important;"></div>
+	                        <div class="progress-bar2" role="progressbar" aria-valuenow="33" aria-valuemin="0" aria-valuemax="100" style="width:33%; background-color: yellow !important;">{{ vad_features['total_vad'] }}%</div>
+	                        <div class="progress-bar2" role="progressbar" aria-valuenow="33" aria-valuemin="0" aria-valuemax="100" style="width:34%; background-color:#ffe6e6 !important;">
+	                        </div>
+	                      </div>
+	                    {% endif %}
+
+	                    {% if vad_features['total_vad'] > 66 %}
+	                      <div class="progress">
+	                        <div class="progress-bar2" role="progressbar" aria-valuenow="33" aria-valuemin="0" aria-valuemax="100" style="width:33%; background-color: #ccffcc !important;"></div>
+	                        <div class="progress-bar2" role="progressbar" aria-valuenow="33" aria-valuemin="0" aria-valuemax="100" style="width:33%; background-color:#ffffb3 !important;"></div>
+	                        <div class="progress-bar2" role="progressbar" aria-valuenow="33" aria-valuemin="0" aria-valuemax="100" style="width:34%; background-color: red !important;">
+	                        {{ vad_features['total_vad'] }}%</div>
+	                      </div>
+	                            
+	                    {% endif %}
+	                  </div>
+	                  <div>
+	                    <h5 style="margin: auto; font-size: 45%;">{{ vad_features['total_vad'] }}% of articles with this affectivity level are fake.</h5>
+	                  </div>
+	              </div>
+	              <span data-toggle="modal" data-target="#AffectiveModal" class="material-icons" style="font-size:23px; margin: auto; margin-left:2%;">info_outline</span>
+	        </div>
+	      </div>
+	      <div style="width: 500px;">
+	        <div  class="media content-section-result-metric" >
+	      
+	              <h2 align="left" style="margin: auto; font-size: 20px;">Polarity</h2>
+	              <div class="media-body">
+	                  <div>
+	                    {% if polarity['total_pol'] <= 33 %}
+	                      <div class="progress">
+	                        <div class="progress-bar2" role="progressbar" aria-valuenow="33" aria-valuemin="0" aria-valuemax="100" style="width:33%; background-color: green !important;">{{ polarity['total_pol'] }}%</div>
+	                        <div class="progress-bar2" role="progressbar" aria-valuenow="33" aria-valuemin="0" aria-valuemax="100" style="width:33%; background-color:#ffffb3 !important;"></div>
+	                        <div class="progress-bar2" role="progressbar" aria-valuenow="33" aria-valuemin="0" aria-valuemax="100" style="width:34%; background-color:#ffe6e6 !important;">
+	                        </div>
+	                      </div>
+	                    {% endif %}
+
+	                    {% if polarity['total_pol'] > 33 and polarity['total_pol'] <= 66  %}
+	                      <div class="progress">
+	                        <div class="progress-bar2" role="progressbar" aria-valuenow="33" aria-valuemin="0" aria-valuemax="100" style="width:33%; background-color: #ccffcc !important;"></div>
+	                        <div class="progress-bar2" role="progressbar" aria-valuenow="33" aria-valuemin="0" aria-valuemax="100" style="width:33%; background-color: yellow !important;">{{ polarity['total_pol'] }}%</div>
+	                        <div class="progress-bar2" role="progressbar" aria-valuenow="33" aria-valuemin="0" aria-valuemax="100" style="width:34%; background-color:#ffe6e6 !important;">
+	                        </div>
+	                      </div>
+	                    {% endif %}
+
+	                    {% if polarity['total_pol'] > 66 %}
+	                      <div class="progress">
+	                        <div class="progress-bar2" role="progressbar" aria-valuenow="33" aria-valuemin="0" aria-valuemax="100" style="width:33%; background-color: #ccffcc !important;"></div>
+	                        <div class="progress-bar2" role="progressbar" aria-valuenow="33" aria-valuemin="0" aria-valuemax="100" style="width:33%; background-color:#ffffb3 !important;"></div>
+	                        <div class="progress-bar2" role="progressbar" aria-valuenow="33" aria-valuemin="0" aria-valuemax="100" style="width:34%; background-color: red !important;">
+	                        {{ polarity['total_pol'] }}%</div>
+	                      </div>
+	                            
+	                    {% endif %}
+	                </div>
+	                <div>
+	                  <h5 style="margin: auto; font-size: 45%;">{{ polarity['total_pol'] }}% of articles with this polarity level are fake.</h5>
+	                </div>
+	              </div>
+	              <span data-toggle="modal" data-target="#PolarityModal" class="material-icons" style="font-size:23px; margin: auto; margin-left:2%;">info_outline</span>
+	        </div>
+	      </div>
+	      <div style="width: 500px;">
+	        <div  class="media content-section-result-metric" >
+	      
+	              <h2 align="left" style="margin: auto; font-size: 20px;">BP</h2>
+	              <div class="media-body">
+	                  <div>
+	                  {% if bp_stats['total_bp'] <= 33 %}
+	                    <div class="progress">
+	                      <div class="progress-bar2" role="progressbar" aria-valuenow="33" aria-valuemin="0" aria-valuemax="100" style="width:33%; background-color: green !important;">{{ bp_stats['total_bp'] }}%</div>
+	                      <div class="progress-bar2" role="progressbar" aria-valuenow="33" aria-valuemin="0" aria-valuemax="100" style="width:33%; background-color:#ffffb3 !important;"></div>
+	                      <div class="progress-bar2" role="progressbar" aria-valuenow="33" aria-valuemin="0" aria-valuemax="100" style="width:34%; background-color:#ffe6e6 !important;">
+	                      </div>
+	                    </div>
+	                  {% endif %}
+
+	                  {% if bp_stats['total_bp'] > 33 and bp_stats['total_bp'] <= 66  %}
+	                    <div class="progress">
+	                      <div class="progress-bar2" role="progressbar" aria-valuenow="33" aria-valuemin="0" aria-valuemax="100" style="width:33%; background-color: #ccffcc !important;"></div>
+	                      <div class="progress-bar2" role="progressbar" aria-valuenow="33" aria-valuemin="0" aria-valuemax="100" style="width:33%; background-color: yellow !important;">{{ bp_stats['total_bp'] }}%</div>
+	                      <div class="progress-bar2" role="progressbar" aria-valuenow="33" aria-valuemin="0" aria-valuemax="100" style="width:34%; background-color:#ffe6e6 !important;">
+	                      </div>
+	                    </div>
+	                  {% endif %}
+
+	                  {% if bp_stats['total_bp'] > 66 %}
+	                    <div class="progress">
+	                      <div class="progress-bar2" role="progressbar" aria-valuenow="33" aria-valuemin="0" aria-valuemax="100" style="width:33%; background-color: #ccffcc !important;"></div>
+	                      <div class="progress-bar2" role="progressbar" aria-valuenow="33" aria-valuemin="0" aria-valuemax="100" style="width:33%; background-color:#ffffb3 !important;"></div>
+	                      <div class="progress-bar2" role="progressbar" aria-valuenow="33" aria-valuemin="0" aria-valuemax="100" style="width:34%; background-color: red !important;">
+	                      {{ bp_stats['total_bp'] }}%</div>
+	                    </div>
+	                          
+	                  {% endif %}
+	                </div>
+	                <div>
+	                  <h5 style="margin: auto; font-size: 45%;">{{ bp_stats['total_bp'] }}% of articles with this BP level are fake.</h5>
+	                </div>
+	              </div>
+	              <span data-toggle="modal" data-target="#BPModal" class="material-icons" style="font-size:23px; margin: auto; margin-left:2%;">info_outline</span>
+	        </div>
+	      </div>
+	      <div style="width: 500px;">
+	        <div class="media content-section-result-metric">
+	          {% if source == True %}
+	            <h2 style="font-size: 20px; margin: auto; margin-left: 0px;" align="left">Source: ({{ source_verification[key][0] }}) <img class="source"  src="static/Images/verified.png" alt="verified Icon"> </h2>
+	            
+	          {% else %}
+	            <h2 style="font-size: 20px; margin: auto; margin-left: 0px; "align="left" >Source: ({{ source_verification[key][0] }})  <img class="source" src="static/Images/not_verified.png" alt="not verifiedIcon" > </h2>
+	           
+	          {% endif %}
+	          <span data-toggle="modal" data-target="#SourceModal" class="material-icons" style="font-size:23px; margin-left:2%;">info_outline</span>
+	        </div>
+	      </div>
+	      <div style="width: 500px;">
+	        <div class="media content-section-result-metric">
+	          <h2 style="font-size: 20px; margin: auto; margin-left: 0px; " align="center">Related Tweets</h2>
+	          <span data-toggle="modal" data-target="#TwitterModal" class="material-icons" style="font-size:23px; margin-left:2%;">info_outline</span>
+	        </div>
+	      </div>
+	    </div>
+	</div>
+
+</div>
+
+</div>
+
+
+
+  <!-- The Modal -->
+  <div class="modal fade" id="EmotionModal">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+      
+        <!-- Modal Header -->
+        <div class="modal-header">
+          <h4 class="modal-title">Emotion: {{ total_emotion }}%-&nbsp;</h4>
+        {% if total_emotion <= 33 %}
+          <h4 class="modal-title">Trustable</h4>
+          <h4 class="dot" style="background-color: green"></h4>
+        {% endif %}
+
+        {% if total_emotion > 33 and total_emotion <= 66  %}
+          <h4 class="modal-title">Dubious</h4>
+          <h4 class="dot" style="background-color: yellow"></h4>
+        {% endif %}
+
+        {% if total_emotion > 66 %}
+          <h4 class="modal-title">Not Trustable</h4>
+          <h4 class="dot" style="background-color: red"></h4>
+        {% endif %}
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+        </div>
+        
+        <!-- Modal body -->
+        <div class="modal-body">
+          <div class="metric_description">
+            <h5>Description: One characteristic of disinformation is that it may make an inflammatory emotional appeal to the reader, so it is important to detect the emotions that the news transmits</h5>
+            {% for key in emotion_ratio %}
+              <ul class="list-group">
+                <li class="list-group-item">{{ key  }}: {{ emotion_n_words[key] }} words ({{ emotion_ratio[key] }}% of article)</li>
+                <p></p>
+              </ul>   
+            {% endfor %}
+          </div>
+
+        </div>
+        
+        <!-- Modal footer -->
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        </div>
+        
+      </div>
+    </div>
+  </div>
+  <!-- End of the Modal -->
+
+
+  <!-- The Modal -->
+  <div class="modal fade" id="SubjectivityModal">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+      
+        <!-- Modal Header -->
+        <div class="modal-header">
+          <h4 class="modal-title">Subjectivity: {{ totalsubj }}%-&nbsp;</h4>
+        {% if totalsubj <= 33 %}
+          <h4 class="modal-title">Trustable</h4>
+          <h4 class="dot" style="background-color: green"></h4>
+        {% endif %}
+
+        {% if totalsubj > 33 and totalsubj <= 66  %}
+          <h4 class="modal-title">Dubious</h4>
+          <h4 class="dot" style="background-color: yellow"></h4>
+        {% endif %}
+
+        {% if totalsubj > 66 %}
+          <h4 class="modal-title">Not Trustable</h4>
+          <h4 class="dot" style="background-color: red"></h4>
+        {% endif %}
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+        </div>
+        
+        <!-- Modal body -->
+        <div class="modal-body">
+          <div class="metric_description">
+            <h5>Disinformation often contains a lot of subjective expressions. This category is responsible to distinguish factual information from subjective information. Subjective expressions are used to express an opinion, emotion, evaluation, stance, speculation by the author. </h5>
+            {% for key in subj_feats %}
+              <ul class="list-group">
+                {% if key == 'strongsubj' %}
+                  <li class="list-group-item">Strong Subjectivity: {{ subj_feats[key] }} words ({{ ratio_of_each_subj[key] }})% of article</li>
+                  <p></p>
+                {% else %}
+                  <li class="list-group-item">Weak Subjectivity: {{ subj_feats[key] }} words ({{ ratio_of_each_subj[key] }})% of article</li>
+                  <p></p>
+                {% endif %}
+              </ul>   
+            {% endfor %}
+          </div>
+
+        </div>
+        
+        <!-- Modal footer -->
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        </div>
+        
+      </div>
+    </div>
+  </div>
+  <!-- End of the Modal -->
+
+
+
+   <!-- The Modal -->
+  <div class="modal fade" id="AffectiveModal">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+      
+        <!-- Modal Header -->
+        <div class="modal-header">
+          <h4 class="modal-title">Affective: {{ vad_features['total_vad'] }}%-&nbsp;</h4>
+        {% if vad_features['total_vad'] <= 33 %}
+          <h4 class="modal-title">Trustable</h4>
+          <h4 class="dot" style="background-color: green"></h4>
+        {% endif %}
+
+        {% if vad_features['total_vad'] > 33 and vad_features['total_vad'] <= 66  %}
+          <h4 class="modal-title">Dubious</h4>
+          <h4 class="dot" style="background-color: yellow"></h4>
+        {% endif %}
+
+        {% if vad_features['total_vad'] > 66 %}
+          <h4 class="modal-title">Not Trustable</h4>
+          <h4 class="dot" style="background-color: red"></h4>
+        {% endif %}
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+        </div>
+        
+        <!-- Modal body -->
+        <div class="modal-body">
+          <div class="metric_description">
+            <h5>Disinformation often employs a higher number of emotional words than informative text ( Fuhr et al. 2017).
+                Affective metrics compute statistics on emotional words present in text and highlight variations to informative content. </h5>
+            <ul class="list-group">
+              <li class="list-group-item"> Valence: {{ total_vad }} words</li>
+              <p></p>
+              <li class="list-group-item"> Arousal: {{ total_vad }} words</li>
+              <p></p>
+              <li class="list-group-item"> Dominance: {{ total_vad }} words</li>
+              <p></p>
+            </ul> 
+          </div>
+        </div>
+        
+        <!-- Modal footer -->
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        </div>
+        
+      </div>
+    </div>
+  </div>
+  <!-- End of the Modal -->
+
+
+   <!-- The Modal -->
+  <div class="modal fade" id="PolarityModal">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+      
+        <!-- Modal Header -->
+        <div class="modal-header">
+          <h4 class="modal-title">Polarity: {{ polarity['total_pol'] }}%-&nbsp;</h4>
+        {% if vad_features['total_vad'] <= 33 %}
+          <h4 class="modal-title">Trustable</h4>
+          <h4 class="dot" style="background-color: green"></h4>
+        {% endif %}
+
+        {% if polarity['total_pol'] > 33 and polarity['total_pol'] <= 66  %}
+          <h4 class="modal-title">Dubious</h4>
+          <h4 class="dot" style="background-color: yellow"></h4>
+        {% endif %}
+
+        {% if polarity['total_pol'] > 66 %}
+          <h4 class="modal-title">Not Trustable</h4>
+          <h4 class="dot" style="background-color: red"></h4>
+        {% endif %}
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+        </div>
+        
+        <!-- Modal body -->
+        <div class="modal-body">
+          <div class="metric_description">
+            <h5>Disinformation employs a lot of opinions expressed by the author. The metrics in this category deal with
+                sentiments that are expressed through subjective expressions to describe people's opinions or feelings towards a given target. </h5>
+            <ul class="list-group">
+              <li class="list-group-item"> Positive: {{polarity['total_pos']}} words ({{ polarity['positive_ratio'] }}% of article)</li>
+              <p></p>
+              <li class="list-group-item"> Negative: {{polarity['total_neg']}} words ({{ polarity['negative_ratio'] }}% of article)</li>
+              <p></p>
+              <li class="list-group-item"> Positive contrast: {{ polarity['positive_contrast'] }} words ({{ polarity['pos_cons_ratio'] }}% of article)</li>
+              <p></p>
+              <li class="list-group-item"> Negative contrast: {{ polarity['negative_contrast'] }} words ({{ polarity['neg_cons_ratio'] }}% of article)</li>
+              <p></p>
+            </ul>   
+          </div>
+        </div>
+        
+        <!-- Modal footer -->
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        </div>
+        
+      </div>
+    </div>
+  </div>
+  <!-- End of the Modal -->
+
+
+   <!-- The Modal -->
+  <div class="modal fade" id="BPModal">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+      
+        <!-- Modal Header -->
+        <div class="modal-header">
+          <h4 class="modal-title">BP: {{ bp_stats['total_bp'] }}%-&nbsp;</h4>
+        {% if bp_stats['total_bp'] <= 33 %}
+          <h4 class="modal-title">Trustable</h4>
+          <h4 class="dot" style="background-color: green"></h4>
+        {% endif %}
+
+        {% if bp_stats['total_bp']> 33 and bp_stats['total_bp'] <= 66  %}
+          <h4 class="modal-title">Dubious</h4>
+          <h4 class="dot" style="background-color: yellow"></h4>
+        {% endif %}
+
+        {% if bp_stats['total_bp'] > 66 %}
+          <h4 class="modal-title">Not Trustable</h4>
+          <h4 class="dot" style="background-color: red"></h4>
+        {% endif %}
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+        </div>
+        
+        <!-- Modal body -->
+        <div class="modal-body">
+          <div class="metric_description">
+            <h5>In a news article, the author also shows the feelings that he had, the information that he gathered. These feelings depends on his behaviour and psychological processes and can help to detect disinformation </h5>
+            <ul class="list-group">
+              <li class="list-group-item"> Perceptuality: {{bp_stats['n_perceptual_words']}} words ({{ bp_stats['perceptuality'] }}% of article)</li>
+              <p></p>
+              <li class="list-group-item"> Relativity: {{bp_stats['n_relativity_words']}} words ({{ bp_stats['relativity'] }}% of article)</li>
+              <p></p>
+              <li class="list-group-item"> Cognitivity: {{bp_stats['n_cognitive_words']}} words ({{ bp_stats['cognitivity'] }}% of article)</li>
+              <p></p>
+              <li class="list-group-item"> Personal concerns: {{bp_stats['n_personal_concerns_words']}} words ({{ bp_stats['personal_concerns'] }}% of article)</li>
+              <p></p>
+              <li class="list-group-item"> Biological processes: {{bp_stats['n_biological_words']}} words ({{ bp_stats['biological_processes'] }}% of article)</li>
+              <p></p>
+              <li class="list-group-item"> Social processes: {{bp_stats['n_social_words']}} words ({{ bp_stats['social_processes'] }}% of article)</li>
+              <p></p>
+            </ul>   
+          </div>
+        </div>
+        
+        <!-- Modal footer -->
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        </div>
+        
+      </div>
+    </div>
+  </div>
+  <!-- End of the Modal -->
+
+
+  <!-- The Modal -->
+  <div class="modal fade" id="SourceModal">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+      
+        <!-- Modal Header -->
+        <div class="modal-header">
+
+        {% if source == True %}
+          <h4 align="center">Source: ({{ source_verification[key][0] }}) <img class="source"  src="static/Images/verified.png" alt="verified Icon"> </h4>
+        {% else %}
+          <h4 align="center">Source: ({{ source_verification[key][0] }})  <img class="source" align="middle" src="static/Images/not_verified.png" alt="not verified Icon" > </h4>       
+        {% endif %}
+
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+        </div>
+        
+        <!-- Modal body -->
+        <div class="modal-body">
+          <div class="metric_description">
+            <h5>Description: It is important to know if it is a trusted and registered source or not. Fake article often come from unknown sources.</h5>
+            {% if source == True %}
+              <h7>{{ source_verification[key][0] }} is a registered source by ERC (Entidade Reguladora para a Comunicação Social). You can check their website <a href={{'https://' + absolute_url }}>here</a> </h7>
+              
+            {% else %}
+              <h7 align="center">({{ source_verification[key][0] }}) is not a registered website by ERC (Entidade Reguladora para a Comunicação Social).</h7>
+             
+            {% endif %}
+          </div>
+
+        </div>
+        
+        <!-- Modal footer -->
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        </div>
+        
+      </div>
+    </div>
+  </div>
+  <!-- End of the Modal -->
+
+     <!-- The Modal -->
+  <div class="modal fade" id="TwitterModal">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+      <div class="modal-content">
+      
+        <!-- Modal Header -->
+        <div class="modal-header" style="background-color: #1DA1F2  ;">
+        <h4 class="m-0" ><a><i class="fa fa-twitter fa-lg"></i></a> </h4>
+        <h4 class="modal-title">  Similar News on Twitter</h4>
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+        </div>
+        
+        <!-- Modal body -->
+        {% for tweet in tweets %}
+          <div class="modal-body">
+            <div class="col-lg-6 offset-lg-3" style="margin: auto; max-width: 70%;">
+              <div class="cardbox shadow-lg bg-white">
+                <div class="cardbox-heading">
+                  <div class="media m-0">
+                    <div class="media-body">
+                      <div class="float-right">
+                        <small><span><i class="icon ion-md-time"></i> {{ tweet[1] }}</span></small>
+                      </div>
+                      {% if tweet[2] == True %}
+                        <p class="m-0" > Account: {{ tweet[0] }} <a><i class="fa fa-check-circle"></i></a> </p>
+                      {% else %}
+                        <p class="m-0" > Account: {{ tweet[0] }} </p>
+                      {% endif %}
+                      
+                      <p class="m-0" >Followers: {{ tweet[3] }}</p>
+                    </div>
+                  </div><!--/ media -->
+                </div><!--/ cardbox-heading -->
+                <div>
+                  <p style="text-align: left; margin-left: 11%; margin-right: 11%; margin-top: 2%; margin-bottom: 2%;">{{ tweet[4] }}</p>
+                </div>
+                <div class="cardbox-base">
+                <ul class="float-right">
+                  <li><a><i class="fa fa-retweet"></i></a></li>
+                  <li><a><em>Retweets: {{ tweet[6] }}</em></a></li>
+                </ul>
+                <ul>
+                  <li><a><i class="fa fa-thumbs-up"></i></a></li>
+                  <li><a><em class="mr-5">Likes: {{ tweet[5] }}</em></a></li>
+                </ul>        
+              </div><!--/ cardbox-base -->   
+            </div><!--/ cardbox -->
+          </div><!--/ col-lg-6 --> 
+      </div>
+        {% endfor %}
+
+        
+        <!-- Modal footer -->
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        </div>
+        
+      </div>
+    </div>
+  </div>
+  <!-- End of the Modal -->
+
+  </section><!-- End Hero -->
+</div>
+
+<script>
+$(document).ready(function(){
+  $('[data-toggle="tooltip"]').tooltip();   
+});
+</script>
 		</div>
 	{% endfor %}
 	</div>
