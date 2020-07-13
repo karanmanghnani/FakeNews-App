@@ -269,7 +269,6 @@ def evaluation():
 def evaluation_message():	
 	if request.method == 'POST': 
 		evaluation = request.cookies.get('evaluation')
-		print(len(evaluation.split()))
 		if(len(evaluation.split())==6):
 			return render_template('evaluation.html' ,posts=posts, articles=articles, title_date=title_date, source_verification=source_verification, key=key, value=value)
 		else:
