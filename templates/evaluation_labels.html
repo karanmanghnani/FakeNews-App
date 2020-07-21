@@ -1,13 +1,13 @@
 {% extends "layout.html" %}
 {% block content %}
 
-<section style="  background: #ffddcc; height: 280px;">
+<section style="  background: #ffddcc; height: 230px;">
 	<h1 style="margin-left: 3%;"> <br> Evaluation with indicators</h1>
-	<div style="margin-left: 3%; width: 55%;">
-		<p>This evaluation contains a news to be evaluated and the indicators of desinformation provided by the tool. <br>Your goal is to read the article and interpret the indicators to answer the questions associated with the credibility of the article.<br> This assessment aims to evaluate the indicators proposed by this tool and assess the usefulness and impact on the answers obtained.</p>
+	<div style="margin-left: 3%; width: 75%;">
+		<p>This assessment contains a news to be evaluated which can be an article from the Social Media or from a news website which the veracity is known. It also presents the indicators of desinformation provided by the tool. <br>Your goal is to read the article and interpret the indicators to answer the questions associated with the credibility of the article.<br> This assessment aims to evaluate the indicators proposed by this tool and assess the usefulness and impact on the answers obtained.</p>
 	</div>
 </section>
-<form action="/evaluation_labels" method = 'POST'> 
+<form action="/evaluation_labels" method = 'POST' onsubmit = "return checkForm();"> 
 	<div style="display: inline-block;">
 	{% for key in articles %}
 		<div style="display: inline;">
@@ -16,7 +16,7 @@
 				<h7 style="margin-left:83%; display: inline;">{{ title_date[key][1] }}</h7>
 			</div>
 			<div id="div1" class="evaluation_article">
-				<article class="media content-section-evaluation" style="height: 300px;">
+				<article class="media content-section-evaluation" style="height: 300px; width: 100%;">
 				  <div>
 				    <p class="article_size"> {{ articles[key] }} </p>
 				  </div>
@@ -104,7 +104,7 @@
 			    	<label class="radio"><input type="radio" value=true name= "6_{{ key }}" >True</label>
 				</div>
 				<div class="radio">
-			    	<label class="radio"><input type="radio" value=true name= "6_{{ key }}" >Dubious</label>
+			    	<label class="radio"><input type="radio" value=dubious name= "6_{{ key }}" >Dubious</label>
 				</div>
 				<div class="radio">
 			    	<label class="radio"><input type="radio" value=false name= "6_{{ key }}" >Fake</label>
@@ -153,9 +153,9 @@
 	<div class="article-classification">
 		<div>
 	      <h2>Indicators of Desinformation</h2>
-	      <div style="width: 500px;">
+	      <div style="width: 110%;">
 	        <div  class="media content-section-result-metric" >
-	              <h2 align="left" style="margin: auto; font-size: 20px;">Emotion</h2>
+	              <h2 align="left" style="margin: auto; font-size: 70%;">Emotion</h2>
 	              <div class="media-body">
 	                  <div>
 	                  {% if total_emotion <= 33 %}
@@ -193,10 +193,10 @@
 	              <span data-toggle="modal" data-target="#EmotionModal" class="material-icons" style="font-size:23px; margin: auto; margin-left:2%;">info_outline</span> <br>
 	        </div>
 	      </div>
-	      <div style="width: 500px;">
+	      <div style="width: 110%;">
 	        <div  class="media content-section-result-metric" >
 	      
-	              <h2 align="left" style="margin: auto; font-size: 20px;">Subjectivity</h2>
+	              <h2 align="left" style="margin: auto; font-size: 70%;">Subjectivity</h2>
 	              <div class="media-body">
 	                <div>
 	                  {% if totalsubj <= 33 %}
@@ -234,10 +234,10 @@
 	              <span data-toggle="modal" data-target="#SubjectivityModal" class="material-icons" style="font-size:23px;margin: auto; margin-left:2%;">info_outline</span>
 	        </div>
 	      </div>
-	      <div style="width: 500px;">
+	      <div style="width: 110%;">
 	        <div  class="media content-section-result-metric" >
 	      
-	              <h2 align="left" style="margin: auto; font-size: 20px;">Affectivity</h2>
+	              <h2 align="left" style="margin: auto; font-size: 70%;">Affectivity</h2>
 	              <div class="media-body">
 	                  <div>
 	                    {% if vad_features['total_vad'] <= 33 %}
@@ -275,10 +275,10 @@
 	              <span data-toggle="modal" data-target="#AffectiveModal" class="material-icons" style="font-size:23px; margin: auto; margin-left:2%;">info_outline</span>
 	        </div>
 	      </div>
-	      <div style="width: 500px;">
+	      <div style="width: 110%;">
 	        <div  class="media content-section-result-metric" >
 	      
-	              <h2 align="left" style="margin: auto; font-size: 20px;">Polarity</h2>
+	              <h2 align="left" style="margin: auto; font-size: 70%;">Polarity</h2>
 	              <div class="media-body">
 	                  <div>
 	                    {% if polarity['total_pol'] <= 33 %}
@@ -316,10 +316,10 @@
 	              <span data-toggle="modal" data-target="#PolarityModal" class="material-icons" style="font-size:23px; margin: auto; margin-left:2%;">info_outline</span>
 	        </div>
 	      </div>
-	      <div style="width: 500px;">
+	      <div style="width: 110%;">
 	        <div  class="media content-section-result-metric" >
 	      
-	              <h2 align="left" style="margin: auto; font-size: 20px;">BP</h2>
+	              <h2 align="left" style="margin: auto; font-size: 70%;">BP</h2>
 	              <div class="media-body">
 	                  <div>
 	                  {% if bp_stats['total_bp'] <= 33 %}
@@ -357,21 +357,21 @@
 	              <span data-toggle="modal" data-target="#BPModal" class="material-icons" style="font-size:23px; margin: auto; margin-left:2%;">info_outline</span>
 	        </div>
 	      </div>
-	      <div style="width: 500px;">
+	      <div style="width: 110%;">
 	        <div class="media content-section-result-metric">
 	          {% if source == True %}
-	            <h2 style="font-size: 20px; margin: auto; margin-left: 0px;" align="left">Source: ({{ source_verification[key][0] }}) <img class="source"  src="static/Images/verified.png" alt="verified Icon"> </h2>
+	            <h2 style="font-size: 70%; margin: auto; margin-left: 0px;" align="left">Source: ({{ source_verification[key][0] }}) <img class="source"  src="static/Images/verified.png" alt="verified Icon"> </h2>
 	            
 	          {% else %}
-	            <h2 style="font-size: 20px; margin: auto; margin-left: 0px; "align="left" >Source: ({{ source_verification[key][0] }})  <img class="source" src="static/Images/not_verified.png" alt="not verifiedIcon" > </h2>
+	            <h2 style="font-size: 70%; margin: auto; margin-left: 0px; "align="left" >Source: ({{ source_verification[key][0] }})  <img class="source" src="static/Images/not_verified.png" alt="not verifiedIcon" > </h2>
 	           
 	          {% endif %}
 	          <span data-toggle="modal" data-target="#SourceModal" class="material-icons" style="font-size:23px; margin-left:2%;">info_outline</span>
 	        </div>
 	      </div>
-	      <div style="width: 500px;">
+	      <div style="width: 110%;">
 	        <div class="media content-section-result-metric">
-	          <h2 style="font-size: 20px; margin: auto; margin-left: 0px; " align="center">Related Tweets</h2>
+	          <h2 style="font-size: 70%; margin: auto; margin-left: 0px; " align="center">Related Tweets</h2>
 	          <span data-toggle="modal" data-target="#TwitterModal" class="material-icons" style="font-size:23px; margin-left:2%;">info_outline</span>
 	        </div>
 	      </div>
@@ -708,6 +708,7 @@
         </div>
         
         <!-- Modal body -->
+        <p style="text-align: center; margin-top: 5%;">Number of Tweets found: {{n_tweets}}</p>
         {% for tweet in tweets %}
           <div class="modal-body">
             <div class="col-lg-6 offset-lg-3" style="margin: auto; max-width: 70%;">
@@ -768,8 +769,19 @@ $(document).ready(function(){
 		</div>
 	{% endfor %}
 	</div>
-	
-	<input style="background-color: blue; color: white; margin-left: 10%; margin-bottom: 5%;" type="submit" class="btn btn-default" value="Submit"></input>
+<script type="text/javascript">
+	function checkForm() {
+	    var valid = true;
+	    if ($('input[type=radio]:checked').length < 7) {
+			alert("Please choose all options");
+			valid = false;
+		}
+
+	    return valid;
+	}
+
+</script>
+	<span class="notranslate"><input style="background-color: blue; color: white; margin-left: 6%; margin-bottom: 5%;" type="submit" class="btn btn-default" value="Submit" onclick="checkForm()"></input> </span>
 </form>
 
 

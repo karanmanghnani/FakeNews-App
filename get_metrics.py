@@ -537,6 +537,21 @@ def fakeProbability2(emotion,subj,val_avg,arou_avg,dom_avg,pos_words,neg_words,p
 
 
     return emotion, subj, affective, polarity, bp
+
+#######################################
+#          Final Probability          #
+#######################################
+
+def finalProb(total_emotion, totalsubj, total_vad, total_pol, total_bp, source):
+    linguisticProb = 0.15*total_emotion + 0.15*totalsubj + 0.15*total_vad + 0.15*total_pol + 0.15*total_bp
+    if(source == False):
+        linguisticProb = linguisticProb + 25
+    #linguisticProb = linguisticProb + 40
+    linguisticProb = round(linguisticProb, 4)
+
+    return linguisticProb
+
+
 #######################################
 #          Auxiliar Functions		  #
 #######################################

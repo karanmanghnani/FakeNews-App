@@ -8,14 +8,15 @@ h2, h3, h4, h5, h6 {
 }
 
 .header h1{
-  padding: 50px;
+  padding: 4%;
   text-align: center;
   background: #213b52;
   color: white;
-  font-size: 85px;
-  line-height: 30px;
-  margin-bottom: 0px;
+  font-size: 550%;
+  line-height: 30%;
+  margin-bottom: 0%;
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.4), 0 20px 40px 0 rgba(0, 0, 0, 0.19);
+  width: 100%;
 }
 
 .navbar-expand-sm{
@@ -38,7 +39,11 @@ h2, h3, h4, h5, h6 {
 }
 
 .navbar-expand-sm .navbar-nav .nav-item {
-  padding-left: 15px;
+  padding-left: 10px;
+}
+
+.navbar-expand-sm .navbar-nav .nav-item .nav-link:hover:not(.active) {
+  background-color: #4d4d4d;
 }
 
 #hero {
@@ -224,7 +229,7 @@ h2, h3, h4, h5, h6 {
 
 .evaluation_article{
   float: left;
-  max-width: 56%;
+  max-width: 45%;
 }
 
 .evaluation_metrics{
@@ -252,20 +257,21 @@ h2, h3, h4, h5, h6 {
 
 .orientation-2{
     float:left;
-    width: 60%;
+    width: 55%;
     margin-right: 0px;
 }
 
 .article-classification{
     float:right;
     margin-right: 5%;
-    font-size: 30px;
+    font-size: 180%;
 }
 
 .article-classification2{
-    float:right;
+    float:left;
     margin-top: 10%;
-    font-size: 30px;
+    font-size: 160%;
+    max-width: 45%;
 }
 
 .metric-section {
@@ -298,10 +304,9 @@ h2, h3, h4, h5, h6 {
 
 .row {
   margin: auto;
-  width: 97%;
+  width: 100%;
   padding-bottom: 120px;
   padding-top: 120px;
-  box-shadow: 0 40px 80px 0 rgba(0, 0, 0, 0.2), 0 60px 80px 0 rgba(0, 0, 0, 0.19);
 }
 
 .article-metadata {
@@ -327,6 +332,7 @@ h2, h3, h4, h5, h6 {
   left: 0;
   bottom: 0;
   width: 100%;
+  line-height: 170%;
 }
 
 .progress-bar2{
@@ -393,11 +399,56 @@ h2, h3, h4, h5, h6 {
     visibility: hidden;
 
 }
+.ref2 {
+    position: relative;
+    left: 1.5%;
+    width: 0.7%;
+    height: 90%;
+    background-color: black;
+    animation: cssAnimation 0s 5s forwards;
+    visibility: hidden;
+}
+.ref2:before {
+    content: attr(data-ref);
+    position: absolute;
+    width: 100px;
+    left: -50px;
+    top: 100%;
+    color: #000;
+    text-align: center;
+    font-size: 15px;
+    margin-top: 6px;
+    animation: cssAnimation 0s 5s forwards;
+    visibility: hidden;
+
+}
+.ref3 {
+    position: relative;
+    left: 98%;
+    width: 0.7%;
+    height: 90%;
+    background-color: black;
+    animation: cssAnimation 0s 5s forwards;
+    visibility: hidden;
+}
+.ref3:before {
+    content: attr(data-ref);
+    position: absolute;
+    width: 100px;
+    left: -50px;
+    top: 100%;
+    color: #000;
+    text-align: center;
+    font-size: 15px;
+    margin-top: 6px;
+    animation: cssAnimation 0s 5s forwards;
+    visibility: hidden;
+
+}
 
 .container-gradient {
-  margin: 3% auto;
-  width: 135%;
-  text-align: center;
+  margin-top: 3%;
+  width: 80%;
 }
 
 .progress-gradient {
@@ -608,7 +659,9 @@ text-align: center;
     border-radius: 5px;
 }
 
-
+.m-0{
+  text-align: left;
+}
 
 
 /*  Twitter tweets END  */
@@ -623,3 +676,59 @@ text-align: center;
   margin-bottom: 30%;
   border-radius: 25px;
 }
+
+.goog-logo-link {
+   display:none !important;
+}
+
+.goog-te-gadget {
+   color: transparent !important;
+}
+
+
+/*Cookie Consent Begin*/
+#cookieConsent {
+    background-color: rgba(20,20,20,0.8);
+    min-height: 26px;
+    font-size: 14px;
+    color: #ccc;
+    line-height: 26px;
+    padding: 8px 0 8px 30px;
+    font-family: "Trebuchet MS",Helvetica,sans-serif;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    display: none;
+    z-index: 9999;
+}
+#cookieConsent a {
+    color: #4B8EE7;
+    text-decoration: none;
+}
+#closeCookieConsent {
+    float: right;
+    display: inline-block;
+    cursor: pointer;
+    height: 20px;
+    width: 20px;
+    margin: -15px 0 0 0;
+    font-weight: bold;
+}
+#closeCookieConsent:hover {
+    color: #FFF;
+}
+#cookieConsent a.cookieConsentOK {
+    background-color: #F1D600;
+    color: #000;
+    display: inline-block;
+    border-radius: 5px;
+    padding: 0 20px;
+    cursor: pointer;
+    float: right;
+    margin: 0 60px 0 10px;
+}
+#cookieConsent a.cookieConsentOK:hover {
+    background-color: #E0C91F;
+}
+/*Cookie Consent End*/

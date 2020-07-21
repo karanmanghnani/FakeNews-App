@@ -80,8 +80,11 @@ def HomePage():
 
 			tweets = metrics.createTweetsDB(article_title)
 			#metrics.runMetricsOnTweets()
+			n_tweets = len(tweets)
 
-			return render_template('result.html', title='Misinformation Detector',posts=posts, article_text=article_text, article_title=article_title, emotion_ratio=emotion_ratio, total_emotion=total_emotion, emotion_n_words=emotion_n_words, totalsubj=totalsubj, subj_feats=subj_feats, ratio_of_each_subj=ratio_of_each_subj, vad_features=vad_features, total_vad=total_vad, polarity=polarity, bp_stats=bp_stats, source=source, url=url,absolute_url=absolute_url, tweets=tweets)
+			finalProb = metrics.finalProb(total_emotion, totalsubj, vad_features['total_vad'], polarity['total_pol'], bp_stats['total_bp'],source)
+
+			return render_template('result.html', title='Misinformation Detector',posts=posts, article_text=article_text, article_title=article_title, emotion_ratio=emotion_ratio, total_emotion=total_emotion, emotion_n_words=emotion_n_words, totalsubj=totalsubj, subj_feats=subj_feats, ratio_of_each_subj=ratio_of_each_subj, vad_features=vad_features, total_vad=total_vad, polarity=polarity, bp_stats=bp_stats, source=source, url=url,absolute_url=absolute_url, tweets=tweets, n_tweets=n_tweets, finalProb=finalProb)
 		
 		else:
 			article_title = "No title"
@@ -221,6 +224,7 @@ def evaluation():
 			url = "No url"
 
 			tweets = metrics.createTweetsDB(article_title)
+			n_tweets = len(tweets)
 
 	if request.method == 'POST': 
 		#print(request.form)
@@ -235,7 +239,7 @@ def evaluation():
 		data =  {  'article': key, 'Q1': request.form['1_'+str(key)], 'Q2': request.form['2_'+str(key)], 'Q3': request.form['3_'+str(key)], 'Q4': request.form['4_'+str(key)], 'Q5': request.form['5_'+str(key)], 'Q6': request.form['6_'+str(key)]}
 		firebase.post('/fakenews-app-d59dc/without_labels/',data)
 
-		return render_template('evaluation_labels.html', posts=posts, articles=articles, title_date=title_date, source_verification=source_verification, article_text=article_text, article_title=article_title, emotion_ratio=emotion_ratio, total_emotion=total_emotion, emotion_n_words=emotion_n_words, totalsubj=totalsubj, subj_feats=subj_feats, ratio_of_each_subj=ratio_of_each_subj, vad_features=vad_features, total_vad=total_vad, polarity=polarity, bp_stats=bp_stats, source=source, url=url,absolute_url=absolute_url, tweets=tweets)
+		return render_template('evaluation_labels.html', posts=posts, articles=articles, title_date=title_date, source_verification=source_verification, article_text=article_text, article_title=article_title, emotion_ratio=emotion_ratio, total_emotion=total_emotion, emotion_n_words=emotion_n_words, totalsubj=totalsubj, subj_feats=subj_feats, ratio_of_each_subj=ratio_of_each_subj, vad_features=vad_features, total_vad=total_vad, polarity=polarity, bp_stats=bp_stats, source=source, url=url,absolute_url=absolute_url, tweets=tweets, n_tweets=n_tweets)
 		
 	else:
 
@@ -258,10 +262,10 @@ def evaluation():
 		else:
 			if(result == '1'):
 				value = True
-				return render_template('evaluation_labels.html' ,posts=posts, articles=articles, title_date=title_date, source_verification=source_verification, key=key, value=value,  article_text=article_text, article_title=article_title, emotion_ratio=emotion_ratio, total_emotion=total_emotion, emotion_n_words=emotion_n_words, totalsubj=totalsubj, subj_feats=subj_feats, ratio_of_each_subj=ratio_of_each_subj, vad_features=vad_features, total_vad=total_vad, polarity=polarity, bp_stats=bp_stats, source=source, url=url,absolute_url=absolute_url, tweets=tweets)
+				return render_template('evaluation_labels.html' ,posts=posts, articles=articles, title_date=title_date, source_verification=source_verification, key=key, value=value,  article_text=article_text, article_title=article_title, emotion_ratio=emotion_ratio, total_emotion=total_emotion, emotion_n_words=emotion_n_words, totalsubj=totalsubj, subj_feats=subj_feats, ratio_of_each_subj=ratio_of_each_subj, vad_features=vad_features, total_vad=total_vad, polarity=polarity, bp_stats=bp_stats, source=source, url=url,absolute_url=absolute_url, tweets=tweets, n_tweets=n_tweets)
 			else:
 				value = False
-				return render_template('evaluation.html' ,posts=posts, articles=articles, title_date=title_date, source_verification=source_verification, key=key, value=value,  article_text=article_text, article_title=article_title, emotion_ratio=emotion_ratio, total_emotion=total_emotion, emotion_n_words=emotion_n_words, totalsubj=totalsubj, subj_feats=subj_feats, ratio_of_each_subj=ratio_of_each_subj, vad_features=vad_features, total_vad=total_vad, polarity=polarity, bp_stats=bp_stats, source=source, url=url,absolute_url=absolute_url, tweets=tweets)
+				return render_template('evaluation.html' ,posts=posts, articles=articles, title_date=title_date, source_verification=source_verification, key=key, value=value,  article_text=article_text, article_title=article_title, emotion_ratio=emotion_ratio, total_emotion=total_emotion, emotion_n_words=emotion_n_words, totalsubj=totalsubj, subj_feats=subj_feats, ratio_of_each_subj=ratio_of_each_subj, vad_features=vad_features, total_vad=total_vad, polarity=polarity, bp_stats=bp_stats, source=source, url=url,absolute_url=absolute_url, tweets=tweets, n_tweets=n_tweets)
 
 		
 
@@ -272,10 +276,10 @@ def evaluation_message():
 		if(len(evaluation.split())==6):
 			return render_template('evaluation.html' ,posts=posts, articles=articles, title_date=title_date, source_verification=source_verification, key=key, value=value)
 		else:
-			return render_template('evaluation.html' ,posts=posts, articles=articles, title_date=title_date, source_verification=source_verification, key=key, value=value,  article_text=article_text, article_title=article_title, emotion_ratio=emotion_ratio, total_emotion=total_emotion, emotion_n_words=emotion_n_words, totalsubj=totalsubj, subj_feats=subj_feats, ratio_of_each_subj=ratio_of_each_subj, vad_features=vad_features, total_vad=total_vad, polarity=polarity, bp_stats=bp_stats, source=source, url=url,absolute_url=absolute_url, tweets=tweets)
+			return render_template('evaluation.html' ,posts=posts, articles=articles, title_date=title_date, source_verification=source_verification, key=key, value=value,  article_text=article_text, article_title=article_title, emotion_ratio=emotion_ratio, total_emotion=total_emotion, emotion_n_words=emotion_n_words, totalsubj=totalsubj, subj_feats=subj_feats, ratio_of_each_subj=ratio_of_each_subj, vad_features=vad_features, total_vad=total_vad, polarity=polarity, bp_stats=bp_stats, source=source, url=url,absolute_url=absolute_url, tweets=tweets, n_tweets=n_tweets)
 
 	else:
-		return render_template('evaluation_message.html' ,posts=posts, articles=articles, title_date=title_date, source_verification=source_verification, key=key, value=value,  article_text=article_text, article_title=article_title, emotion_ratio=emotion_ratio, total_emotion=total_emotion, emotion_n_words=emotion_n_words, totalsubj=totalsubj, subj_feats=subj_feats, ratio_of_each_subj=ratio_of_each_subj, vad_features=vad_features, total_vad=total_vad, polarity=polarity, bp_stats=bp_stats, source=source, url=url,absolute_url=absolute_url, tweets=tweets)
+		return render_template('evaluation_message.html' ,posts=posts, articles=articles, title_date=title_date, source_verification=source_verification, key=key, value=value,  article_text=article_text, article_title=article_title, emotion_ratio=emotion_ratio, total_emotion=total_emotion, emotion_n_words=emotion_n_words, totalsubj=totalsubj, subj_feats=subj_feats, ratio_of_each_subj=ratio_of_each_subj, vad_features=vad_features, total_vad=total_vad, polarity=polarity, bp_stats=bp_stats, source=source, url=url,absolute_url=absolute_url, tweets=tweets, n_tweets=n_tweets)
 
 if __name__ == '__main__':
     app.run(debug=True)

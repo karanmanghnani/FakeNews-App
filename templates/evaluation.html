@@ -3,13 +3,13 @@
 
 <section style="  background: #ffddcc; height: 250px;">
 	<h1 style="margin-left: 3%;"> <br> Evaluation</h1>
-	<div style="margin-left: 3%; width: 70%;">
-		<p>This evaluation contains a news to be evaluated. Your goal is to read the article and answer the questions associated with the credibility of the article. <br>
+	<div style="margin-left: 3%; width: 75%;">
+		<p>This assessment contains a news to be evaluated which can be an article from the Social Media or from a news website which the veracity is known. Your goal is to read the article and answer the questions associated with the credibility of the article. <br>
 		Next you will find the same article but this time are presented the indicators of desinformation provided by the tool. <br>
 		The assessment aims to evaluate the indicators proposed by this tool and assess the usefulness and impact on the answers obtained.</p>
 	</div>
 </section>
-<form action="/evaluation" method = 'POST'>
+<form action="/evaluation" method = 'POST' onsubmit = "return checkForm();">
     {% if key == 6 %}
 		<div class="message-evaluation">
 			<p>There are no more assessements!</p>
@@ -109,7 +109,7 @@
 					    	<label class="radio"><input type="radio" value=true name= "6_{{ key }}" >True</label>
 						</div>
 						<div class="radio">
-					    	<label class="radio"><input type="radio" value=true name= "6_{{ key }}" >Dubious</label>
+					    	<label class="radio"><input type="radio" value=dubious name= "6_{{ key }}" >Dubious</label>
 						</div>
 						<div class="radio">
 					    	<label class="radio"><input type="radio" value=false name= "6_{{ key }}" >Fake</label>
@@ -117,16 +117,30 @@
 					</div>
 				</div> 
 			{% endfor %}
-			
-			<input style="background-color: blue; color: white; margin-left: 15%; margin-top: 5%;" type="submit" class="btn btn-default" value="Next"></input>
+			<script type="text/javascript">
+				function checkForm() {
+				    var valid = true;
+				    if ($('input[type=radio]:checked').length < 5) {
+    					alert("Please choose all options");
+    					valid = false;
+					}
+
+				    return valid;
+				}
+
+			</script>
+
+			<input style="background-color: blue; color: white; margin-left: 9%; margin-top: 5%;" type="submit" class="btn btn-default" value="Next" onclick="checkForm()"></input>
 		</form>
 
 
 
 
 		<p><br></p>
-		<h1> .</h1>
+		<h1> </h1>
 
     {% endif %} 
+
+
 	
 {% endblock content %}
