@@ -147,6 +147,8 @@ def evaluation_labels():
 		evaluation = request.cookies.get('evaluation')
 		if(evaluation == None):
 			key = 1
+			count = firebase.get('/fakenews-app-d59dc', 'answer_count')
+			firebase.put('/fakenews-app-d59dc','answer_count', str(int(count) + 1) )
 		else:
 			key = len(evaluation.split()) + 1
 		value = 6 - key
