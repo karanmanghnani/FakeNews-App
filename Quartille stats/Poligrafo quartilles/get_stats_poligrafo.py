@@ -10,7 +10,8 @@ stats_true, stats_false = stats[:15], stats[15:]
 stats_emotions= [stats_true.Emotion, stats_false.Emotion]
 stats_subj= [stats_true.Subj, stats_false.Subj]
 stats_affective = [stats_true.val_avg, stats_false.val_avg, stats_true.aro_avg, stats_false.aro_avg, stats_true.dom_avg, stats_false.dom_avg]
-stats_polarity = [stats_true.pos_words, stats_false.pos_words, stats_true.neg_words, stats_false.neg_words]
+stats_polarity = [stats_true.pos_words, stats_false.pos_words, stats_true.neg_words, stats_false.neg_words ]
+stats_polarity_contrast = [stats_true.positive_contrast, stats_false.positive_contrast, stats_true.negative_contrast, stats_false.negative_contrast]
 stats_bp = [stats_true.perceptuality, stats_false.perceptuality, stats_true.relativity, stats_false.relativity, stats_true.cognitivity, stats_false.cognitivity, stats_true.personal, stats_false.personal, stats_true.biological, stats_false.biological, stats_true.social, stats_false.social]
 
 
@@ -70,14 +71,30 @@ for patch, color in zip(box['boxes'], colors):
 	patch.set_facecolor(color)
 
 ax.set_xticklabels(['True', 'False','True', 'False'])
-ax.set_title('Polarity')
+ax.set_title('Polarity (Positive & Negative words)')
 
-fig.savefig('polarity-stats.png', bbox_inches='tight')
+fig.savefig('poligrafo-polarity-stats.png', bbox_inches='tight')
+
+######Polarity contrast ######
+
+fig = plt.figure(5, figsize=(9, 6))
+ax = fig.add_subplot(111)
+box = ax.boxplot(stats_polarity_contrast, patch_artist=True)
+
+colors = ['green', 'red','green', 'red']
+for patch, color in zip(box['boxes'], colors):
+	patch.set_facecolor(color)
+
+ax.set_xticklabels(['True', 'False','True', 'False'])
+ax.set_title('Polarity (Positive & Negative contrast)')
+
+fig.savefig('poligrafo-polarity-contrast-stats.png', bbox_inches='tight')
+
 
 
 ######BP######
 
-fig = plt.figure(5, figsize=(9, 6))
+fig = plt.figure(6, figsize=(9, 6))
 ax = fig.add_subplot(111)
 box = ax.boxplot(stats_bp, patch_artist=True)
 

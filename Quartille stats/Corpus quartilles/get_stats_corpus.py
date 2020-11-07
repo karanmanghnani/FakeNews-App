@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 
 stats = pd.read_excel('BD_results_corpus.xlsx',0) 
 
-stats_true, stats_false = stats[:998], stats[998:]
+stats_true, stats_false = stats[:3600], stats[3600:]
 print(stats_true.Label)
 print(stats_false.Label)
 
@@ -12,7 +12,8 @@ print(stats_false.Label)
 stats_emotions= [stats_true.Emotion, stats_false.Emotion]
 stats_subj= [stats_true.Subj, stats_false.Subj]
 stats_affective = [stats_true.val_avg, stats_false.val_avg, stats_true.aro_avg, stats_false.aro_avg, stats_true.dom_avg, stats_false.dom_avg]
-stats_polarity = [stats_true.pos_words, stats_false.pos_words, stats_true.neg_words, stats_false.neg_words]
+stats_polarity = [stats_true.pos_words, stats_false.pos_words, stats_true.neg_words, stats_false.neg_words ]
+stats_polarity_contrast = [stats_true.pos_contrast, stats_false.pos_contrast, stats_true.neg_contrast, stats_false.neg_contrast]
 stats_bp = [stats_true.perceptuality, stats_false.perceptuality, stats_true.relativity, stats_false.relativity, stats_true.cognitivity, stats_false.cognitivity, stats_true.personal, stats_false.personal, stats_true.biological, stats_false.biological, stats_true.social, stats_false.social]
 
 
@@ -72,14 +73,29 @@ for patch, color in zip(box['boxes'], colors):
 	patch.set_facecolor(color)
 
 ax.set_xticklabels(['True', 'False','True', 'False'])
-ax.set_title('Polarity')
+ax.set_title('Polarity (Positive & Negative words)')
 
 fig.savefig('polarity-corpus-stats.png', bbox_inches='tight')
+
+######Polarity contrast######
+
+fig = plt.figure(5, figsize=(9, 6))
+ax = fig.add_subplot(111)
+box = ax.boxplot(stats_polarity_contrast, patch_artist=True)
+
+colors = ['green', 'red','green', 'red']
+for patch, color in zip(box['boxes'], colors):
+	patch.set_facecolor(color)
+
+ax.set_xticklabels(['True', 'False','True', 'False'])
+ax.set_title('Polarity (Positive & Negative contrast)')
+
+fig.savefig('polarity-contrast-corpus-stats.png', bbox_inches='tight')
 
 
 ######BP######
 
-fig = plt.figure(5, figsize=(9, 6))
+fig = plt.figure(6, figsize=(9, 6))
 ax = fig.add_subplot(111)
 box = ax.boxplot(stats_bp, patch_artist=True)
 

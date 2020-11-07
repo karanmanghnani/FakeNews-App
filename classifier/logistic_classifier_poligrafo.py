@@ -35,27 +35,48 @@ def predict(df, model, metrics, name):
 #y_predicted = model.predict_proba(X_test)
 #model._classes
 
-df = pd.read_excel('BD_results.xlsx')
+df = pd.read_excel('BD_results_poligrafo.xlsx')
 
 
 model = LogisticRegression(max_iter=2000)
 #model = LinearSVC(random_state=0, tol=1e-5,max_iter=2000)
 
 #Emotion
-predict(df,model,['Emotion'],'Emotion')
+predict(df,model,['alegria','desgosto','medo','raiva','surpresa','tristeza'],'Emotion')
 
 #Subjectivity
-predict(df, model, ['Subj'], 'Subjectivity')
+predict(df, model, ['strongsubj','weaksubj'], 'Subjectivity')
 
 # Affective
-predict(df, model, ['val_avg','aro_avg','dom_avg'], 'Affectivity')
+predict(df, model, ['valence_avg','arousal_avg','dominance_avg','valence_std','arousal_std','dominance_std','valence_max','arousal_max','dominance_max','valence_min','arousal_min','dominance_min','valence_dif','arousal_dif','dominance_dif'], 'Affectivity')
 
 # Polarity
-predict(df, model,['pos_words','neg_words'],'Polarity' )
+predict(df, model,['pos_words','neg_words','positive_contrast','negative_contrast'],'Polarity' )
 
 # BP
 predict(df,model,['perceptuality','relativity','cognitivity','personal','biological','social'],'BP' )
 
 # All
-predict(df, model, ['Emotion', 'Subj', 'val_avg','aro_avg','dom_avg', 'pos_words','neg_words', 'perceptuality','relativity','cognitivity','personal','biological','social'], 'All')
+predict(df, model, ['alegria','positive_contrast','negative_contrast','desgosto','medo','raiva','surpresa','tristeza', 'strongsubj','weaksubj', 'valence_avg','arousal_avg','dominance_avg','valence_std','arousal_std','dominance_std','valence_max','arousal_max','dominance_max','valence_min','arousal_min','dominance_min','valence_dif','arousal_dif','dominance_dif', 'pos_words','neg_words', 'perceptuality','relativity','cognitivity','personal','biological','social'], 'All')
 
+"""#All - Emotion
+predict(df, model, ['positive_contrast','negative_contrast','strongsubj','weaksubj', 'valence_avg','arousal_avg','dominance_avg','valence_std','arousal_std','dominance_std','valence_max','arousal_max','dominance_max','valence_min','arousal_min','dominance_min','valence_dif','arousal_dif','dominance_dif', 'pos_words','neg_words', 'perceptuality','relativity','cognitivity','personal','biological','social'], 'All - Emotion')
+
+#All - Subjectivity
+predict(df, model, ['positive_contrast','negative_contrast','alegria','desgosto','medo','raiva','surpresa','tristeza', 'valence_avg','arousal_avg','dominance_avg','valence_std','arousal_std','dominance_std','valence_max','arousal_max','dominance_max','valence_min','arousal_min','dominance_min','valence_dif','arousal_dif','dominance_dif', 'pos_words','neg_words', 'perceptuality','relativity','cognitivity','personal','biological','social'], 'All - Subjectivity')
+
+# All - Affective
+predict(df, model, ['positive_contrast','negative_contrast','alegria','desgosto','medo','raiva','surpresa','tristeza', 'strongsubj','weaksubj', 'pos_words','neg_words', 'perceptuality','relativity','cognitivity','personal','biological','social'], 'All - Affectivity')
+
+# All - Polarity
+predict(df, model, ['alegria','desgosto','medo','raiva','surpresa','tristeza', 'strongsubj','weaksubj', 'valence_avg','arousal_avg','dominance_avg','valence_std','arousal_std','dominance_std','valence_max','arousal_max','dominance_max','valence_min','arousal_min','dominance_min','valence_dif','arousal_dif','dominance_dif', 'perceptuality','relativity','cognitivity','personal','biological','social'], 'All - Polarity')
+
+# All - BP
+predict(df, model, ['positive_contrast','negative_contrast','alegria','desgosto','medo','raiva','surpresa','tristeza', 'strongsubj','weaksubj', 'valence_avg','arousal_avg','dominance_avg','valence_std','arousal_std','dominance_std','valence_max','arousal_max','dominance_max','valence_min','arousal_min','dominance_min','valence_dif','arousal_dif','dominance_dif', 'pos_words','neg_words'], 'All - BP')
+
+# All - Affectivity, polarity
+predict(df, model, ['alegria','desgosto','medo','raiva','surpresa','tristeza', 'strongsubj','weaksubj', 'perceptuality','relativity','cognitivity','personal','biological','social'], 'All - Affectivity, polarity')
+
+# Affectivity + polarity
+predict(df, model, [ 'valence_avg','arousal_avg','dominance_avg','valence_std','arousal_std','dominance_std','valence_max','arousal_max','dominance_max','valence_min','arousal_min','dominance_min','valence_dif','arousal_dif','dominance_dif', 'pos_words','neg_words','positive_contrast','negative_contrast'], 'All + Affectivity, polarity')
+"""

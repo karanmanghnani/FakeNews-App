@@ -74,7 +74,7 @@ def HomePage():
 
 			#emotion_list = metrics.replace_original_words(emotion_list, article_text.split())
 			subj_list = metrics.replace_original_words(subj_list, splitted_words, splitted_words)"""
-			total_emotion, totalsubj, vad_features['total_vad'], polarity['total_pol'], bp_stats['total_bp'] = metrics.fakeProbability2(total_emotion,totalsubj,vad_features['valence_avg'],vad_features['arousal_avg'],vad_features['dominance_avg'],polarity['positive_ratio'],polarity['negative_ratio'],bp_stats['perceptuality'],bp_stats['relativity'],bp_stats['cognitivity'],bp_stats['personal_concerns'],bp_stats['biological_processes'],bp_stats['social_processes'])
+			total_emotion, totalsubj, vad_features['total_vad'], polarity['total_pol'], bp_stats['total_bp'] = metrics.fakeProbability2(total_emotion,totalsubj,vad_features['valence_avg'],vad_features['arousal_avg'],vad_features['dominance_avg'],polarity['positive_ratio'],polarity['negative_ratio'],polarity['positive_contrast'],polarity['negative_contrast'],bp_stats['perceptuality'],bp_stats['relativity'],bp_stats['cognitivity'],bp_stats['personal_concerns'],bp_stats['biological_processes'],bp_stats['social_processes'])
 
 			source, absolute_url = metrics.source(url)
 
@@ -94,19 +94,24 @@ def HomePage():
 			words, original_words = metrics.tokenize_words(sentences)
 
 
-			emotion_ratio, total_emotion, emotion_list = metrics.get_emotions(words, emotion_words)
-			totalsubj, subj_feats, subj_list = metrics.get_subjective_ratio(words, subjective_words)
-			vad_features, vad_list = metrics.get_vad_features(lemmas, anew_extended)
+			emotion_ratio, emotion_n_words, total_emotion, emotion_list = metrics.get_emotions(words, emotion_words)
+			totalsubj, subj_feats, subj_list, ratio_of_each_subj = metrics.get_subjective_ratio(words, subjective_words)
+			vad_features, vad_list, total_vad = metrics.get_vad_features(lemmas, anew_extended)
 			polarity = metrics.sentiment_polarity(words, sentilex)
 			bp_stats = metrics.behavioral_physiological(words, liwc_tags)
 
-			total_emotion, totalsubj, vad_features['total_vad'], polarity['total_pol'], bp_stats['total_bp'] = metrics.fakeProbability2(total_emotion,totalsubj,vad_features['valence_avg'],vad_features['arousal_avg'],vad_features['dominance_avg'],polarity['positive_ratio'],polarity['negative_ratio'],bp_stats['perceptuality'],bp_stats['relativity'],bp_stats['cognitivity'],bp_stats['personal_concerns'],bp_stats['biological_processes'],bp_stats['social_processes'])
+			total_emotion, totalsubj, vad_features['total_vad'], polarity['total_pol'], bp_stats['total_bp'] = metrics.fakeProbability2(total_emotion,totalsubj,vad_features['valence_avg'],vad_features['arousal_avg'],vad_features['dominance_avg'],polarity['positive_ratio'],polarity['negative_ratio'],polarity['positive_contrast'],polarity['negative_contrast'],bp_stats['perceptuality'],bp_stats['relativity'],bp_stats['cognitivity'],bp_stats['personal_concerns'],bp_stats['biological_processes'],bp_stats['social_processes'])
 
 			source = False
 			absolute_url = "No url"
 			url = "No url"
+			tweets = metrics.createTweetsDB(article_title)
+			n_tweets = len(tweets)
 
-			return render_template('result.html', title='Misinformation Detector',posts=posts, article_text=article_text, article_title=article_title, emotion_ratio=emotion_ratio, total_emotion=total_emotion, totalsubj=totalsubj, subj_feats=subj_feats, vad_features=vad_features, polarity=polarity, bp_stats=bp_stats, source=source, url=url,absolute_url=absolute_url)
+			finalProb = metrics.finalProb(total_emotion, totalsubj, vad_features['total_vad'], polarity['total_pol'], bp_stats['total_bp'],source)
+
+
+			return render_template('result.html', title='Misinformation Detector',posts=posts, article_text=article_text, article_title=article_title, emotion_ratio=emotion_ratio, total_emotion=total_emotion, emotion_n_words=emotion_n_words, totalsubj=totalsubj, subj_feats=subj_feats, ratio_of_each_subj=ratio_of_each_subj, vad_features=vad_features, total_vad=total_vad, polarity=polarity, bp_stats=bp_stats, source=source, url=url,absolute_url=absolute_url, tweets=tweets, n_tweets=n_tweets, finalProb=finalProb)
 		
 	else:
 		return render_template('HomePage.html', title='Misinformation Detector')

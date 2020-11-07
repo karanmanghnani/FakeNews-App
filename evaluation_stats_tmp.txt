@@ -1,0 +1,207 @@
+###############
+With Indicators
+###############
+--------TRUE ARTICLES--------
+1. Does the title represent the content of the article?
+{'Completely Unrepresentative': 4, 'Somewhat Unrepresentative': 4, 'Somewhat Representative': 5, 'Completely Representative': 4}
+
+
+2. If you selected unrepresentative, why do you think the title does not represent the content of the article?
+{'It representative': 9, 'Title is on a different topic than the body': 2, 'Title carries only little information about the body': 3, 'Title takes a different point of view than the body': 1, 'Title overstates/understates claims or conclusions': 2}
+
+
+3. Is the title clickbaity (form of false advertisement to attract attention and to make users read the news)? <br> Rank on a scale of 1 (Not clickbaity) to 5 (Very clickbaity)
+{'1': 6, '2': 2, '3': 4, '4': 3, '5': 2}
+
+
+4. If you think the headline is clickbaity, what makes you think it is?
+['', '', '', '', 'Uso de nomes mais conhecidos e titulo muito subjectivo em relação á noticia.', '', '', 'the article doesn´t say anything about Centeno and his actions', '', '', "Because the title claims something that isn't confirmed on the body. The title mention Centeno and something he said, but the body don't even have nothing about that.", '', '', '', '', '', 'article is not specific.']
+
+
+5. Is the article subjective (it is expressed an opinion)? <br> Rank on a scale of 1 (Not subjective) to 5 (Very subjective)
+{'1': 3, '2': 3, '3': 4, '4': 2, '5': 5}
+
+
+6. How do you classify this news?
+{'true': 6, 'dubious': 9, 'false': 2}
+
+
+7. Did the indicators made an impact in your assessment of the credibility of the article?
+{'Big impact': 8, 'Small impact': 6, 'No impact': 3}
+
+
+8. If it made an impact in your assessment, which indicator made the biggest impact?
+{'Emotion': 0, 'Subjectivity': 4, 'Affectivity': 0, 'Polarity': 2, 'BP': 0, 'Source': 8, 'None': 3}
+
+
+--------FALSE ARTICLES--------
+1. Does the title represent the content of the article?
+{'Completely Unrepresentative': 2, 'Somewhat Unrepresentative': 4, 'Somewhat Representative': 2, 'Completely Representative': 9}
+
+
+2. If you selected unrepresentative, why do you think the title does not represent the content of the article?
+{'It representative': 11, 'Title is on a different topic than the body': 0, 'Title carries only little information about the body': 2, 'Title takes a different point of view than the body': 0, 'Title overstates/understates claims or conclusions': 4}
+
+
+3. Is the title clickbaity (form of false advertisement to attract attention and to make users read the news)? <br> Rank on a scale of 1 (Not clickbaity) to 5 (Very clickbaity)
+{'1': 2, '2': 1, '3': 4, '4': 3, '5': 7}
+
+
+4. If you think the headline is clickbaity, what makes you think it is?
+['', '', '', '', 'transmitir escandalo', '', 'the article dosent specify the amount said in the tittle', 'É  do meu interesse', '', 'It doesnt assure the proposal 100%.', 'The way the news are written and because they say "loja dos chineses", which a real journalist would never say it because of ethics. ', 'its mentions religion and it gives attention', 'Referir que é uma proposta milionária faz com que as pessoas queiram saber qual o valor', 'As pessoas abrem por curiosidade ', 'Quando o tema é religião e envolve alguma mudança, como neste caso, vai levar a que as pessoas queiram perceber melhor a situação', 'João Félix', 'Choca o público que lê o título.']
+
+
+5. Is the article subjective (it is expressed an opinion)? <br> Rank on a scale of 1 (Not subjective) to 5 (Very subjective)
+{'1': 1, '2': 2, '3': 4, '4': 2, '5': 8}
+
+
+6. How do you classify this news?
+{'true': 0, 'dubious': 6, 'false': 11}
+
+
+7. Did the indicators made an impact in your assessment of the credibility of the article?
+{'Big impact': 7, 'Small impact': 8, 'No impact': 2}
+
+
+8. If it made an impact in your assessment, which indicator made the biggest impact?
+{'Emotion': 2, 'Subjectivity': 0, 'Affectivity': 0, 'Polarity': 0, 'BP': 0, 'Source': 13, 'None': 2}
+
+
+###############
+Without Indicators
+###############
+--------TRUE ARTICLES--------
+1. Does the title represent the content of the article?
+{'Completely Unrepresentative': 2, 'Somewhat Unrepresentative': 4, 'Somewhat Representative': 10, 'Completely Representative': 7}
+
+
+2. If you selected unrepresentative, why do you think the title does not represent the content of the article?
+{'It representative': 15, 'Title is on a different topic than the body': 1, 'Title carries only little information about the body': 3, 'Title takes a different point of view than the body': 1, 'Title overstates/understates claims or conclusions': 3}
+
+
+3. Is the title clickbaity (form of false advertisement to attract attention and to make users read the news)? <br> Rank on a scale of 1 (Not clickbaity) to 5 (Very clickbaity)
+{'1': 7, '2': 5, '3': 8, '4': 1, '5': 2}
+
+
+4. If you think the headline is clickbaity, what makes you think it is?
+['', '', 'Foca-se bastante no presidente do brasil e nao no geral da noticia em si ', '', '', '', 'Uso de nomes mais conhecidos (como Centeno em vez de Fundo de resoluções).', '', '', 'because the article didn´t says anything about Centeno himself and his actions', '', '', '', "Because the title claims something that isn't confirmed on the body. The title mention Centeno and something he said, but the body don't even have nothing about that.", '', '', '', '', '', 'nao responde', 'nao responde', 'nao responde', '']
+
+
+5. Is the article subjective (it is expressed an opinion)? <br> Rank on a scale of 1 (Not subjective) to 5 (Very subjective)
+{'1': 7, '2': 1, '3': 8, '4': 3, '5': 4}
+
+
+6. How do you classify this news?
+{'true': 9, 'dubious': 13, 'false': 1}
+
+
+7. Did the indicators made an impact in your assessment of the credibility of the article?
+{'Big impact': 0, 'Small impact': 0, 'No impact': 0}
+
+
+8. If it made an impact in your assessment, which indicator made the biggest impact?
+{'Emotion': 0, 'Subjectivity': 0, 'Affectivity': 0, 'Polarity': 0, 'BP': 0, 'Source': 0, 'None': 0}
+
+
+--------FALSE ARTICLES--------
+1. Does the title represent the content of the article?
+{'Completely Unrepresentative': 0, 'Somewhat Unrepresentative': 5, 'Somewhat Representative': 6, 'Completely Representative': 8}
+
+
+2. If you selected unrepresentative, why do you think the title does not represent the content of the article?
+{'It representative': 13, 'Title is on a different topic than the body': 0, 'Title carries only little information about the body': 3, 'Title takes a different point of view than the body': 0, 'Title overstates/understates claims or conclusions': 3}
+
+
+3. Is the title clickbaity (form of false advertisement to attract attention and to make users read the news)? <br> Rank on a scale of 1 (Not clickbaity) to 5 (Very clickbaity)
+{'1': 4, '2': 1, '3': 3, '4': 6, '5': 5}
+
+
+4. If you think the headline is clickbaity, what makes you think it is?
+['', 'The title states that the contract will occur, when in the news there is no concrete evidence that it happened.', '', 'The title states a fact, when in the news it is asked at the beginning if "Is it true?"', '', '', 'transmitir escandalo', '', 'the article dosent specify the amount said in the tittle', 'fala sobre grandes jogadores e de grande clubes , e isso chama a minha atenção.', 'noticias que nos rodeiam', 'It doesnt assure the proposal 100%.', 'The way the news are written and because they say "loja dos chineses", which a real journalist would never say it because of ethics. ', 'its mentions religion and it gives attention', 'Referir que é uma proposta milionária faz com que as pessoas queiram saber qual o valor', 'As pessoas abrem por curiosidade ', 'Quando o tema é religião e envolve alguma mudança, como neste caso, vai levar a que as pessoas queiram perceber melhor a situação', 'João Félix', 'Choca o público que lê o título.']
+
+
+5. Is the article subjective (it is expressed an opinion)? <br> Rank on a scale of 1 (Not subjective) to 5 (Very subjective)
+{'1': 3, '2': 1, '3': 3, '4': 4, '5': 8}
+
+
+6. How do you classify this news?
+{'true': 4, 'dubious': 9, 'false': 6}
+
+
+7. Did the indicators made an impact in your assessment of the credibility of the article?
+{'Big impact': 0, 'Small impact': 0, 'No impact': 0}
+
+
+8. If it made an impact in your assessment, which indicator made the biggest impact?
+{'Emotion': 0, 'Subjectivity': 0, 'Affectivity': 0, 'Polarity': 0, 'BP': 0, 'Source': 0, 'None': 0}
+
+
+###############
+With Indicators only
+###############
+--------TRUE ARTICLES--------
+1. Does the title represent the content of the article?
+{'Completely Unrepresentative': 2, 'Somewhat Unrepresentative': 4, 'Somewhat Representative': 5, 'Completely Representative': 6}
+
+
+2. If you selected unrepresentative, why do you think the title does not represent the content of the article?
+{'It representative': 8, 'Title is on a different topic than the body': 0, 'Title carries only little information about the body': 5, 'Title takes a different point of view than the body': 1, 'Title overstates/understates claims or conclusions': 3}
+
+
+3. Is the title clickbaity (form of false advertisement to attract attention and to make users read the news)? <br> Rank on a scale of 1 (Not clickbaity) to 5 (Very clickbaity)
+{'1': 6, '2': 0, '3': 5, '4': 3, '5': 3}
+
+
+4. If you think the headline is clickbaity, what makes you think it is?
+['', '', '', '', '', '', '', '', '', '', "It is somewhat representative of the article, but exagerates the point made in it to call the users' atention.", '', 'As pessoas vão querer saber os dois primeiros lugares', 'o titulo refere-se a um assunto em concreto, e certas partes da noticia abordam assuntos de acionistas que  vem cobrar faturas ao estado. ', 'Provoca desconfiança no sistema político, nomeadamente nos representantes do governo.', 'Polémica.', 'O corpo da notícia não desenvolveu a informação presente no título.']
+
+
+5. Is the article subjective (it is expressed an opinion)? <br> Rank on a scale of 1 (Not subjective) to 5 (Very subjective)
+{'1': 7, '2': 4, '3': 4, '4': 0, '5': 2}
+
+
+6. How do you classify this news?
+{'true': 7, 'dubious': 10, 'false': 0}
+
+
+7. Did the indicators made an impact in your assessment of the credibility of the article?
+{'Big impact': 8, 'Small impact': 9, 'No impact': 0}
+
+
+8. If it made an impact in your assessment, which indicator made the biggest impact?
+{'Emotion': 2, 'Subjectivity': 5, 'Affectivity': 0, 'Polarity': 1, 'BP': 1, 'Source': 8, 'None': 0}
+
+
+--------FALSE ARTICLES--------
+1. Does the title represent the content of the article?
+{'Completely Unrepresentative': 1, 'Somewhat Unrepresentative': 1, 'Somewhat Representative': 5, 'Completely Representative': 9}
+
+
+2. If you selected unrepresentative, why do you think the title does not represent the content of the article?
+{'It representative': 11, 'Title is on a different topic than the body': 0, 'Title carries only little information about the body': 0, 'Title takes a different point of view than the body': 2, 'Title overstates/understates claims or conclusions': 3}
+
+
+3. Is the title clickbaity (form of false advertisement to attract attention and to make users read the news)? <br> Rank on a scale of 1 (Not clickbaity) to 5 (Very clickbaity)
+{'1': 2, '2': 2, '3': 3, '4': 3, '5': 6}
+
+
+4. If you think the headline is clickbaity, what makes you think it is?
+['Concludes in the title when there is no conclusion yet', '', '', 'Dizer que existe uma proposta por parte do PSG que nao existe na realidade', '', '', '', '', '', "The articles' point is completely different than the titles'", "Not sure. The title does represent the articles' content. But the article is obviously fake.", '', 'pois não passa de especulaçoes criadas pela imprensa desportiva', 'não responde', 'Relaciona a transferência de um Português com um valor astronómico.', 'Questões político-religiosas são sempre motivo de discórdia e debate. Provoca essa emoção nas pessoas.']
+
+
+5. Is the article subjective (it is expressed an opinion)? <br> Rank on a scale of 1 (Not subjective) to 5 (Very subjective)
+{'1': 5, '2': 0, '3': 2, '4': 4, '5': 5}
+
+
+6. How do you classify this news?
+{'true': 2, 'dubious': 5, 'false': 9}
+
+
+7. Did the indicators made an impact in your assessment of the credibility of the article?
+{'Big impact': 10, 'Small impact': 4, 'No impact': 2}
+
+
+8. If it made an impact in your assessment, which indicator made the biggest impact?
+{'Emotion': 2, 'Subjectivity': 0, 'Affectivity': 2, 'Polarity': 0, 'BP': 1, 'Source': 11, 'None': 0}
+
+

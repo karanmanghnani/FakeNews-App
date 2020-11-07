@@ -445,7 +445,7 @@ def fakeProbability(metric, metric_total):
 
     return float('%.1f' % ((metric_prob)*100))
 
-def fakeProbability2(emotion,subj,val_avg,arou_avg,dom_avg,pos_words,neg_words,percep,relat,cogni,personal,bio,social):
+def fakeProbability2(emotion,subj,val_avg,arou_avg,dom_avg,pos_words,neg_words,pos_contrast,neg_contrast,percep,relat,cogni,personal,bio,social):
 
     df = pd.read_excel('BD_results_corpus.xlsx')
     model = LogisticRegression()
@@ -503,9 +503,12 @@ def fakeProbability2(emotion,subj,val_avg,arou_avg,dom_avg,pos_words,neg_words,p
     lista = []
     lista.append(pos_words)
     lista.append(neg_words)
+    lista.append(pos_contrast)
+    lista.append(neg_contrast)
+    print(lista)
 
-    X_test = pd.DataFrame([lista], columns=['pos_words','neg_words'])
-    X_train = df[['pos_words','neg_words']]
+    X_test = pd.DataFrame([lista], columns=['pos_words','neg_words','pos_contrast','neg_contrast'])
+    X_train = df[['pos_words','neg_words','pos_contrast','neg_contrast']]
     y_train = df.Label
 
     model.fit(X_train, y_train)

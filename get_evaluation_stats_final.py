@@ -153,7 +153,10 @@ def get_article_stats(result, article_bool, label_bool):
 
 firebase = firebase.FirebaseApplication('https://fakenews-app-d59dc.firebaseio.com/', None)
 
-
+with_indicator = 0
+without_indicators=0
+indicatos_only=0
+total_count = 0
 
 
 ##############################
@@ -161,9 +164,11 @@ firebase = firebase.FirebaseApplication('https://fakenews-app-d59dc.firebaseio.c
 ##############################
 print("###############")
 print("With Indicators")
-print("###############")
+print("###############\n")
 
 result = firebase.get('/fakenews-app-d59dc/with_labels', '')
+with_indicator = len(result)
+total_count += len(result)
 
 print("--------TRUE ARTICLES--------")
 get_article_stats(result, True, True)
@@ -176,9 +181,11 @@ get_article_stats(result, False, True)
 ##############################
 print("###############")
 print("Without Indicators")
-print("###############")
+print("###############\n")
 
 result = firebase.get('/fakenews-app-d59dc/without_labels', '')
+without_indicators = len(result)
+total_count += len(result)
 
 print("--------TRUE ARTICLES--------")
 get_article_stats(result, True, False)
@@ -193,9 +200,11 @@ get_article_stats(result, False, False)
 ##############################
 print("###############")
 print("With Indicators only")
-print("###############")
+print("###############\n")
 
 result = firebase.get('/fakenews-app-d59dc/with_labels_only', '')
+indicatos_only = len(result)
+total_count += len(result)
 
 
 print("--------TRUE ARTICLES--------")
@@ -203,3 +212,22 @@ get_article_stats(result, True, True)
 
 print("--------FALSE ARTICLES--------")
 get_article_stats(result, False, True)
+
+##############################
+#       Number of people     #
+##############################
+print("###############")
+print("Number of people")
+print("###############\n")
+
+people = firebase.get('/fakenews-app-d59dc/answer_count', '')
+print("number of people")
+print(people)
+print("with_indicator")
+print(with_indicator)
+print("without_indicators")
+print(without_indicators)
+print("indicatos_only")
+print(indicatos_only)
+print("total_count")
+print(total_count)
