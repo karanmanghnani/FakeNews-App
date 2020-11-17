@@ -1,0 +1,135 @@
+{% extends "layout.html" %}
+{% block content %}
+
+<html>
+	<head>
+		<title> </title>
+		<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+		<meta name="description" content="" />
+		<meta name="keywords" content="" />
+		<!--[if lte IE 8]><script src="css/ie/html5shiv.js"></script><![endif]-->
+
+		<script type="text/javascript" src="{{ url_for('static', filename='js/init.js') }}"></script>
+		<script type="text/javascript" src="{{ url_for('static', filename='js/jquery.min.js') }}"></script>
+		<script type="text/javascript" src="{{ url_for('static', filename='js/jquery.scrollgress.min.js') }}"></script>
+		<script type="text/javascript" src="{{ url_for('static', filename='js/skel.min.js') }}"></script>
+		<script type="text/javascript" src="{{ url_for('static', filename='js/jquery.dropotron.min.js') }}"></script>
+		<script type="text/javascript" src="{{ url_for('static', filename='js/jquery.scrolly.min.js') }}"></script>
+		<script type="text/javascript" src="{{ url_for('static', filename='js/jquery.slidertron.min.js') }}"></script>
+		<script type="text/javascript" src="{{ url_for('static', filename='js/skel-layers.min.js') }}"></script>
+
+		<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/style.css') }}">
+		<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/skel.css') }}">
+		<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/style-xlarge.css') }}">
+
+
+		<!--[if lte IE 9]><link rel="stylesheet" href="css/ie/v9.css" /><![endif]-->
+		<!--[if lte IE 8]><link rel="stylesheet" href="css/ie/v8.css" /><![endif]-->
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+	</head>
+	<body>
+
+		<!-- Main -->
+			<section id="main" class="wrapper style1">
+				<header class="major">
+					<h2>About FactMe</h2>
+				</header>
+				<div class="container5">
+					<div class="row5 150%">
+						<div class="4u 12u$(2)">
+						
+							<!-- Sidebar -->
+								<section id="sidebar">
+									<section>
+										<a href="#" class="image fit"><img src="static/Images/ist-logo.png" alt="" /></a>
+									</section>
+								</section>
+						</div>
+						<div class="8u 12u$(2) important(2)">
+						
+							<!-- Content -->
+								<section id="content">
+									<p style="margin-top: 10%;">FactMe was implemented as a thesis project in Master´s in Computer Science and Engineering from Instituto Superior Técnico. The goal of this project is to implement a prototype tool to provide information quality indicators in an explainable way for news articles in Portuguese which will help detect disinformation and assist consumers to judge the credibility of articles. This project was done with the guidance of the Proj. Mario Gaspar Silva. The thesis is available <a href="https://fenix.tecnico.ulisboa.pt/cursos/meic-t/dissertacao/846778572212570">here.</a> </p>
+								</section>
+								
+						</div>
+					</div>
+					<div style="margin-left: 3%; max-width: 95%;">
+						<h3 style="font-size: 2em;">Motivation</h3>
+						<p>The role of traditional information channels, like television and newspapers, on how we collect and consume news is becoming less prominent. The growth of social media and online news sources has played a crucial role in this transformation. In addiction, the consumption of fresh news content over the Internet is rapidly increasing, resulting from an abundance of technology, which can expose users globally.
+						However, this positive impact comes at a cost, it can also contribute to the spreading of disinformation, which can have many malicious purposes for example:
+						<ul>
+							<li>Promoting ideologies</li>
+							<li>Gaining favor in political elections</li>
+							<li>Earning money</li>
+							<li>Generate ad revenue</li>
+						</ul>
+						Social media has become a critical publishing tool for journalists and the primary consumption method for citizens looking for the latest news. However, online content proliferation also brings disinformation with it, in social media platforms like Facebook, Twitter, and Whatsapp.
+						Disinformation is false or misleading information spread deliberately to deceive. This is a subset of misinformation, which is also false or inaccurate (while misinformation is shared regardless of intent to mislead, disinformation is shared deliberately). The terms misinformation and disinformation have often
+						been associated with the term fake news which is “a news article that is intentionally and verifiably false.” Therefore, it includes news articles intentionally written to mislead or misinform readers but can be verified as false through other sources. 
+						The damage of disinformation leads us to realize how vital a fake news detection tool could be. Recent research has shown techniques and approaches to detect fake news with artificial intelligence tools.
+						One such approach for news analysis consists in using NLP for feature extraction.
+						Feature extraction for disinformation analysis can be either content-based or context-based. Content-based features rely on linguistic features, referring to information that can be directly extracted from the text. Context features are extracted by considering relevant information surrounding the actual social media post or news content. These types of features are called non-linguistic disinformation metrics. A variable computed from one or more metrics, called an indicator, quantifies disinformation and helps consumers decide the credibility of the news </p>
+
+						<h3 style="font-size: 1.5em;">Fake news examples</h3>
+						<div class="row5">
+							<div class="4u 6u(2) 12u$(3)">
+								<article class="box post">
+									<a href="#" class="image fit"><img src="static/Images/covid.jpg" alt="" /></a>
+									<h3>Coronavirus</h3>
+									<p>'Hundreds dead' because of Covid-19 misinformation</p>
+									<ul class="actions">
+										<li><a href="https://www.bbc.com/news/world-53755067" class="button">News article</a></li>
+									</ul>
+								</article>
+							</div>
+							<div class="4u 6u$(2) 12u$(3)">
+								<article class="box post">
+									<a href="#" class="image fit"><img src="static/Images/elections.jpg" alt="" /></a>
+									<h3>2016 Elections</h3>
+									<p>US election: Fake news becomes the news</p>
+									<ul class="actions">
+										<li><a href="https://www.bbc.com/news/world-us-canada-37896753" class="button">News article</a></li>
+									</ul>
+								</article>
+							</div>
+							<div class="4u$ 6u(2) 12u$(3)">
+								<article class="box post">
+									<a href="#" class="image fit"><img src="static/Images/pizzagate.png" alt="" /></a>
+									<h3>Pizzagate theory</h3>
+									<p>A man attacks Comet Ping Pong restaurant </p>
+									<ul class="actions">
+										<li><a href="https://money.cnn.com/2016/12/05/media/fake-news-real-violence-pizzagate/index.html" class="button">News article</a></li>
+									</ul>
+								</article>
+							</div>
+						</div>
+					</div>
+					<hr>
+					<h3 style="font-size: 1.5em; text-align: center;">Acknowledgments</h3>
+					<article class="box post">
+						<div style="text-align: center; display: block; margin-left: auto; margin-right: auto;" class="4u 6u(2) 12u$(3)">
+							<a  href="#" class="image fit"><img src="static/Images/acknowledgments.png" alt="" /></a>
+						</div>
+					</article>
+				</div>
+
+
+
+
+			</section>
+			
+		<!-- Footer -->
+			<footer id="footer" >
+				<ul class="icons">
+					<li><a href="https://fenix.tecnico.ulisboa.pt/cursos/meic-t/dissertacao/846778572212570" class="icon fa-book"><span class="label">Thesis</span></a></li>
+					<li><a href="https://github.com/karanmanghnani" class="icon fa-github"><span class="label">Github</span></a></li>
+					<li><a href="https://tecnico.ulisboa.pt/pt/" class="icon fa-university"><span class="label">University</span></a></li>
+				</ul>
+			</footer>
+
+	</body>
+</html>
+
+	
+{% endblock content %}

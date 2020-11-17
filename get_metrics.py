@@ -294,9 +294,6 @@ def createTweetsDB(query):
 
     api = tweepy.API(auth)
 
-    workbook = xlsxwriter.Workbook('tweets.xlsx')
-    worksheet = workbook.add_worksheet()
-
     # take out the stoppwords
     """    filtered_words = []
     query = query.split()
@@ -321,9 +318,11 @@ def createTweetsDB(query):
     #query = " OR ".join(filtered_words)
     #ver reetweet
     #print(query)
-    max_tweets = 100
+    
     #result_type="popular" Posso meter so os resultados mais populares 
     # meter a lingua portuguesa
+
+    max_tweets = 100
     searched_tweets = [status for status in tweepy.Cursor(api.search, q=query,lang="pt",tweet_mode="extended").items(max_tweets)]
     count = 0
     #[name, date, verified, followers, text, likes, retweets ]
@@ -334,19 +333,12 @@ def createTweetsDB(query):
         if('retweeted_status' not in status_dic.keys()):
             date = status_dic['created_at'].split()
             short_date = date[2] + " " + date[1] + " " + date[5]
-            #print(short_date)
-            #print(status_dic['user']['entities'])
-            worksheet.write(count, 0, status_dic["full_text"])
-            worksheet.write(count, 1, status_dic['created_at'])
-            worksheet.write(count, 2, status_dic['user']['verified'])
+
             tweet.append([status_dic['user']['screen_name'], short_date, status_dic['user']['verified'], status_dic['user']['followers_count'], status_dic["full_text"], status_dic["favorite_count"], status_dic["retweet_count"]])
             count += 1
             #print(tweet)
         if(count == 10):
             break
-
-
-    workbook.close()
     
     return tweet
 
@@ -445,18 +437,25 @@ def fakeProbability(metric, metric_total):
 
     return float('%.1f' % ((metric_prob)*100))
 
-def fakeProbability2(emotion,subj,val_avg,arou_avg,dom_avg,pos_words,neg_words,pos_contrast,neg_contrast,percep,relat,cogni,personal,bio,social):
-
-    df = pd.read_excel('BD_results_corpus.xlsx')
-    model = LogisticRegression()
+def fakeProbability2(emotion_ratio, ratio_of_each_subj, vad_features, polarity, bp_stats):
+    #print(emotion,subj,val_avg,arou_avg,dom_avg,pos_words,neg_words,pos_contrast,neg_contrast,percep,relat,cogni,personal,bio,social)
+    
+    model = LogisticRegression(solver="saga", max_iter=8000)
 
     # Emotion
 
-    lista = []
-    lista.append(emotion)
+    df = pd.read_excel('BD_results_poligrafo.xlsx')
 
-    X_test = pd.DataFrame(lista, columns=['Emotion'])
-    X_train = df[['Emotion']]
+    lista = []
+    lista.append(emotion_ratio['Alegria'])
+    lista.append(emotion_ratio['Desgosto'])
+    lista.append(emotion_ratio['Medo'])
+    lista.append(emotion_ratio['Raiva'])
+    lista.append(emotion_ratio['Surpresa'])
+    lista.append(emotion_ratio['Tristeza']) 
+
+    X_test = pd.DataFrame([lista], columns=['Alegria','Desgosto','Medo','Raiva','Surpresa','Tristeza'])
+    X_train = df[['Alegria','Desgosto','Medo','Raiva','Surpresa','Tristeza']]
     y_train = df.Label
 
     model.fit(X_train, y_train)
@@ -465,13 +464,51 @@ def fakeProbability2(emotion,subj,val_avg,arou_avg,dom_avg,pos_words,neg_words,p
 
     emotion = float('%.0f' % ((y_predicted[0][0])*100))
 
-    # Subj
+    
+    # Affective
+
+    df = pd.read_excel('BD_results_corpus_affectivity.xlsx')
 
     lista = []
-    lista.append(subj)
+    lista.append(vad_features['valence_avg'])
+    lista.append(vad_features['arousal_avg'])
+    lista.append(vad_features['dominance_avg'])
+    lista.append(vad_features['dominance_std'])
+    lista.append(vad_features['arousal_std'])
+    lista.append(vad_features['valence_std'])
+    lista.append(vad_features['dominance_dif'])
+    lista.append(vad_features['arousal_dif'])
+    lista.append(vad_features['valence_dif'])
+    """lista.append(vad_features['dominance_min'])
+    lista.append(vad_features['arousal_min'])
+    lista.append(vad_features['valence_min'])
+    lista.append(vad_features['dominance_max'])
+    lista.append(vad_features['arousal_max'])
+    lista.append(vad_features['valence_max'])
+    """
+    #,'valence_max','arousal_max','dominance_max','valence_min','arousal_min','dominance_min'
 
-    X_test = pd.DataFrame(lista, columns=['Subj'])
-    X_train = df[['Subj']]
+    X_test = pd.DataFrame([lista], columns=['valence_avg','arousal_avg','dominance_avg','valence_std','arousal_std','dominance_std','valence_dif','arousal_dif','dominance_dif'])
+    X_train = df[['valence_avg','arousal_avg','dominance_avg','valence_std','arousal_std','dominance_std','valence_dif','arousal_dif','dominance_dif']]
+    y_train = df.Label
+
+    model.fit(X_train, y_train)
+
+    y_predicted = model.predict_proba(X_test)
+
+    affective = float('%.0f' % ((y_predicted[0][0])*100))
+
+
+    # Subj
+
+    df = pd.read_excel('BD_results_corpus.xlsx')
+
+    lista = []
+    lista.append(ratio_of_each_subj['weaksubj']) 
+    lista.append(ratio_of_each_subj['strongsubj'])
+
+    X_test = pd.DataFrame([lista], columns=['strongsubj','weaksubj'])
+    X_train = df[['strongsubj','weaksubj']]
     y_train = df.Label
 
     model.fit(X_train, y_train)
@@ -481,55 +518,38 @@ def fakeProbability2(emotion,subj,val_avg,arou_avg,dom_avg,pos_words,neg_words,p
     subj = float('%.0f' % ((y_predicted[0][0])*100))
 
 
-    # Affective
-
-    lista = []
-    lista.append(val_avg)
-    lista.append(arou_avg)
-    lista.append(dom_avg)
-
-    X_test = pd.DataFrame([lista], columns=['val_avg','aro_avg','dom_avg'])
-    X_train = df[['val_avg','aro_avg','dom_avg']]
-    y_train = df.Label
-
-    model.fit(X_train, y_train)
-
-    y_predicted = model.predict_proba(X_test)
-
-    affective = float('%.0f' % ((y_predicted[0][0])*100))
-
     # Polarity
 
     lista = []
-    lista.append(pos_words)
-    lista.append(neg_words)
-    lista.append(pos_contrast)
-    lista.append(neg_contrast)
-    print(lista)
+    lista.append(polarity['positive_ratio'])
+    lista.append(polarity['negative_ratio'])
+    lista.append(polarity['positive_contrast'])
+    lista.append(polarity['negative_contrast'])
 
-    X_test = pd.DataFrame([lista], columns=['pos_words','neg_words','pos_contrast','neg_contrast'])
-    X_train = df[['pos_words','neg_words','pos_contrast','neg_contrast']]
+    X_test = pd.DataFrame([lista], columns=['positive_ratio','negative_ratio','positive_contrast','negative_contrast'])
+    X_train = df[['positive_ratio','negative_ratio','positive_contrast','negative_contrast']]
     y_train = df.Label
 
     model.fit(X_train, y_train)
 
     y_predicted = model.predict_proba(X_test)
+    #print(y_predicted)
 
-    polarity = float('%.0f' % ((y_predicted[0][0])*100))
+    pol = float('%.0f' % ((y_predicted[0][0])*100))
 
 
     # BP
 
     lista = []
-    lista.append(percep)
-    lista.append(relat)
-    lista.append(cogni)
-    lista.append(personal)
-    lista.append(bio)
-    lista.append(social)
+    lista.append(bp_stats['perceptuality'])
+    lista.append(bp_stats['relativity'])
+    lista.append(bp_stats['cognitivity'])
+    lista.append(bp_stats['personal_concerns'])
+    lista.append(bp_stats['biological_processes'])
+    lista.append(bp_stats['social_processes'])
 
-    X_test = pd.DataFrame([lista], columns=['perceptuality','relativity','cognitivity','personal','biological','social'])
-    X_train = df[['perceptuality','relativity','cognitivity','personal','biological','social']]
+    X_test = pd.DataFrame([lista], columns=['perceptuality','relativity','cognitivity','personal_concerns','biological_processes','social_processes'])
+    X_train = df[['perceptuality','relativity','cognitivity','personal_concerns','biological_processes','social_processes']]
     y_train = df.Label
 
     model.fit(X_train, y_train)
@@ -537,9 +557,58 @@ def fakeProbability2(emotion,subj,val_avg,arou_avg,dom_avg,pos_words,neg_words,p
     y_predicted = model.predict_proba(X_test)
 
     bp = float('%.0f' % ((y_predicted[0][0])*100))
+    """
+    # All
+
+    lista = []
+    lista.append(emotion_ratio['Alegria'])
+    lista.append(emotion_ratio['Desgosto'])
+    lista.append(emotion_ratio['Medo'])
+    lista.append(emotion_ratio['Raiva'])
+    lista.append(emotion_ratio['Surpresa'])
+    lista.append(emotion_ratio['Tristeza']) 
+    lista.append(ratio_of_each_subj['weaksubj']) 
+    lista.append(ratio_of_each_subj['strongsubj'])
+    lista.append(vad_features['valence_avg'])
+    lista.append(vad_features['arousal_avg'])
+    lista.append(vad_features['dominance_dif'])
+    lista.append(vad_features['arousal_dif'])
+    lista.append(vad_features['valence_dif'])
+    lista.append(vad_features['dominance_min'])
+    lista.append(vad_features['arousal_min'])
+    lista.append(vad_features['valence_min'])
+    lista.append(vad_features['dominance_max'])
+    lista.append(vad_features['arousal_max'])
+    lista.append(vad_features['valence_max'])
+    lista.append(vad_features['dominance_std'])
+    lista.append(vad_features['arousal_std'])
+    lista.append(vad_features['valence_std'])
+    lista.append(vad_features['dominance_avg'])
+    lista.append(polarity['positive_ratio'])
+    lista.append(polarity['negative_ratio'])
+    lista.append(polarity['positive_contrast'])
+    lista.append(polarity['negative_contrast'])
+    lista.append(bp_stats['perceptuality'])
+    lista.append(bp_stats['relativity'])
+    lista.append(bp_stats['cognitivity'])
+    lista.append(bp_stats['personal_concerns'])
+    lista.append(bp_stats['biological_processes'])
+    lista.append(bp_stats['social_processes'])
+
+    X_test = pd.DataFrame([lista], columns=['Alegria','Desgosto','Medo','Raiva','Surpresa','Tristeza', 'strongsubj','weaksubj', 'valence_avg','arousal_avg','dominance_avg','valence_std','arousal_std','dominance_std','valence_max','arousal_max','dominance_max','valence_min','arousal_min','dominance_min','valence_dif','arousal_dif','dominance_dif', 'positive_ratio','negative_ratio', 'positive_contrast', 'negative_contrast', 'perceptuality','relativity','cognitivity','personal_concerns','biological_processes','social_processes'])
+    X_train = df[['Alegria','Desgosto','Medo','Raiva','Surpresa','Tristeza', 'strongsubj','weaksubj', 'valence_avg','arousal_avg','dominance_avg','valence_std','arousal_std','dominance_std','valence_max','arousal_max','dominance_max','valence_min','arousal_min','dominance_min','valence_dif','arousal_dif','dominance_dif', 'positive_ratio','negative_ratio', 'positive_contrast', 'negative_contrast', 'perceptuality','relativity','cognitivity','personal_concerns','biological_processes','social_processes']]
+    y_train = df.Label
+
+    model.fit(X_train, y_train)
+
+    y_predicted = model.predict_proba(X_test)
+
+    finalProb = float('%.0f' % ((y_predicted[0][0])*100))
+
+    print(finalProb)"""
 
 
-    return emotion, subj, affective, polarity, bp
+    return emotion, subj, affective, pol, bp
 
 #######################################
 #          Final Probability          #
@@ -554,6 +623,56 @@ def finalProb(total_emotion, totalsubj, total_vad, total_pol, total_bp, source):
 
     return linguisticProb
 
+def finalProb2(emotion_ratio, ratio_of_each_subj, vad_features, polarity, bp_stats):
+    df = pd.read_excel('BD_results_corpus_temp.xlsx')
+    model = LogisticRegression(max_iter=5000)
+
+    lista = []
+    lista.append(emotion_ratio['Alegria'])
+    lista.append(emotion_ratio['Desgosto'])
+    lista.append(emotion_ratio['Medo'])
+    lista.append(emotion_ratio['Raiva'])
+    lista.append(emotion_ratio['Surpresa'])
+    lista.append(emotion_ratio['Tristeza']) 
+    lista.append(ratio_of_each_subj['weaksubj']) 
+    lista.append(ratio_of_each_subj['strongsubj'])
+    lista.append(vad_features['valence_avg'])
+    lista.append(vad_features['arousal_avg'])
+    lista.append(vad_features['dominance_dif'])
+    lista.append(vad_features['arousal_dif'])
+    lista.append(vad_features['valence_dif'])
+    lista.append(vad_features['dominance_min'])
+    lista.append(vad_features['arousal_min'])
+    lista.append(vad_features['valence_min'])
+    lista.append(vad_features['dominance_max'])
+    lista.append(vad_features['arousal_max'])
+    lista.append(vad_features['valence_max'])
+    lista.append(vad_features['dominance_std'])
+    lista.append(vad_features['arousal_std'])
+    lista.append(vad_features['valence_std'])
+    lista.append(vad_features['dominance_avg'])
+    lista.append(polarity['positive_ratio'])
+    lista.append(polarity['negative_ratio'])
+    lista.append(polarity['positive_contrast'])
+    lista.append(polarity['negative_contrast'])
+    lista.append(bp_stats['perceptuality'])
+    lista.append(bp_stats['relativity'])
+    lista.append(bp_stats['cognitivity'])
+    lista.append(bp_stats['personal_concerns'])
+    lista.append(bp_stats['biological_processes'])
+    lista.append(bp_stats['social_processes'])
+
+    X_test = pd.DataFrame([lista], columns=['Alegria','Desgosto','Medo','Raiva','Surpresa','Tristeza', 'strongsubj','weaksubj', 'valence_avg','arousal_avg','dominance_avg','valence_std','arousal_std','dominance_std','valence_max','arousal_max','dominance_max','valence_min','arousal_min','dominance_min','valence_dif','arousal_dif','dominance_dif', 'positive_ratio','negative_ratio', 'positive_contrast', 'negative_contrast', 'perceptuality','relativity','cognitivity','personal_concerns','biological_processes','social_processes'])
+    X_train = df[['Alegria','Desgosto','Medo','Raiva','Surpresa','Tristeza', 'strongsubj','weaksubj', 'valence_avg','arousal_avg','dominance_avg','valence_std','arousal_std','dominance_std','valence_max','arousal_max','dominance_max','valence_min','arousal_min','dominance_min','valence_dif','arousal_dif','dominance_dif', 'positive_ratio','negative_ratio', 'positive_contrast', 'negative_contrast', 'perceptuality','relativity','cognitivity','personal_concerns','biological_processes','social_processes']]
+    y_train = df.Label
+
+    model.fit(X_train, y_train)
+
+    y_predicted = model.predict_proba(X_test)
+
+    finalProb2 = float('%.0f' % ((y_predicted[0][0])*100))
+    #print(y_predicted)
+    return finalProb2
 
 #######################################
 #          Auxiliar Functions		  #

@@ -15,13 +15,14 @@
     {% if title %}
         <title>{{ title }}</title>
     {% else %}
-        <title>Misinformation Detector</title>
+        <title>FactMe</title>
     {% endif %}
 </head>
 <body>
     <div >
     <div class="header">
-      <h1> <span class="notranslate"> Misinformation Detector</span></h1>
+      <h1> <span class="notranslate"> FactMe</span><p style="font-size: 15%; margin-top: 2%; margin-bottom: 0%;">Disinformation detector</p></h1>
+
     </div>
 
     <nav class="navbar navbar-expand-sm">
@@ -36,16 +37,21 @@
           <a class="nav-link" href="#">Fact-checks</a>
         </li>
         <!-- Dropdown -->
-        <li class="nav-item ">
-          <a class="nav-link " href="evaluation">
-            Evaluation
-          </a>
+        <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> Evaluation </a>
+            <div class="dropdown-menu" aria-labelledby="navbarDropdown" >
+                <a class="dropdown-item" href="evaluation"> Evaluation of Indicators </a>
+                <a class="dropdown-item" href="evaluation_interface"> Evaluation of interface </a>
+            </div>
+
         </li>
+
+
         <li class="nav-item">
           <a class="nav-link" href="#">How it works</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="#">About</a>
+          <a class="nav-link" href="about">About</a>
         </li>
         
       </ul>

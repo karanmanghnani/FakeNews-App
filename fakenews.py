@@ -74,7 +74,11 @@ def HomePage():
 
 			#emotion_list = metrics.replace_original_words(emotion_list, article_text.split())
 			subj_list = metrics.replace_original_words(subj_list, splitted_words, splitted_words)"""
-			total_emotion, totalsubj, vad_features['total_vad'], polarity['total_pol'], bp_stats['total_bp'] = metrics.fakeProbability2(total_emotion,totalsubj,vad_features['valence_avg'],vad_features['arousal_avg'],vad_features['dominance_avg'],polarity['positive_ratio'],polarity['negative_ratio'],polarity['positive_contrast'],polarity['negative_contrast'],bp_stats['perceptuality'],bp_stats['relativity'],bp_stats['cognitivity'],bp_stats['personal_concerns'],bp_stats['biological_processes'],bp_stats['social_processes'])
+
+			#finalProb = metrics.finalProb2(emotion_ratio, ratio_of_each_subj, vad_features, polarity, bp_stats)
+
+
+			total_emotion, totalsubj, vad_features['total_vad'], polarity['total_pol'], bp_stats['total_bp'] = metrics.fakeProbability2(emotion_ratio, ratio_of_each_subj, vad_features, polarity, bp_stats)
 
 			source, absolute_url = metrics.source(url)
 
@@ -87,8 +91,9 @@ def HomePage():
 			return render_template('result.html', title='Misinformation Detector',posts=posts, article_text=article_text, article_title=article_title, emotion_ratio=emotion_ratio, total_emotion=total_emotion, emotion_n_words=emotion_n_words, totalsubj=totalsubj, subj_feats=subj_feats, ratio_of_each_subj=ratio_of_each_subj, vad_features=vad_features, total_vad=total_vad, polarity=polarity, bp_stats=bp_stats, source=source, url=url,absolute_url=absolute_url, tweets=tweets, n_tweets=n_tweets, finalProb=finalProb)
 		
 		else:
-			article_title = "No title"
+			article_title = request.form['ArticleTitle']
 			article_text = request.form['ArticleText']
+
 			sentences = metrics.tokenize_sentences(article_text)
 			lemmas, original_lemmas = metrics.lemmatize_words(sentences)
 			words, original_words = metrics.tokenize_words(sentences)
@@ -100,13 +105,17 @@ def HomePage():
 			polarity = metrics.sentiment_polarity(words, sentilex)
 			bp_stats = metrics.behavioral_physiological(words, liwc_tags)
 
-			total_emotion, totalsubj, vad_features['total_vad'], polarity['total_pol'], bp_stats['total_bp'] = metrics.fakeProbability2(total_emotion,totalsubj,vad_features['valence_avg'],vad_features['arousal_avg'],vad_features['dominance_avg'],polarity['positive_ratio'],polarity['negative_ratio'],polarity['positive_contrast'],polarity['negative_contrast'],bp_stats['perceptuality'],bp_stats['relativity'],bp_stats['cognitivity'],bp_stats['personal_concerns'],bp_stats['biological_processes'],bp_stats['social_processes'])
+			total_emotion, totalsubj, vad_features['total_vad'], polarity['total_pol'], bp_stats['total_bp'] = metrics.fakeProbability2(emotion_ratio, ratio_of_each_subj, vad_features, polarity, bp_stats)
 
 			source = False
 			absolute_url = "No url"
 			url = "No url"
-			tweets = metrics.createTweetsDB(article_title)
-			n_tweets = len(tweets)
+			if(article_title == ""):
+				tweets = []
+				n_tweets = 0
+			else:
+				tweets = metrics.createTweetsDB(article_title)
+				n_tweets = len(tweets)
 
 			finalProb = metrics.finalProb(total_emotion, totalsubj, vad_features['total_vad'], polarity['total_pol'], bp_stats['total_bp'],source)
 
@@ -220,7 +229,7 @@ def evaluation():
 			polarity = metrics.sentiment_polarity(words, sentilex)
 			bp_stats = metrics.behavioral_physiological(words, liwc_tags)
 
-			total_emotion, totalsubj, vad_features['total_vad'], polarity['total_pol'], bp_stats['total_bp'] = metrics.fakeProbability2(total_emotion,totalsubj,vad_features['valence_avg'],vad_features['arousal_avg'],vad_features['dominance_avg'],polarity['positive_ratio'],polarity['negative_ratio'],bp_stats['perceptuality'],bp_stats['relativity'],bp_stats['cognitivity'],bp_stats['personal_concerns'],bp_stats['biological_processes'],bp_stats['social_processes'])
+			total_emotion, totalsubj, vad_features['total_vad'], polarity['total_pol'], bp_stats['total_bp'] = metrics.fakeProbability2(emotion_ratio, ratio_of_each_subj, vad_features, polarity, bp_stats)
 
 			#source, absolute_url = metrics.source(url)
 			if(i['verified'] == "True"):
@@ -287,6 +296,14 @@ def evaluation_message():
 
 	else:
 		return render_template('evaluation_message.html' ,posts=posts, articles=articles, title_date=title_date, source_verification=source_verification, key=key, value=value,  article_text=article_text, article_title=article_title, emotion_ratio=emotion_ratio, total_emotion=total_emotion, emotion_n_words=emotion_n_words, totalsubj=totalsubj, subj_feats=subj_feats, ratio_of_each_subj=ratio_of_each_subj, vad_features=vad_features, total_vad=total_vad, polarity=polarity, bp_stats=bp_stats, source=source, url=url,absolute_url=absolute_url, tweets=tweets, n_tweets=n_tweets)
+
+@app.route("/about",methods = ['POST', 'GET'])
+def about():
+    return render_template('about.html', posts=posts)
+
+@app.route("/evaluation_interface",methods = ['POST', 'GET'])
+def evaluation_interface():
+    return render_template('evaluation_interface.html', posts=posts)
 
 if __name__ == '__main__':
     app.run(debug=True)

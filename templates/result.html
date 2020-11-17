@@ -16,7 +16,7 @@
   </div>
 
     <div class="article-classification2">
-    <p style="display: inline;">This article is classified as: </p>
+    <p style="display: inline;">Disinformation score: </p>
     <div class="container-gradient">    
       <div class="progress-gradient progress-striped">
         <div class="progress-bar-gradient">
@@ -64,7 +64,7 @@
   <section id="hero">
 
   <div>
-    <h1 class="indicators-title">Indicators of desinformation</h1>
+    <h1 class="indicators-title">Indicators of disinformation</h1>
   </div>
 
   <div  style="display: inline;">
@@ -281,22 +281,22 @@
     <div style="width: 42%; float: right; margin-right:5%;">
       <div class="media content-section-result-metric">
         {% if source == True %}
-          <h2 style="font-size: 150%; margin: auto; margin-left: 0px;" align="left">Source: ({{ absolute_url }}) <img class="source"  src="static/Images/verified.png" alt="verified Icon"> </h2>
+          <h2 style="font-size: 150%; margin: auto; margin-left: 0px;" align="left">Source credibility: ({{ absolute_url }}) <img class="source"  src="static/Images/verified.png" alt="verified Icon"> </h2>
           
         {% else %}
-          <h2 style="font-size: 150%; margin: auto; margin-left: 0px; "align="left" >Source  <img class="source" src="static/Images/not_verified.png" alt="not verifiedIcon" > </h2>
+          <h2 style="font-size: 150%; margin: auto; margin-left: 0px; "align="left" >Source credibility <img class="source" src="static/Images/not_verified.png" alt="not verifiedIcon" > </h2>
          
         {% endif %}
-        <span data-toggle="modal" data-target="#SourceModal" class="material-icons" style="font-size:23px; margin-left:2%;">info_outline</span>
+        <span data-toggle="modal" data-target="#SourceModal" class="material-icons" style="font-size:23px; margin: auto; margin-right:0%;">info_outline</span>
       </div>
     </div>
   </div>
 
   <div  style="display: inline;">
-    <div style="width: 42%;  margin-left:5%; margin-top: 23%;">
+    <div style="width: 42%;  margin-left:5%; ">
       <div class="media content-section-result-metric">
         <h2 style="font-size: 150%;  margin: auto; margin-left: 0px; " align="center">Related Tweets</h2>
-        <span data-toggle="modal" data-target="#TwitterModal" class="material-icons" style="font-size:23px; margin-left:2%;">info_outline</span>
+        <span data-toggle="modal" data-target="#TwitterModal" class="material-icons" style="font-size:23px; margin: auto; margin-right:0%;">info_outline</span>
       </div>
     </div>
   </div>

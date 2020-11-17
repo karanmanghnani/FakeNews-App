@@ -7,8 +7,43 @@
       It also describes the indicators used to evaluate the news</a>
     </div>
     </article-->
+
+   <div class="content3">
+    <!-- Nav pills -->
+    <ul class="nav nav-pills news" role="tablist">
+      <li class="nav-item news">
+        <a class="nav-link active" data-toggle="pill" href="#login">URL</a>
+      </li>
+      <li class="nav-item news">
+        <a class="nav-link" data-toggle="pill" href="#regis">Article Text</a>
+      </li>
+    </ul>
+
+    <!-- Tab panes -->
+    <div class="tab-content news">
+      <div id="login" class=" tab-pane active">
+        <form action="/HomePage" method = 'POST'>
+		<div style="margin-top: 15%;" class="form-group">
+			<input type="text" class="form-control" id="text" placeholder="Enter the URL here" name="url">
+		</div>
+		<input class="button" type="submit" class="btn btn-primary" value="Go"></input>
+
+        </form>
+      </div>
+
+      <div id="regis" class="container tab-pane fade">
+        <form action="/HomePage" method = 'POST'>
+	    <div class="form-group">
+	    	<textarea class="form-control-title" name="ArticleTitle" placeholder="Title" cols="86" rows="1"></textarea>
+	    	<textarea class="form-control" name="ArticleText" placeholder="Enter the article text here" cols="40" rows="10"></textarea>
+	    </div>
+		<input class="button" type="submit" class="btn btn-primary" value="Go"></input>
+        </form>
+      </div>
+    </div>
+  </div>
    
-    <div class="row">
+    <!--div class="row">
     	<div class="col-sm-4 url"> News URL
 			<div class="container">
 			  <form action="/HomePage" method = 'POST'> 
@@ -30,7 +65,7 @@
 			  </form>
 			</div>
     	</div>
-  </div>
+  </div!-->
 
 <div id="cookieConsent">
 	<div id="closeCookieConsent">x</div>

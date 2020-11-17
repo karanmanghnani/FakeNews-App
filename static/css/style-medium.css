@@ -1,0 +1,100 @@
+/*
+	Drift by Pixelarity
+	pixelarity.com @pixelarity
+	License: pixelarity.com/license
+*/
+
+/* Basic */
+
+	body, input, select, textarea {
+		font-size: 12pt;
+	}
+
+	h2 br, h3 br, h4 br, h5 br, h6 br {
+		display: none;
+	}
+
+/* Section/Article */
+
+	header br {
+		display: none;
+	}
+
+/* Feature */
+
+	.feature {
+		padding-left: 0;
+		text-align: center;
+	}
+
+		.feature:before {
+			margin: 0 0 0.7em 0;
+			position: relative;
+		}
+
+		.feature p {
+			padding: 0 2em;
+		}
+
+/* Slider */
+
+	.slider .viewer {
+		border-width: 1em;
+		width: 100%;
+	}
+
+	.slider .slide img {
+		border-radius: 0.375em;
+		display: block;
+		width: 100%;
+	}
+
+	.slider .nav-next,
+	.slider .nav-previous {
+		background: none;
+		border-radius: 0;
+		color: #fff;
+		height: 100%;
+		margin-top: 0;
+		top: 0;
+		vertical-align: bottom;
+		width: 50%;
+		z-index: 1;
+	}
+
+		.slider .nav-next:before,
+		.slider .nav-previous:before {
+			display: block;
+			height: 2em;
+			line-height: 2em;
+			margin-top: -1em;
+			padding: 0 1em;
+			top: 50%;
+			width: 100%;
+		}
+
+	.slider .nav-next {
+		right: 0;
+		text-align: right;
+	}
+
+	.slider .nav-previous {
+		left: 0;
+		text-align: left;
+	}
+
+/* Header */
+
+	#skel-layers-wrapper {
+		padding-top: 0;
+	}
+
+	#header {
+		display: none;
+	}
+
+/* Banner */
+
+	#banner {
+		padding: 12em 2em;
+	}
