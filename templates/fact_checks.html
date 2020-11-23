@@ -1,0 +1,119 @@
+{% extends "layout.html" %}
+{% block content %}
+
+<html>
+	<head>
+		<title> </title>
+		<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+		<meta name="description" content="" />
+		<meta name="keywords" content="" />
+		<!--[if lte IE 8]><script src="css/ie/html5shiv.js"></script><![endif]-->
+
+		<script type="text/javascript" src="{{ url_for('static', filename='js/init.js') }}"></script>
+		<script type="text/javascript" src="{{ url_for('static', filename='js/jquery.min.js') }}"></script>
+		<script type="text/javascript" src="{{ url_for('static', filename='js/jquery.scrollgress.min.js') }}"></script>
+		<script type="text/javascript" src="{{ url_for('static', filename='js/skel.min.js') }}"></script>
+		<script type="text/javascript" src="{{ url_for('static', filename='js/jquery.dropotron.min.js') }}"></script>
+		<script type="text/javascript" src="{{ url_for('static', filename='js/jquery.scrolly.min.js') }}"></script>
+		<script type="text/javascript" src="{{ url_for('static', filename='js/jquery.slidertron.min.js') }}"></script>
+		<script type="text/javascript" src="{{ url_for('static', filename='js/skel-layers.min.js') }}"></script>
+
+		<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/style.css') }}">
+		<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/skel.css') }}">
+		<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/style-xlarge.css') }}">
+
+
+		<!--[if lte IE 9]><link rel="stylesheet" href="css/ie/v9.css" /><![endif]-->
+		<!--[if lte IE 8]><link rel="stylesheet" href="css/ie/v8.css" /><![endif]-->
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+	</head>
+	<body>
+
+		<!-- Main -->
+			<section id="main" class="wrapper style1">
+				<header class="major">
+					<h2 style="font-size: 350%; font-family: 'Times New Roman', Times, serif;">Fact-checks</h2>
+				</header>
+				<div class="container5">
+					<p style="font-size: 150%; text-align: center;">Articles submitted by consumers</p>
+					<div class="modal-body">
+					
+					{% for article in saved_articles.values() %}
+					<form action="/fact_checks" method = 'POST'>
+						<div class="col-lg-6 offset-lg-3" style="margin: auto; max-width: 70%; margin-bottom: 5%;">
+						   <div class="cardbox shadow-lg bg-white">
+						      <div class="cardbox-heading">
+						         <div class="media m-0">
+						            <div class="media-body">
+						               <div class="float-right">
+						                  <small><span><i class="icon ion-md-time"></i> </span></small>
+						               </div>
+           						        <div class="float-right">
+						               		<input class="button" type="hidden" class="btn btn-primary" value="{{article['url']}}" name="url" ></input>
+						               		<input class="button" type="submit" class="btn btn-primary" value="Check" name="url_hidden" ></input>
+										</div>
+										<div>
+											<p class="m-0" style="font-size: 120%;"> <b>{{ article['article_title'] }}</b> </i></a> </p>
+										</div>
+						               
+						               <br>
+						               <p class="fact_check_text">{{ article['article_text'] }}</p>
+						            </div>
+						         </div>
+						         <!--/ media -->
+						      </div>
+						      <!--/ cardbox-heading -->
+						      <div class="cardbox-base">
+						         <ul class="float-right">
+						            <li><a><i class="fas fa-tachometer-alt"></i></a></li>
+									{% if article['finalProb'] <= 33 %}
+										<li><a><em>Trustuble <i style="color: green" class="fas fa-circle"></i></em></a></li>
+									{% endif %}
+
+									{% if article['finalProb'] > 33 and article['finalProb'] <= 66  %}
+										<li><a><em>Dubious <i style="color: yellow" class="fas fa-circle"></i></em></a></li>
+									{% endif %}
+
+									{% if article['finalProb'] > 66 %}
+										<h4 class="modal-title"></h4>
+										<li><a><em>Not Trustable <i style="color: red" class="fas fa-circle"></i></em></a></li>
+									{% endif %}
+						            
+						         </ul>
+						         <ul>
+						            <li><a><i class="fa fa-globe"></i></a></li>
+
+				                    {% if article['source'] == True %}
+							          <li><a><em class="mr-5">Source: {{ article['absolute_url'] }} <i class="fa fa-check-circle"></i></em></a></li>
+							        {% else %}
+										<li><a><em class="mr-5">Source: {{ article['absolute_url'] }} <i class="far fa-times-circle"></i></em></a></li>      
+							        {% endif %}
+						         </ul>
+						      </div>
+						      <!--/ cardbox-base -->   
+						   </div>
+
+						   <!--/ cardbox -->
+						</div>
+						<!--/ col-lg-6 -->
+						</input>
+					</form>
+					{% endfor %}
+  					</div>
+  				</div>
+
+
+
+		
+
+
+
+
+			</section>
+
+
+	</body>
+</html>
+
+	
+{% endblock content %}

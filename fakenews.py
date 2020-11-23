@@ -50,6 +50,17 @@ def HomePage():
 			url = request.form['url']
 			#print(url)
 			#print(type(url))
+
+			saved_articles = firebase.get('/fakenews-app-d59dc/saved_articles/', '')
+			for article in saved_articles.values():
+				if (article['url'] == url):
+					if("tweets" not in article.keys()):
+						article['tweets'] = []
+					return render_template('result.html', title='Misinformation Detector',posts=posts, article_text=article['article_text'], article_title=article['article_title'], emotion_ratio=article['emotion_ratio'], total_emotion=article['total_emotion'], emotion_n_words=article['emotion_n_words'], totalsubj=article['totalsubj'], subj_feats=article['subj_feats'], ratio_of_each_subj=article['ratio_of_each_subj'], vad_features=article['vad_features'], total_vad=article['total_vad'], polarity=article['polarity'], bp_stats=article['bp_stats'], source=article['source'], url=article['url'],absolute_url=article['absolute_url'], tweets=article['tweets'], n_tweets=article['n_tweets'], finalProb=article['finalProb'])
+
+
+
+
 			article_text, article_title = parse(url)
 			sentences = metrics.tokenize_sentences(article_text)
 			lemmas, original_lemmas = metrics.lemmatize_words(sentences)
@@ -83,10 +94,34 @@ def HomePage():
 			source, absolute_url = metrics.source(url)
 
 			tweets = metrics.createTweetsDB(article_title)
+			print(tweets)
 			#metrics.runMetricsOnTweets()
 			n_tweets = len(tweets)
 
 			finalProb = metrics.finalProb(total_emotion, totalsubj, vad_features['total_vad'], polarity['total_pol'], bp_stats['total_bp'],source)
+
+			url_data1 = {
+				"url":url,
+				"article_text":article_text,
+				"article_title":article_title,
+				"emotion_ratio":emotion_ratio,
+				"emotion_n_words":emotion_n_words,
+				"total_emotion":total_emotion,
+				"totalsubj":totalsubj,
+				"subj_feats":subj_feats,
+				"ratio_of_each_subj":ratio_of_each_subj,
+				"vad_features":vad_features,
+				"total_vad":total_vad,
+				"polarity":polarity,
+				"bp_stats":bp_stats,
+				"source":source,
+				"absolute_url":absolute_url,
+				"tweets":tweets,
+				"n_tweets":n_tweets,
+				"finalProb":finalProb
+			}
+
+			firebase.post('/fakenews-app-d59dc/saved_articles/',url_data1)
 
 			return render_template('result.html', title='Misinformation Detector',posts=posts, article_text=article_text, article_title=article_title, emotion_ratio=emotion_ratio, total_emotion=total_emotion, emotion_n_words=emotion_n_words, totalsubj=totalsubj, subj_feats=subj_feats, ratio_of_each_subj=ratio_of_each_subj, vad_features=vad_features, total_vad=total_vad, polarity=polarity, bp_stats=bp_stats, source=source, url=url,absolute_url=absolute_url, tweets=tweets, n_tweets=n_tweets, finalProb=finalProb)
 		
@@ -304,6 +339,37 @@ def about():
 @app.route("/evaluation_interface",methods = ['POST', 'GET'])
 def evaluation_interface():
     return render_template('evaluation_interface.html', posts=posts)
+
+@app.route("/how_it_works",methods = ['POST', 'GET'])
+def how_it_works():
+    return render_template('how_it_works.html', posts=posts)
+
+@app.route("/fact_checks",methods = ['POST', 'GET'])
+def fact_checks():
+	if request.method == 'POST':
+		saved_articles = firebase.get('/fakenews-app-d59dc/saved_articles/', '')
+		
+		url = request.form['url']
+		#print(url)
+
+		for article in saved_articles.values():
+			if (article['url'] == url):
+				if("tweets" not in article.keys()):
+					article['tweets'] = []
+				return render_template('result.html', title='Misinformation Detector',posts=posts, article_text=article['article_text'], article_title=article['article_title'], emotion_ratio=article['emotion_ratio'], total_emotion=article['total_emotion'], emotion_n_words=article['emotion_n_words'], totalsubj=article['totalsubj'], subj_feats=article['subj_feats'], ratio_of_each_subj=article['ratio_of_each_subj'], vad_features=article['vad_features'], total_vad=article['total_vad'], polarity=article['polarity'], bp_stats=article['bp_stats'], source=article['source'], url=article['url'],absolute_url=article['absolute_url'], tweets=article['tweets'], n_tweets=article['n_tweets'], finalProb=article['finalProb'])
+
+
+		return render_template('fact_checks.html', posts=posts, saved_articles=saved_articles, url=url)
+
+	else:
+		saved_articles = firebase.get('/fakenews-app-d59dc/saved_articles/', '')
+		for article in saved_articles.values():
+			if("tweets" not in article.keys()):
+				article['tweets'] = []
+				url = article['url']
+				print(url)
+
+		return render_template('fact_checks.html', posts=posts, saved_articles=saved_articles, url=url)
 
 if __name__ == '__main__':
     app.run(debug=True)
