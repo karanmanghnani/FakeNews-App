@@ -42,123 +42,123 @@ def parse(website):
 @app.route("/HomePage",methods = ['POST', 'GET'])
 def HomePage():
 	if request.method == 'POST': 
-		#metrics.prepare_lexicons()
+		try:
 
-		liwc_tags, sentilex, anew_extended, emotion_words, subjective_words = metrics.load_lexicons()
+			#metrics.prepare_lexicons()
 
-		if('url' in request.values ):
-			url = request.form['url']
-			#print(url)
-			#print(type(url))
+			liwc_tags, sentilex, anew_extended, emotion_words, subjective_words = metrics.load_lexicons()
 
-			saved_articles = firebase.get('/fakenews-app-d59dc/saved_articles/', '')
-			for article in saved_articles.values():
-				if (article['url'] == url):
-					if("tweets" not in article.keys()):
-						article['tweets'] = []
-					return render_template('result.html', title='Misinformation Detector',posts=posts, article_text=article['article_text'], article_title=article['article_title'], emotion_ratio=article['emotion_ratio'], total_emotion=article['total_emotion'], emotion_n_words=article['emotion_n_words'], totalsubj=article['totalsubj'], subj_feats=article['subj_feats'], ratio_of_each_subj=article['ratio_of_each_subj'], vad_features=article['vad_features'], total_vad=article['total_vad'], polarity=article['polarity'], bp_stats=article['bp_stats'], source=article['source'], url=article['url'],absolute_url=article['absolute_url'], tweets=article['tweets'], n_tweets=article['n_tweets'], finalProb=article['finalProb'])
+			if('url' in request.values ):
+				url = request.form['url']
+				#print(url)
+				#print(type(url))
 
+				saved_articles = firebase.get('/fakenews-app-d59dc/saved_articles/', '')
+				for article in saved_articles.values():
+					if (article['url'] == url):
+						if("tweets" not in article.keys()):
+							article['tweets'] = []
+						return render_template('result.html', title='FactMe',posts=posts, article_text=article['article_text'], article_title=article['article_title'], emotion_ratio=article['emotion_ratio'], total_emotion=article['total_emotion'], emotion_n_words=article['emotion_n_words'], totalsubj=article['totalsubj'], subj_feats=article['subj_feats'], ratio_of_each_subj=article['ratio_of_each_subj'], vad_features=article['vad_features'], total_vad=article['total_vad'], polarity=article['polarity'], bp_stats=article['bp_stats'], source=article['source'], url=article['url'],absolute_url=article['absolute_url'], tweets=article['tweets'], n_tweets=article['n_tweets'], finalProb=article['finalProb'])
 
-
-
-			article_text, article_title = parse(url)
-			sentences = metrics.tokenize_sentences(article_text)
-			lemmas, original_lemmas = metrics.lemmatize_words(sentences)
-			words, original_words = metrics.tokenize_words(sentences)
-
-
-			emotion_ratio, emotion_n_words, total_emotion, emotion_list = metrics.get_emotions(words, emotion_words)
-			totalsubj, subj_feats, subj_list, ratio_of_each_subj = metrics.get_subjective_ratio(words, subjective_words)
-			vad_features, vad_list, total_vad = metrics.get_vad_features(lemmas, anew_extended)
-			polarity = metrics.sentiment_polarity(words, sentilex)
-			bp_stats = metrics.behavioral_physiological(words, liwc_tags)
-			"""
-			para mostrar as palavras nas metricas nao funciona função replace
-
-			keys = ['pos_list', 'neg_list', 'pos_cons_list', 'neg_cons_list']
-			polarity_list = {x:polarity[x] for x in keys}
-
-			keys = ['perc_list', 'rel_list', 'cog_list', 'pers_list', 'soc_list', 'bio_list']
-			bp_list = {x:bp_stats[x] for x in keys}
-
-			splitted_words =  nltk.word_tokenize(article_text)
-
-			#emotion_list = metrics.replace_original_words(emotion_list, article_text.split())
-			subj_list = metrics.replace_original_words(subj_list, splitted_words, splitted_words)"""
-
-			#finalProb = metrics.finalProb2(emotion_ratio, ratio_of_each_subj, vad_features, polarity, bp_stats)
+				article_text, article_title = parse(url)
+				sentences = metrics.tokenize_sentences(article_text)
+				lemmas, original_lemmas = metrics.lemmatize_words(sentences)
+				words, original_words = metrics.tokenize_words(sentences)
 
 
-			total_emotion, totalsubj, vad_features['total_vad'], polarity['total_pol'], bp_stats['total_bp'] = metrics.fakeProbability2(emotion_ratio, ratio_of_each_subj, vad_features, polarity, bp_stats)
+				emotion_ratio, emotion_n_words, total_emotion, emotion_list = metrics.get_emotions(words, emotion_words)
+				totalsubj, subj_feats, subj_list, ratio_of_each_subj = metrics.get_subjective_ratio(words, subjective_words)
+				vad_features, vad_list, total_vad = metrics.get_vad_features(lemmas, anew_extended)
+				polarity = metrics.sentiment_polarity(words, sentilex)
+				bp_stats = metrics.behavioral_physiological(words, liwc_tags)
+				"""
+				para mostrar as palavras nas metricas nao funciona função replace
 
-			source, absolute_url = metrics.source(url)
+				keys = ['pos_list', 'neg_list', 'pos_cons_list', 'neg_cons_list']
+				polarity_list = {x:polarity[x] for x in keys}
 
-			tweets = metrics.createTweetsDB(article_title)
-			print(tweets)
-			#metrics.runMetricsOnTweets()
-			n_tweets = len(tweets)
+				keys = ['perc_list', 'rel_list', 'cog_list', 'pers_list', 'soc_list', 'bio_list']
+				bp_list = {x:bp_stats[x] for x in keys}
 
-			finalProb = metrics.finalProb(total_emotion, totalsubj, vad_features['total_vad'], polarity['total_pol'], bp_stats['total_bp'],source)
+				splitted_words =  nltk.word_tokenize(article_text)
 
-			url_data1 = {
-				"url":url,
-				"article_text":article_text,
-				"article_title":article_title,
-				"emotion_ratio":emotion_ratio,
-				"emotion_n_words":emotion_n_words,
-				"total_emotion":total_emotion,
-				"totalsubj":totalsubj,
-				"subj_feats":subj_feats,
-				"ratio_of_each_subj":ratio_of_each_subj,
-				"vad_features":vad_features,
-				"total_vad":total_vad,
-				"polarity":polarity,
-				"bp_stats":bp_stats,
-				"source":source,
-				"absolute_url":absolute_url,
-				"tweets":tweets,
-				"n_tweets":n_tweets,
-				"finalProb":finalProb
-			}
+				#emotion_list = metrics.replace_original_words(emotion_list, article_text.split())
+				subj_list = metrics.replace_original_words(subj_list, splitted_words, splitted_words)"""
 
-			firebase.post('/fakenews-app-d59dc/saved_articles/',url_data1)
-
-			return render_template('result.html', title='Misinformation Detector',posts=posts, article_text=article_text, article_title=article_title, emotion_ratio=emotion_ratio, total_emotion=total_emotion, emotion_n_words=emotion_n_words, totalsubj=totalsubj, subj_feats=subj_feats, ratio_of_each_subj=ratio_of_each_subj, vad_features=vad_features, total_vad=total_vad, polarity=polarity, bp_stats=bp_stats, source=source, url=url,absolute_url=absolute_url, tweets=tweets, n_tweets=n_tweets, finalProb=finalProb)
-		
-		else:
-			article_title = request.form['ArticleTitle']
-			article_text = request.form['ArticleText']
-
-			sentences = metrics.tokenize_sentences(article_text)
-			lemmas, original_lemmas = metrics.lemmatize_words(sentences)
-			words, original_words = metrics.tokenize_words(sentences)
+				#finalProb = metrics.finalProb2(emotion_ratio, ratio_of_each_subj, vad_features, polarity, bp_stats)
 
 
-			emotion_ratio, emotion_n_words, total_emotion, emotion_list = metrics.get_emotions(words, emotion_words)
-			totalsubj, subj_feats, subj_list, ratio_of_each_subj = metrics.get_subjective_ratio(words, subjective_words)
-			vad_features, vad_list, total_vad = metrics.get_vad_features(lemmas, anew_extended)
-			polarity = metrics.sentiment_polarity(words, sentilex)
-			bp_stats = metrics.behavioral_physiological(words, liwc_tags)
+				total_emotion, totalsubj, vad_features['total_vad'], polarity['total_pol'], bp_stats['total_bp'] = metrics.fakeProbability2(emotion_ratio, ratio_of_each_subj, vad_features, polarity, bp_stats)
 
-			total_emotion, totalsubj, vad_features['total_vad'], polarity['total_pol'], bp_stats['total_bp'] = metrics.fakeProbability2(emotion_ratio, ratio_of_each_subj, vad_features, polarity, bp_stats)
+				source, absolute_url = metrics.source(url)
 
-			source = False
-			absolute_url = "No url"
-			url = "No url"
-			if(article_title == ""):
-				tweets = []
-				n_tweets = 0
-			else:
 				tweets = metrics.createTweetsDB(article_title)
+				#print(tweets)
+				#metrics.runMetricsOnTweets()
 				n_tweets = len(tweets)
 
-			finalProb = metrics.finalProb(total_emotion, totalsubj, vad_features['total_vad'], polarity['total_pol'], bp_stats['total_bp'],source)
+				finalProb = metrics.finalProb(total_emotion, totalsubj, vad_features['total_vad'], polarity['total_pol'], bp_stats['total_bp'],source)
+
+				url_data1 = {
+					"url":url,
+					"article_text":article_text,
+					"article_title":article_title,
+					"emotion_ratio":emotion_ratio,
+					"emotion_n_words":emotion_n_words,
+					"total_emotion":total_emotion,
+					"totalsubj":totalsubj,
+					"subj_feats":subj_feats,
+					"ratio_of_each_subj":ratio_of_each_subj,
+					"vad_features":vad_features,
+					"total_vad":total_vad,
+					"polarity":polarity,
+					"bp_stats":bp_stats,
+					"source":source,
+					"absolute_url":absolute_url,
+					"tweets":tweets,
+					"n_tweets":n_tweets,
+					"finalProb":finalProb
+				}
+
+				firebase.post('/fakenews-app-d59dc/saved_articles/',url_data1)
+
+				return render_template('result.html', title='FactMe',posts=posts, article_text=article_text, article_title=article_title, emotion_ratio=emotion_ratio, total_emotion=total_emotion, emotion_n_words=emotion_n_words, totalsubj=totalsubj, subj_feats=subj_feats, ratio_of_each_subj=ratio_of_each_subj, vad_features=vad_features, total_vad=total_vad, polarity=polarity, bp_stats=bp_stats, source=source, url=url,absolute_url=absolute_url, tweets=tweets, n_tweets=n_tweets, finalProb=finalProb)
+
+			else:
+				article_title = request.form['ArticleTitle']
+				article_text = request.form['ArticleText']
+
+				sentences = metrics.tokenize_sentences(article_text)
+				lemmas, original_lemmas = metrics.lemmatize_words(sentences)
+				words, original_words = metrics.tokenize_words(sentences)
 
 
-			return render_template('result.html', title='Misinformation Detector',posts=posts, article_text=article_text, article_title=article_title, emotion_ratio=emotion_ratio, total_emotion=total_emotion, emotion_n_words=emotion_n_words, totalsubj=totalsubj, subj_feats=subj_feats, ratio_of_each_subj=ratio_of_each_subj, vad_features=vad_features, total_vad=total_vad, polarity=polarity, bp_stats=bp_stats, source=source, url=url,absolute_url=absolute_url, tweets=tweets, n_tweets=n_tweets, finalProb=finalProb)
-		
+				emotion_ratio, emotion_n_words, total_emotion, emotion_list = metrics.get_emotions(words, emotion_words)
+				totalsubj, subj_feats, subj_list, ratio_of_each_subj = metrics.get_subjective_ratio(words, subjective_words)
+				vad_features, vad_list, total_vad = metrics.get_vad_features(lemmas, anew_extended)
+				polarity = metrics.sentiment_polarity(words, sentilex)
+				bp_stats = metrics.behavioral_physiological(words, liwc_tags)
+
+				total_emotion, totalsubj, vad_features['total_vad'], polarity['total_pol'], bp_stats['total_bp'] = metrics.fakeProbability2(emotion_ratio, ratio_of_each_subj, vad_features, polarity, bp_stats)
+
+				source = False
+				absolute_url = "No url"
+				url = "No url"
+				if(article_title == ""):
+					tweets = []
+					n_tweets = 0
+				else:
+					tweets = metrics.createTweetsDB(article_title)
+					n_tweets = len(tweets)
+
+				finalProb = metrics.finalProb(total_emotion, totalsubj, vad_features['total_vad'], polarity['total_pol'], bp_stats['total_bp'],source)
+
+
+				return render_template('result.html', title='FactMe',posts=posts, article_text=article_text, article_title=article_title, emotion_ratio=emotion_ratio, total_emotion=total_emotion, emotion_n_words=emotion_n_words, totalsubj=totalsubj, subj_feats=subj_feats, ratio_of_each_subj=ratio_of_each_subj, vad_features=vad_features, total_vad=total_vad, polarity=polarity, bp_stats=bp_stats, source=source, url=url,absolute_url=absolute_url, tweets=tweets, n_tweets=n_tweets, finalProb=finalProb)
+		except Exception as e:
+			return render_template('error.html')
 	else:
-		return render_template('HomePage.html', title='Misinformation Detector')
+		return render_template('HomePage.html', title='FactMe')
 
 
 @app.route("/result",methods = ['POST', 'GET'])
@@ -356,7 +356,7 @@ def fact_checks():
 			if (article['url'] == url):
 				if("tweets" not in article.keys()):
 					article['tweets'] = []
-				return render_template('result.html', title='Misinformation Detector',posts=posts, article_text=article['article_text'], article_title=article['article_title'], emotion_ratio=article['emotion_ratio'], total_emotion=article['total_emotion'], emotion_n_words=article['emotion_n_words'], totalsubj=article['totalsubj'], subj_feats=article['subj_feats'], ratio_of_each_subj=article['ratio_of_each_subj'], vad_features=article['vad_features'], total_vad=article['total_vad'], polarity=article['polarity'], bp_stats=article['bp_stats'], source=article['source'], url=article['url'],absolute_url=article['absolute_url'], tweets=article['tweets'], n_tweets=article['n_tweets'], finalProb=article['finalProb'])
+				return render_template('result.html', title='FactMe',posts=posts, article_text=article['article_text'], article_title=article['article_title'], emotion_ratio=article['emotion_ratio'], total_emotion=article['total_emotion'], emotion_n_words=article['emotion_n_words'], totalsubj=article['totalsubj'], subj_feats=article['subj_feats'], ratio_of_each_subj=article['ratio_of_each_subj'], vad_features=article['vad_features'], total_vad=article['total_vad'], polarity=article['polarity'], bp_stats=article['bp_stats'], source=article['source'], url=article['url'],absolute_url=article['absolute_url'], tweets=article['tweets'], n_tweets=article['n_tweets'], finalProb=article['finalProb'])
 
 
 		return render_template('fact_checks.html', posts=posts, saved_articles=saved_articles, url=url)
@@ -367,9 +367,14 @@ def fact_checks():
 			if("tweets" not in article.keys()):
 				article['tweets'] = []
 				url = article['url']
-				print(url)
+				#print(url)
 
 		return render_template('fact_checks.html', posts=posts, saved_articles=saved_articles, url=url)
 
+@app.errorhandler(404)
+def page_not_found(e):
+	return("ERROR 404: This page does not exist in FactMe.")
+
 if __name__ == '__main__':
     app.run(debug=True)
+
