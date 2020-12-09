@@ -16,6 +16,8 @@ from sklearn.feature_extraction.text import TfidfVectorizer
 from tweepy import Stream
 from tweepy import OAuthHandler
 from tweepy.streaming import StreamListener
+import subprocess
+import hunspell
 import json
 import xlsxwriter
 import tweepy
@@ -265,6 +267,28 @@ def get_subjective_ratio(words, subjective_words):
     #print(subj_feats)
     return total_subj_ratio, subj_feats, subj_list, ratio_of_each_subj
 
+def get_grammatical(sentences, words):
+
+    doc_citiustags = metrics.citiustagger_doc(sentences)
+    #print(doc_citiustags)
+
+    gram_stats = {}
+
+    gram_stats['n_sents'] = len(sentences)
+    gram_stats['informality'], gram_stats['informality_words'] = metrics.get_typographical_error_ratio(words)
+
+    gram_stats['verbs_ratio'], gram_stats['verbs_words'] = metrics.get_verbs_ratio(doc_citiustags, words)
+    gram_stats['adjs_ratio'], gram_stats['adjs_words'] = metrics.get_adjectives_ratio(doc_citiustags, words)
+    gram_stats['nouns_ratio'], gram_stats['nouns_words'] = metrics.get_nouns_ratio(doc_citiustags, words)
+    gram_stats['content_diversity'], gram_stats['content_words'] = metrics.get_content_diversity(doc_citiustags)
+    gram_stats['redundancy'], gram_stats['redundancy_words'] = metrics.get_redundancy(gram_stats['n_sents'], doc_citiustags)
+    gram_stats['pausality'], gram_stats['pausality_words'] = metrics.get_pausality(gram_stats['n_sents'], doc_citiustags)
+    gram_stats['expressivity'], gram_stats['expressivity_words'] = metrics.get_emotiveness(doc_citiustags)
+    gram_stats['non_immediacy'], gram_stats['non_immediacy_words'] = metrics.get_non_immediacy(doc_citiustags, words)
+    gram_stats['modifiers_ratio'], gram_stats['modifiers_ratio_words'] = metrics.get_modifiers_ratio(doc_citiustags, words)
+
+    return gram_stats
+
 def source(url):
     hostname = urlparse(url).hostname
     absolute_url = re.sub('www.', '', hostname)
@@ -437,7 +461,7 @@ def fakeProbability(metric, metric_total):
 
     return float('%.1f' % ((metric_prob)*100))
 
-def fakeProbability2(emotion_ratio, ratio_of_each_subj, vad_features, polarity, bp_stats):
+def fakeProbability2(emotion_ratio, ratio_of_each_subj, vad_features, polarity, bp_stats, gram_stats):
     #print(emotion,subj,val_avg,arou_avg,dom_avg,pos_words,neg_words,pos_contrast,neg_contrast,percep,relat,cogni,personal,bio,social)
     
     model = LogisticRegression(solver="saga", max_iter=8000)
@@ -557,6 +581,33 @@ def fakeProbability2(emotion_ratio, ratio_of_each_subj, vad_features, polarity, 
     y_predicted = model.predict_proba(X_test)
 
     bp = float('%.0f' % ((y_predicted[0][0])*100))
+
+    # Grammatical
+
+    lista = []
+    lista.append(gram_stats['informality'])
+    lista.append(gram_stats['verbs_ratio'])
+    lista.append(gram_stats['adjs_ratio'])
+    lista.append(gram_stats['nouns_ratio'])
+    lista.append(gram_stats['content_diversity'])
+    lista.append(gram_stats['redundancy'])
+    lista.append(gram_stats['pausality'])
+    lista.append(gram_stats['expressivity'])
+    lista.append(gram_stats['non_immediacy'])
+    lista.append(gram_stats['modifiers_ratio'])
+
+
+
+    X_test = pd.DataFrame([lista], columns=['informality','verbs_ratio','adjs_ratio','nouns_ratio','content_diversity','redundancy','pausality','non_immediacy','modifiers_ratio','expressivity'])
+    X_train = df[['informality','verbs_ratio','adjs_ratio','nouns_ratio','content_diversity','redundancy','pausality','non_immediacy','modifiers_ratio','expressivity']]
+    y_train = df.Label
+
+    model.fit(X_train, y_train)
+
+    y_predicted = model.predict_proba(X_test)
+
+    grammatical = float('%.0f' % ((y_predicted[0][0])*100))
+
     """
     # All
 
@@ -608,14 +659,14 @@ def fakeProbability2(emotion_ratio, ratio_of_each_subj, vad_features, polarity, 
     print(finalProb)"""
 
 
-    return emotion, subj, affective, pol, bp
+    return emotion, subj, affective, pol, bp, grammatical
 
 #######################################
 #          Final Probability          #
 #######################################
 
-def finalProb(total_emotion, totalsubj, total_vad, total_pol, total_bp, source):
-    linguisticProb = 0.15*total_emotion + 0.15*totalsubj + 0.15*total_vad + 0.15*total_pol + 0.15*total_bp
+def finalProb(total_emotion, totalsubj, total_vad, total_pol, total_bp, total_gram, source):
+    linguisticProb = 0.125*total_emotion + 0.125*totalsubj + 0.125*total_vad + 0.125*total_pol + 0.125*total_bp + 0.125*total_gram
     if(source == False):
         linguisticProb = linguisticProb + 25
     #linguisticProb = linguisticProb + 40
@@ -887,3 +938,220 @@ def replace_original_words(emotion_list, words, original_words):
                     #print(original_words[j])
     #print("emotion listttttttttttttttttttttttttttttttttt")
     #print(emotion_list)
+
+""" AUX FOR GRAMMATICAL """
+
+def citiustagger_doc(doc):
+
+    doc_citiustags = {
+        'adjective': [],
+        'conjunction': [],
+        'determiner': [],
+        'noun': [],
+        'pronoun': [],
+        'adverb': [],
+        'adposition': [],
+        'verb': [],
+        'number': [],
+        'date': [],
+        'interjection': [],
+        'punctuation': []
+    }
+
+    for sent in doc:
+        citiustagger_sent(sent, doc_citiustags)
+
+    return doc_citiustags
+
+def citiustagger_sent(sent, doc_citiustags):
+
+    #add period to the sentence to delimit the end.
+    sent += '.'
+
+    #write sentence to file.
+    file = open('temp_file.txt','w', encoding='utf-8') 
+    file.write(sent) 
+    file.close()
+    #print(sent)
+
+    #call citius tools
+    result = subprocess.run('cd CitiusTools/; sh nec.sh pt ../temp_file.txt', shell=True, stdout=subprocess.PIPE)
+    postags = result.stdout.decode("utf-8").strip().split('\n')
+    postags_clean = []
+
+    for token in postags:
+        if token:
+            postags_clean += [token.split()]
+    
+    #remove period added before
+    last_token = postags_clean[-1][0]
+    if last_token == '.':
+        postags_clean.pop(-1)
+    #print(postags_clean)
+    doc_citiustags = process_tags(postags_clean, doc_citiustags)
+
+
+def process_tags(postags_clean, tags):
+
+    #tags sanity check
+    for token in postags_clean:
+        if len(token) not in [2,3]:
+            #problem with tags length
+            #print('ATTENTION: ERROR!!!!')
+            #print(token)
+            sys.exit(0)
+
+    for token in postags_clean:
+        tag = token[-1]
+
+        if tag.startswith('A'):
+            #print(token[0], 'adjective')
+            tags['adjective'] += [token]
+        elif tag.startswith('C'):
+            #print(token[0], 'conjunction')
+            tags['conjunction'] += [token]
+        elif tag.startswith('D'):
+            #print(token[0], 'determiner')
+            tags['determiner'] += [token]            
+        elif tag.startswith('N'):
+            #print(token[0], 'noun')
+            tags['noun'] += [token]
+        elif tag.startswith('P'):
+            #print(token[0], 'pronoun')
+            tags['pronoun'] += [token]
+        elif tag.startswith('R'):
+            #print(token[0], 'adverb')
+            tags['adverb'] += [token]
+        elif tag.startswith('S'):
+            #print(token[0], 'adposition')
+            tags['adposition'] += [token]
+        elif tag.startswith('V'):
+            #print(token[0], 'verb')
+            tags['verb'] += [token]
+        elif tag.startswith('Z'):
+            #print(token[0], 'number')
+            tags['number'] += [token]
+        elif tag.startswith('W'):
+            #print(token[0], 'date')
+            tags['date'] += [token]
+        elif tag.startswith('I'):
+            #print(token[0], 'interjection')
+            tags['interjection'] += [token]
+        elif tag.startswith('F'):
+            #print(token[0], 'punctuation')
+            tags['punctuation'] += [token]
+        #elif tag.startswith(''):
+
+    #print(tags)
+    return tags
+
+def get_typographical_error_ratio(words):
+    ''' total number of misspelled words over total number of words '''
+    #https://datascience.blog.wzb.eu/2016/07/13/autocorrecting-misspelled-words-in-python-using-hunspell/
+    #https://natura.di.uminho.pt/download/sources/Dictionaries/hunspell/
+
+    n_words = len(words)
+
+    misspelled = 0
+    spellchecker = hunspell.HunSpell('util/pt_PT.dic',
+                                     'util/pt_PT.aff')
+    
+    for word in words:
+        #print(words)
+        if not spellchecker.spell(word.lower()):
+            misspelled += 1
+            #print(word)
+
+    return round(misspelled/n_words, 4), misspelled
+
+def get_verbs_ratio(doc_citiustags, words):
+    '''number of verbs over the number of words'''
+
+    n_words = len(words)
+    n_verbs = len(doc_citiustags['verb'])
+
+    return round(n_verbs/n_words, 4), n_verbs
+
+
+def get_nouns_ratio(doc_citiustags, words):
+    '''number of nouns over the number of words'''
+
+    n_words = len(words)
+    n_nouns = len(doc_citiustags['noun'])
+
+    return round(n_nouns/n_words, 4), n_nouns
+
+
+def get_adjectives_ratio(doc_citiustags, words):
+    '''number of adjectives over the number of words'''
+
+    n_words = len(words)
+    n_adjs = len(doc_citiustags['adjective'])
+
+    return round(n_adjs/n_words, 4), n_adjs
+
+def get_content_diversity(doc_citiustags):
+    ''' total number of different content words (nouns, verbs, adjectives, adverbs) over the total number of content words '''
+    content_words = []
+    keys = ['adjective', 'adverb', 'noun', 'verb']
+    
+    for k in keys:
+        for w in doc_citiustags[k]:
+            #print(w)
+            if len(w) == 3:
+                content_words += [w[1]]
+            elif len(w) == 2:
+                content_words += [w[0]]
+    #print(set(content_words))
+    return round(len(set(content_words))/len(content_words), 4), len(set(content_words))
+
+def get_redundancy(n_sentences, doc_citiustags):
+    ''' total number of function words (prepositions, pronouns, conjunctions, determiner) over the total number of sentences '''
+
+    function_words = doc_citiustags['adposition'] + doc_citiustags['pronoun'] + doc_citiustags['conjunction'] + doc_citiustags['determiner']
+
+    return  round(len(function_words)/n_sentences, 4), len(function_words)
+
+
+def get_pausality(n_sentences, doc_citiustags):
+    ''' the number of punctuation signals over the number of sentences '''
+
+    n_punct = len(doc_citiustags['punctuation'])
+
+    return round(n_punct/n_sentences, 4), n_punct
+
+
+def get_emotiveness(doc_citiustags):
+    ''' the sum of the number of adjectives and adverbs over the sum of nouns and verbs '''
+
+    n_adjs = len(doc_citiustags['adjective'])
+    n_advs = len(doc_citiustags['adverb'])
+    n_nouns = len(doc_citiustags['noun'])
+    n_verbs =  len(doc_citiustags['verb'])
+
+    return round((n_adjs+n_advs)/(n_nouns+n_verbs), 4), (n_adjs+n_advs)
+
+def get_non_immediacy(doc_citiustags, words):
+    ''' the (normalized) number of 1st and 2nd pronouns '''
+
+    n_words = len(words)
+    pronouns = doc_citiustags['pronoun']
+
+    n_12p = 0
+    for pronoun in pronouns:
+        tag = pronoun[-1]
+        #person = tag[2]
+        if tag[2] in ['1', '2']:
+            n_12p += 1 
+
+    #normalized by the number of sentences 
+    return round(n_12p/n_words, 4), n_12p
+
+def get_modifiers_ratio(doc_citiustags, words):
+    '''number of modifiers (adjectives and adverbs) over the number of words'''
+    
+    n_words = len(words)
+    n_adjs = len(doc_citiustags['adjective'])
+    n_advs = len(doc_citiustags['adverb'])
+
+    return round((n_adjs+n_advs)/n_words, 4), (n_adjs+n_advs)

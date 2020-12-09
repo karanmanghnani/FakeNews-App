@@ -53,9 +53,13 @@ predict(df, model,['pos_words','neg_words','pos_contrast','neg_contrast'],'Polar
 # BP
 predict(df,model,['perceptuality','relativity','cognitivity','personal','biological','social'],'BP' )
 
-# All
-predict(df, model, ['alegria','desgosto','medo','raiva','surpresa','tristeza', 'strongsubj','weaksubj', 'valence_avg','arousal_avg','dominance_avg','valence_std','arousal_std','dominance_std','valence_max','arousal_max','dominance_max','valence_min','arousal_min','dominance_min','valence_dif','arousal_dif','dominance_dif', 'pos_words','neg_words', 'perceptuality','relativity','cognitivity','personal','biological','social'], 'All')
+# Grammatical
+predict(df,model,['informality','verbs_ratio','adjs_ratio','nouns_ratio','content_diversity','redundancy','pausality','non_immediacy','modifiers_ratio','expressivity'],'Grammatical' )
 
+# All
+predict(df, model, ['alegria','desgosto','medo','raiva','surpresa','tristeza', 'strongsubj','weaksubj', 'valence_avg','arousal_avg','dominance_avg','valence_std','arousal_std','dominance_std','valence_max','arousal_max','dominance_max','valence_min','arousal_min','dominance_min','valence_dif','arousal_dif','dominance_dif', 'pos_words','neg_words', 'perceptuality','relativity','cognitivity','personal','biological','social','informality','verbs_ratio','adjs_ratio','nouns_ratio','content_diversity','redundancy','pausality','non_immediacy','modifiers_ratio','expressivity'], 'All')
+
+                    
 
 
 """#All - Emotion

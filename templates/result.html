@@ -102,7 +102,7 @@
                   {% endif %}
                 </div>
                 <div>
-                  <h5 style="margin: auto; font-size: 88%;">{{ total_emotion }}% of articles with this emotivity level are fake.</h5>
+                  <h5 style="margin: auto; font-size: 88%;">{{ total_emotion }}% of articles with this emotivity score are fake.</h5>
                 </div>
               </div>
               <span data-toggle="modal" data-target="#EmotionModal" class="material-icons" style="font-size:23px; margin: auto; margin-left:2%;">info_outline</span> <br>
@@ -143,7 +143,7 @@
                 {% endif %}
               </div>
               <div>
-                <h5 style="margin: auto; font-size: 88%;">{{ totalsubj }}% of articles with this subjectivity level are fake.</h5>
+                <h5 style="margin: auto; font-size: 88%;">{{ totalsubj }}% of articles with this subjectivity score are fake.</h5>
               </div>
             </div>
             <span data-toggle="modal" data-target="#SubjectivityModal" class="material-icons" style="font-size:23px;margin: auto; margin-left:2%;">info_outline</span>
@@ -187,7 +187,7 @@
                     {% endif %}
                   </div>
                   <div>
-                    <h5 style="margin: auto; font-size: 88%;">{{ vad_features['total_vad'] }}% of articles with this affectivity level are fake.</h5>
+                    <h5 style="margin: auto; font-size: 88%;">{{ vad_features['total_vad'] }}% of articles with this affectivity score are fake.</h5>
                   </div>
               </div>
               <span data-toggle="modal" data-target="#AffectiveModal" class="material-icons" style="font-size:23px; margin: auto; margin-left:2%;">info_outline</span>
@@ -228,7 +228,7 @@
                     {% endif %}
                 </div>
                 <div>
-                  <h5 style="margin: auto; font-size: 88%;">{{ polarity['total_pol'] }}% of articles with this polarity level are fake.</h5>
+                  <h5 style="margin: auto; font-size: 88%;">{{ polarity['total_pol'] }}% of articles with this polarity score are fake.</h5>
                 </div>
               </div>
               <span data-toggle="modal" data-target="#PolarityModal" class="material-icons" style="font-size:23px; margin: auto; margin-left:2%;">info_outline</span>
@@ -272,13 +272,57 @@
                 {% endif %}
               </div>
               <div>
-                <h5 style="margin: auto; font-size: 88%;">{{ bp_stats['total_bp'] }}% of articles with this BP level are fake.</h5>
+                <h5 style="margin: auto; font-size: 88%;">{{ bp_stats['total_bp'] }}% of articles with this BP score are fake.</h5>
               </div>
             </div>
             <span data-toggle="modal" data-target="#BPModal" class="material-icons" style="font-size:23px; margin: auto; margin-left:2%;">info_outline</span>
       </div>
     </div>
     <div style="width: 42%; float: right; margin-right:5%;">
+      <div  class="media content-section-result-metric" >
+    
+            <h2 align="left" style="margin: auto; font-size: 150%;">Grammatical</h2>
+            <div class="media-body">
+                <div>
+                {% if gram_stats['total'] <= 33 %}
+                  <div class="progress">
+                    <div class="progress-bar2" role="progressbar" aria-valuenow="33" aria-valuemin="0" aria-valuemax="100" style="width:33%; background-color: green !important;">{{ gram_stats['total'] }}%</div>
+                    <div class="progress-bar2" role="progressbar" aria-valuenow="33" aria-valuemin="0" aria-valuemax="100" style="width:33%; background-color:#ffffb3 !important;"></div>
+                    <div class="progress-bar2" role="progressbar" aria-valuenow="33" aria-valuemin="0" aria-valuemax="100" style="width:34%; background-color:#ffe6e6 !important;">
+                    </div>
+                  </div>
+                {% endif %}
+
+                {% if gram_stats['total'] > 33 and gram_stats['total'] <= 66  %}
+                  <div class="progress">
+                    <div class="progress-bar2" role="progressbar" aria-valuenow="33" aria-valuemin="0" aria-valuemax="100" style="width:33%; background-color: #ccffcc !important;"></div>
+                    <div class="progress-bar2" role="progressbar" aria-valuenow="33" aria-valuemin="0" aria-valuemax="100" style="width:33%; background-color: yellow !important;">{{ gram_stats['total'] }}%</div>
+                    <div class="progress-bar2" role="progressbar" aria-valuenow="33" aria-valuemin="0" aria-valuemax="100" style="width:34%; background-color:#ffe6e6 !important;">
+                    </div>
+                  </div>
+                {% endif %}
+
+                {% if gram_stats['total'] > 66 %}
+                  <div class="progress">
+                    <div class="progress-bar2" role="progressbar" aria-valuenow="33" aria-valuemin="0" aria-valuemax="100" style="width:33%; background-color: #ccffcc !important;"></div>
+                    <div class="progress-bar2" role="progressbar" aria-valuenow="33" aria-valuemin="0" aria-valuemax="100" style="width:33%; background-color:#ffffb3 !important;"></div>
+                    <div class="progress-bar2" role="progressbar" aria-valuenow="33" aria-valuemin="0" aria-valuemax="100" style="width:34%; background-color: red !important;">
+                    {{ gram_stats['total'] }}%</div>
+                  </div>
+                        
+                {% endif %}
+              </div>
+              <div>
+                <h5 style="margin: auto; font-size: 88%;">{{ gram_stats['total'] }}% of articles with this grammar score are fake.</h5>
+              </div>
+            </div>
+            <span data-toggle="modal" data-target="#GramModal" class="material-icons" style="font-size:23px; margin: auto; margin-left:2%;">info_outline</span>
+      </div>
+    </div>
+  </div>
+
+  <div  style="display: inline;">
+    <div style="width: 42%; float: left; margin-left:5%;">
       <div class="media content-section-result-metric">
         {% if source == True %}
           <h2 style="font-size: 150%; margin: auto; margin-left: 0px;" align="left">Source credibility: ({{ absolute_url }}) <img class="source"  src="static/Images/verified.png" alt="verified Icon"> </h2>
@@ -290,10 +334,7 @@
         <span data-toggle="modal" data-target="#SourceModal" class="material-icons" style="font-size:23px; margin: auto; margin-right:0%;">info_outline</span>
       </div>
     </div>
-  </div>
-
-  <div  style="display: inline;">
-    <div style="width: 42%;  margin-left:5%; ">
+    <div style="width: 42%; float: right; margin-right:5%; ">
       <div class="media content-section-result-metric">
         <h2 style="font-size: 150%;  margin: auto; margin-left: 0px; " align="center">Related Tweets</h2>
         <span data-toggle="modal" data-target="#TwitterModal" class="material-icons" style="font-size:23px; margin: auto; margin-right:0%;">info_outline</span>
@@ -556,6 +597,70 @@
               <li class="list-group-item"> Biological processes: {{bp_stats['n_biological_words']}} words ({{ bp_stats['biological_processes'] }}% of article)</li>
               <p></p>
               <li class="list-group-item"> Social processes: {{bp_stats['n_social_words']}} words ({{ bp_stats['social_processes'] }}% of article)</li>
+              <p></p>
+            </ul>   
+          </div>
+        </div>
+        
+        <!-- Modal footer -->
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        </div>
+        
+      </div>
+    </div>
+  </div>
+  <!-- End of the Modal -->
+
+   <!-- The Modal -->
+  <div class="modal fade" id="GramModal">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+      
+        <!-- Modal Header -->
+        <div class="modal-header">
+          <h4 class="modal-title">Grammatical: {{ gram_stats['total'] }}%-&nbsp;</h4>
+        {% if gram_stats['total'] <= 33 %}
+          <h4 class="modal-title">Trustable</h4>
+          <h4 class="dot" style="background-color: green"></h4>
+        {% endif %}
+
+        {% if gram_stats['total']> 33 and gram_stats['total'] <= 66  %}
+          <h4 class="modal-title">Dubious</h4>
+          <h4 class="dot" style="background-color: yellow"></h4>
+        {% endif %}
+
+        {% if gram_stats['total'] > 66 %}
+          <h4 class="modal-title">Not Trustable</h4>
+          <h4 class="dot" style="background-color: red"></h4>
+        {% endif %}
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+        </div>
+        
+        <!-- Modal body -->
+        <div class="modal-body">
+          <div class="metric_description">
+            <h5>This category is based on PoS (Part-of-Speech) and NeR (Named-entity recognition) which considers  content  words  (i.e.,  nouns,verbs, adjectives, adverbs) and function words (i.e., prepositions, pronouns, conjunctions, determiners). </h5>
+            <ul class="list-group">
+              <li class="list-group-item"> Informality: {{gram_stats['informality_words']}} words </li>
+              <p></p>
+              <li class="list-group-item"> Expressivity: {{gram_stats['expressivity_words']}} words </li>
+              <p></p>
+              <li class="list-group-item"> Diversity: {{gram_stats['content_words']}} words </li>
+              <p></p>
+              <li class="list-group-item"> Modifiers ratio: {{gram_stats['modifiers_ratio_words']}} words </li>
+              <p></p>
+              <li class="list-group-item"> Non-immediacy: {{gram_stats['non_immediacy_words']}} words </li>
+              <p></p>
+              <li class="list-group-item"> Pausality: {{gram_stats['pausality_words']}} words </li>
+              <p></p>
+              <li class="list-group-item"> Redundancy : {{gram_stats['redundancy_words']}} words </li>
+              <p></p>
+              <li class="list-group-item"> Verbs ratio: {{gram_stats['verbs_words']}} words </li>
+              <p></p>
+              <li class="list-group-item"> Adjectives ratio: {{gram_stats['adjs_words']}} words </li>
+              <p></p>
+              <li class="list-group-item"> Nouns ratio: {{gram_stats['nouns_words']}} words </li>
               <p></p>
             </ul>   
           </div>

@@ -19,6 +19,7 @@ stats_affective_dominance = [stats_true.dominance_avg, stats_false.dominance_avg
 stats_polarity = [stats_true.pos_words, stats_false.pos_words, stats_true.neg_words, stats_false.neg_words]
 stats_polarity_contrast = [stats_true.pos_contrast, stats_false.pos_contrast, stats_true.neg_contrast, stats_false.neg_contrast]
 stats_bp = [stats_true.perceptuality, stats_false.perceptuality, stats_true.relativity, stats_false.relativity, stats_true.cognitivity, stats_false.cognitivity, stats_true.personal, stats_false.personal, stats_true.biological, stats_false.biological, stats_true.social, stats_false.social]
+stats_grammatical = [stats_true.informality, stats_false.informality, stats_true.verbs_ratio, stats_false.verbs_ratio, stats_true.adjs_ratio, stats_false.adjs_ratio, stats_true.nouns_ratio, stats_false.nouns_ratio, stats_true.content_diversity, stats_false.content_diversity,	stats_true.redundancy, stats_false.redundancy, stats_true.pausality, stats_false.pausality,	stats_true.expressivity, stats_false.expressivity,	stats_true.non_immediacy, stats_false.non_immediacy, stats_true.modifiers_ratio, stats_false.modifiers_ratio]
 
 
 ######EMOTION######
@@ -139,3 +140,19 @@ plt.xticks([1.5, 3.5, 5.5, 7.5, 9.5, 11.5], ['Perceptuality', 'Relativity', 'Cog
 ax.set_title('BP')
 
 fig.savefig('bp-stats.png', bbox_inches='tight')
+
+######Grammatical######
+
+fig = plt.figure(9, figsize=(15, 10))
+ax = fig.add_subplot(111)
+box = ax.boxplot(stats_grammatical, patch_artist=True)
+
+colors = ['green', 'red', 'green', 'red', 'green', 'red', 'green', 'red', 'green', 'red', 'green', 'red', 'green', 'red', 'green', 'red', 'green', 'red', 'green', 'red']
+for patch, color in zip(box['boxes'], colors):
+	patch.set_facecolor(color)
+
+plt.xticks([1.5, 3.5, 5.5, 7.5, 9.5, 11.5, 13.5, 15.5, 17.5, 19.5], ['Informality', 'Verbs ratio', 'Adjectives ratio', 'Nouns ratio', 'Diversity', 'Redundancy', 'Pausality', 'Expressivity', 'Non immediacy', 'Modifiers ratio'])
+ax.set_title('Grammatical')
+
+fig.savefig('grammatical-stats.png', bbox_inches='tight')
+
