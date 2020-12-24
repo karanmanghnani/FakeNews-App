@@ -65,16 +65,16 @@
 						<p>We use Artificial Inteligence to classify the content. Our Natural Language Processing has a big database of news articles which help us to learn how false content look like and detect by presenting a credibility score.</p>
 						<p>FactMe will help detecting the credibility by presenting <b>indicators of disinformation</b> and a <b>disinformation score</b> </p>
 						<ul style="list-style-type: circle;  margin-left: 5%;">
-							<li><b>Indicators of disinformation- </b> The indicators of disinformations can be <b>content-based</b> which are reflected in the article text and <b>context-based</b> which are reflected surronding the news content. We have computed in total of 7 indicators using machine learning algorithms and present them in a color-form to help you analyze and evaluate the news article. </li>
+							<li><b>Indicators of disinformation- </b> The indicators of disinformations can be <b>content-based</b> which are reflected in the article text and <b>context-based</b> which are reflected surronding the news content. We have computed in total of 8 indicators using machine learning algorithms and present them in a color-form to help you analyze and evaluate the news article. </li>
 							<br>
-							<li><b>Disinformation score- We have also associated a score to the article using the indicators.  </b>  </li>
+							<li><b>Disinformation score-</b> We have also associated a score to the article using the indicators.</li>
 							<br>
 						</ul>
 
 						<p>The colors respresented has the following meaning:</p>
 						<div style="margin-left: 3%;">
 							<div style="align-items: flex-start; display: flex; ">
-								<h4 class="dot" style="background-color: green">  </h4><p style="margin-top: 0.5%;">&emsp;Shows no perceived fake tendencies in the news. The user can have a high-level of trust in the article.</p>
+								<h4 class="dot" style="background-color: green">  </h4><p style="margin-top: 0.5%;">&emsp;Shows no perceived or irrelevant misleading tendencies in the news. The user can have a high-level of trust in the article.</p>
 							</div>
 
 							<div style="align-items: flex-start; display: flex; ">
@@ -82,7 +82,7 @@
 							</div>
 
 							<div style="align-items: flex-start; display: flex; ">
-								<h4 class="dot" style="background-color: red">  </h4><p style="margin-top: 0.5%;">&emsp;This shows to the user that fake tendencies were detected, and the user should read the article with caution.</p>
+								<h4 class="dot" style="background-color: red">  </h4><p style="margin-top: 0.5%;">&emsp;This shows the user that high fake tendencies were detected, and the user should read the article with caution.</p>
 							</div>
 						</div>
 						<hr>
@@ -93,15 +93,17 @@
 							<br>
 							<li><b>Subjectivity-</b> This category is responsible for distinguishing factual information from subjective information. Subjective expressions are used to express an opinion, emotion, evaluation, stance, or speculation. Subjective terms can be strong subjective (terms used without subjective meaning) and weak subjective (used for objective or subjective expressions). </li>
 							<br>
-							<li><b>Affectivity-</b> : Disinformation often employs a higher number of emotional words than informative text. Affectivity metrics compute statistics on emotional words present in text and highlight variations to informative content. These metrics are based on a three-dimensional emotion representation: Valence: Corresponds to the concept of polarity; Arousal: Degree of excitement/calmness; Dominance: Control over specific stimulus. </li>
+							<li><b>Affectivity-</b> Disinformation often employs a higher number of emotional words than informative text. Affectivity metrics compute statistics on emotional words present in text and highlight variations to informative content. These metrics are based on a three-dimensional emotion representation: Valence: Corresponds to the concept of polarity; Arousal: Degree of excitement/calmness; Dominance: Control over specific stimulus. </li>
 							<br>
 							<li><b>Polarity-</b> The sentiment is expressed through subjective expressions to describe people’s opinions, appraisals, or feelings toward a given target. </li>
 							<br>
 							<li><b>BP (Behavioral & Physiological)-</b> In a news article, the author also shows the feelings he had about the reported information. Such feelings, which depend on his behavior and psychological processes, can help detect disinformation. The BP category corresponds to six processes such as: Biological (body, health, sexual); Cognitive: (insight, causation, discrepancy, certainty, inclusion and exclusion); Perceptual (sounds, smells, physical sensations); Personal (work, achievement, leisure, money, religion); Relative (motion, spatio-temporal locations of people); Social (family, friends). </li>
 							<br>
+							<li><b>Grammatical-</b> This category is based in Part-of-Speech (PoS) tagging considering therole,  definition,  and  context  of  the  terms.   Grammatical  metrics  consider  content  words  (i.e.,  nouns,verbs, adjectives, adverbs) and function words (i.e., prepositions, pronouns, conjunctions, determiners).This category also includes the degree of informality (or typographical error ratio) of a text. </li>
+							<br>
 							<li><b>Source credibility-</b> This indicators shows the credibility of the article according to the ERC (Entidade Reguladora para a Comunicação Social) which is the entity responsible for the regulation and supervision of all entities that pursue social communication activities in Portugal. To be registered by this entity, the journalistic company must be classified as a press by the Portuguese law of press (Lei n.º 2/99, de 13 de Janeiro), which requires the company to verify the veracity of the news. This indicator show if the URL of the article belongs a company registered by ERC. </li>
 							<br>
-							<li><b>Related Tweets-</b> fake article can be shared in a viral way across the internet, and one of those platforms is Twitter. We show to the users how the submitted article is being shared on Twitter. For that it is taken into account some properties like the number of users shared the article, number of retweets each user had, number of followers, number of likes, date and if it is a verified profile by Twitter. These properties can help a user to conclude something about the credibility of the news.  </li>
+							<li><b>Related Tweets-</b> Fake article can be shared in a viral way across the internet, and one of those platforms is Twitter. We show to the users how the submitted article is being shared on Twitter. For that it is taken into account some properties like the number of users shared the article, number of retweets each user had, number of followers, number of likes, date and if it is a verified profile by Twitter. These properties can help a user to conclude something about the credibility of the news.  </li>
 							<br>
 						</ul>
 
