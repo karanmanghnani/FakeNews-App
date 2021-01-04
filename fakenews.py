@@ -159,7 +159,7 @@ def HomePage():
 
 				return render_template('result.html', title='FactMe',posts=posts, article_text=article_text, article_title=article_title, emotion_ratio=emotion_ratio, total_emotion=total_emotion, emotion_n_words=emotion_n_words, totalsubj=totalsubj, subj_feats=subj_feats, ratio_of_each_subj=ratio_of_each_subj, vad_features=vad_features, total_vad=total_vad, polarity=polarity, bp_stats=bp_stats, source=source, url=url,absolute_url=absolute_url, tweets=tweets, n_tweets=n_tweets, finalProb=finalProb,gram_stats=gram_stats)
 		except Exception as e:
-			return render_template('error.html')
+			return render_template('error.html',e=e)
 	else:
 		return render_template('HomePage.html', title='FactMe')
 
